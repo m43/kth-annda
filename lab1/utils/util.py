@@ -38,16 +38,12 @@ def extend_inputs_with_bias(inputs, value=-1, features_axis=1) -> np.array:
     return np.concatenate((inputs, value * ones), axis=features_axis)
 
 
-def sse(outputs, targets) -> None:
-    """
-    Calculates the sum-of-squares error between given outputs and expected outputs aka targets
+def sse(outputs, targets):
+    return np.sum((targets - outputs) ** 2) / 2
 
-    :param outputs: np.array
-    :param targets: np.array of same shape as given outputs
-    :return: None
-    """
-    result = np.sum((targets - outputs) ** 2) / len(outputs)
-    print(f"sse:{result:>12.4f}")
+
+def mse(outputs, targets):
+    return np.sum((targets - outputs) ** 2) / len(outputs)
 
 
 def standardize(x, mean, std):

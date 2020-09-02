@@ -2,16 +2,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from model.slp import SingleLayerPerceptron
-from utils.util import shuffle_two_arrays
+from utils.util import shuffle_two_arrays, ensure_dir
 
-TEST = True
-PLOT_FOLDER = 'results'
+TEST = False
+PLOT_FOLDER = 'imgs'
 ETA = 0.001  # learning rate
-N = 100000  # number of epochs
+MAX_ITER = 1000  # max number of epochs
 DELTA_N = 100  # number of epochs without improvements in delta batch learning
 
-
 def plot_all(first_class, second_class, line_coefficients, name):
+    ensure_dir(PLOT_FOLDER)
+    plt.title(name)
     plt.scatter(first_class[0], first_class[1], c='#FF0000')
     plt.scatter(second_class[0], second_class[1], c='#00FF00')
     plt.xlabel('x1')
@@ -43,14 +44,12 @@ if __name__ == '__main__':
 
     # create class A data with bias and labels (1)
     class_a = np.array([np.random.normal(m_a[0], sigma_a, n),
-                        np.random.normal(m_a[1], sigma_a, n),
-                        np.ones(n)])
+                        np.random.normal(m_a[1], sigma_a, n)])
     test_print('Class A pattern:\n', class_a, '\n')
 
     # create class B data with labels (-1)
     class_b = np.array([np.random.normal(m_b[0], sigma_b, n),
-                        np.random.normal(m_b[1], sigma_b, n),
-                        np.ones(n)])
+                        np.random.normal(m_b[1], sigma_b, n)])
     test_print('Class B pattern:\n', class_b, '\n')
 
     # targets
@@ -63,8 +62,28 @@ if __name__ == '__main__':
     test_print('All targets (shuffled):\n', targets, '\n')
     plot_all(class_a, class_b, line_coefficients=None, name='samples')
 
-    slp = SingleLayerPerceptron(patterns, targets, True)
-    plot_all(class_a, class_b, line_coefficients=slp.W, name='start')
+    print("LEARNING RULE PERCEPTRON")
+    slp = SingleLayerPerceptron(patterns, targets)
+    print("Before training")
+    slp.eval(patterns, targets, delta_metrics=False)
+    slp.train(patterns, targets, ETA, minibatch_size=1, max_iter=MAX_ITER, delta=False)
+    plot_all(class_a, class_b, line_coefficients=slp.W, name='Perceptron learning - start')
+    print("After training")
+    slp.eval(patterns, targets, delta_metrics=False)
+    plot_all(class_a, class_b, line_coefficients=slp.W, name='Perceptron learning - end result')
 
-    slp.train(patterns, targets, ETA, minibatch_size=1, max_iter=1000)
-    plot_all(class_a, class_b, line_coefficients=slp.W, name='end')
+
+    print("DELTA RULE PERCEPTRON")
+    slp = SingleLayerPerceptron(patterns, targets)
+
+    print("Before training")
+    slp.eval(patterns, targets)
+    plot_all(class_a, class_b, line_coefficients=slp.W, name='Delta rule learning - start')
+
+    slp.train(patterns, targets, ETA, minibatch_size=1, max_iter=MAX_ITER)
+
+    print("After training")
+    slp.eval(patterns, targets)
+    plot_all(class_a, class_b, line_coefficients=slp.W, name='Delta rule learning - end result')
+
+# TODO refactor file. Create separate demo programs
