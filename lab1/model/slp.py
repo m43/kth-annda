@@ -5,7 +5,7 @@ from utils.util import shuffle_two_arrays, extend_inputs_with_bias, horse, sse
 
 class SingleLayerPerceptron:
     def __init__(self, inputs, targets, debug=False):
-        self.W = np.random.randn(targets.shape[0], inputs.shape[0] + 1) * 0.7
+        self.W = np.random.randn(targets.shape[0], inputs.shape[0] + 1) / 2
         self.debug = debug
 
     def forward(self, inputs):
@@ -60,18 +60,21 @@ class SingleLayerPerceptron:
         if pocket:
             self.W = pocket
 
-        self.log('Converged after', epoch, 'epochs.')
-        self.log(horse)  # horsified
+        self.log(f'Converged after {epoch} epochs.')
+        # self.log(horse)  # horsified
 
     def log(self, *a, **b):
         if self.debug:
-            print(a, b)
+            for elem in a:
+                print(elem)
+            if b:
+                print(b)
 
     # TODO Should I ask for delta_metrics?  How should one know what metrics are expected - loss or acc or both?
     def eval(self, inputs, targets, delta_metrics=True):
         self.forward(extend_inputs_with_bias(inputs, features_axis=0))
 
-        acc = np.sum(np.where(targets == self.outputs, 1, 0)) *100 / targets.shape[-1] # TODO works only for 1d target
+        acc = np.sum(np.where(targets == self.outputs, 1, 0)) * 100 / targets.shape[-1]  # TODO works only for 1d target
         print(f"Accuracy:{acc:>3.4f}")
 
         if delta_metrics:

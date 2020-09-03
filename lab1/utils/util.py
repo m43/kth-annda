@@ -22,7 +22,7 @@ horse = """               .,,.
                 `""""`        `""""`     ;'"""  # Why jgs?
 
 
-def extend_inputs_with_bias(inputs, value=-1, features_axis=1) -> np.array:
+def extend_inputs_with_bias(inputs, value=1, features_axis=1) -> np.array:
     """
     Function returns given input extended by `value` at `axis`.
 
