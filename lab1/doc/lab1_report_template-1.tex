@@ -17,9 +17,9 @@
   {\Large Learning and generalisation in feed-forward networks ---\\[1ex]
  from perceptron learning to backprop}\\
   \vspace{8mm}  
-  {\Large Author 1, Author 2 and Author 3\\}
+  {\Large Ivan Stresec, Frano Rajic\\}
   \vspace{4mm}
-  {\large September 1, 2018\\}
+  {\large September 11, 2020\\}
 \end{center}
 
 \begin{framed}
@@ -33,15 +33,18 @@ Below you find some extra instructions in italics. Please remove them and use no
 \textit{List here a concise list of your major intended goals, what you planned to do and what you wanted to learn/what problems you were set to address or investigate, e.g.}\\
 Our major goals in the assignment were  
 \begin{itemize}
-\item to .......
-\item to .......
-\item to ....... 
+\item to investigate the performance of classification single-layer perceptrons (SLPs) in various settings
+\item to observe the capabilities of MLPs in the context of solving non-linearly separable patterns in both classification and regression problems 
+\item to implement MLPs in a chaotic time-series prediction\footnote{FIX THIS ONE}
 \end{itemize}
 
 \textit{Then you can write two or three sentences about the scope, limitations and assumptions made for the lab assignment}\\
 
 \section{Methods}
+
 \textit{Mention here in just a couple of sentences what tools you have used, e.g. programming/scripting environment, toolboxes. If you use some unconventional method or introduce a clearly different performance measure, you can briefly mention or define it here.}\\
+
+For the first assignment we used Python as a programming language and its library Numpy for data representation and matrix operations. For graphs we used the Matplotlib library. In the second assignment we used Pytorch, as well as the aforementioned libraries. As an IDE, we've used JetBrains' PyCharm for both assignments.
 
 \section{Results and discussion - Part I}
 
@@ -54,6 +57,16 @@ Our major goals in the assignment were
 
 \subsection{Classification with a single-layer perceptron \textit{(ca.1 page)}}
 \textit{Combine results and findings from perceptron simulations on both linearly separable and non-separable datasets. Answer the questions, quantify the outcomes, discuss your interpretations and summarise key findings as conclusions.}
+
+In solving classification problem using an SLP one can easily observe its efficiency and its limitations.
+
+Firstly, we have implemented the perceptron rule (implying a sequential learning scheme) and the Delta learning rule (batch learning) to a randomly generated, linearly separable classification dataset. Both have performed well and converged quickly...
+
+Secondly, we have tested the differences between batch and sequential learning for the Delta rule SLP. In terms of epochs, both approaches converge relatively quickly, with ... being somewhat quicker
+
+Thirdly, we have tested removing the bias term with the Delta rule in batch mode. Even without testing it, it is clear that the algorithm can converge only when the data is linearly separable by a line which goes through the center of the coordinate system. 
+
+
 
 \subsection{Classification and regression with a two-layer perceptron \textit{(ca.2 pages)}}
 
