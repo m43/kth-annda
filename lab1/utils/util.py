@@ -1,8 +1,10 @@
+import math
 import os
 from pathlib import Path
 
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import pyplot as plt
 
 horse = """               .,,.
              ,;;*;;;;,
@@ -83,8 +85,8 @@ def shuffle_two_arrays(a, b):
     return a, b
 
 
-def plot_metric(data, name, save,  *more_data, point=None):
-    plt.figure(figsize=(9, 6))
+def plot_metric(data, name, save, *more_data, point=None):
+    # plt.figure(figsize=(9, 6))
     x = np.arange(len(data))
     plt.title(name)
     plt.plot(x, data, color="green")
@@ -93,7 +95,7 @@ def plot_metric(data, name, save,  *more_data, point=None):
     if point is not None:
         plt.scatter(point[0], point[1], color="red")
     if save:
-        plt.savefig(name)
+        plt.savefig(name, dpi=300)
     plt.show()
 
 
@@ -125,8 +127,65 @@ class TwoClassDatasetGenerator:
         return patterns, targets
 
 
-def scatter_plot_2d_features(inputs, targets: np.array, name, save_folder=None, line_coefficients=None):
-    plt.figure(figsize=(9, 6))
+def animate_lienar_separator_for_2d_features(inputs, targets, name, weights, convergance_epoch, save_folder=None):
+    # matplotlib.use("TkAgg")
+
+    # Help method that converts a weight into x&y start&end point coordinate data
+    xmin = inputs[0].min() - 1
+    xmax = inputs[0].max() + 1
+    ymin = inputs[1].min() - 1
+    ymax = inputs[1].max() + 1
+
+    fig = plt.figure()
+    ax = plt.axes(xlim=(xmin, xmax), ylim=(ymin, ymax))
+
+    # set up the plot labels
+    plt.title(name)
+    plt.xlabel('feature 1')
+    plt.ylabel('feature 2')
+
+    # determine feature 1 and feature 2 and plot them in different colors
+    positive = np.where(targets.flatten() == 1)
+    negative = np.where(targets.flatten() != 1)
+    ax.scatter(inputs[0][positive].T, inputs[1][positive].T, color="blue")
+    ax.scatter(inputs[0][negative].T, inputs[1][negative].T, color="red")
+
+    # line setup
+    line, = ax.plot([], [], lw=2, label="Epoch", color="green")
+
+    # initialization function: plot the background of each frame
+    def init():
+        line.set_data([], [])
+        return line, line.figure.legend()
+
+    def weight_to_line_data(w, xmin=xmin, xmax=xmax):
+        x = np.array([xmin, xmax])
+        y = (- w[0, 0] * x - w[0, 2]) / w[0, 1]
+        return [x[0], x[1]], [y[0], y[1]]
+
+    def animate(i):
+        x, y = weight_to_line_data(weights[i])
+        line.set_data(x, y)
+        line.set_label(f"Epoch {i + 1}")
+        if i == convergance_epoch:
+            line.set_color("red")
+        legend = plt.legend()
+        return line, legend
+
+    epochs = len(weights)
+    fps = math.ceil(epochs / 7)
+    ani = animation.FuncAnimation(fig, animate, init_func=init, frames=epochs, interval=10,
+                                  blit=True)
+
+    if save_folder is not None:
+        ani.save(os.path.join(save_folder, name) + ".mp4", fps=fps, extra_args=['-vcodec', 'libx264'], dpi=300)
+        print(os.path.abspath(os.path.realpath(os.path.join(save_folder, name) + ".mp4")))
+    # plt.close()
+    # plt.show()
+
+
+def scatter_plot_2d_features(inputs, targets, name, line_coefficients=None, save_folder=None):
+    # plt.figure(figsize=(9, 6))
     plt.title(name)
 
     positive = np.where(targets.flatten() == 1)
@@ -145,5 +204,5 @@ def scatter_plot_2d_features(inputs, targets: np.array, name, save_folder=None, 
         plt.plot(x, y)
 
     if save_folder is not None:
-        plt.savefig(os.path.join(save_folder, name) + ".png")
+        plt.savefig(os.path.join(save_folder, name) + ".png", dpi=300)
     plt.show()

@@ -31,7 +31,7 @@ class PerceptronRulePerceptron:
         weights_per_epoch = []  # Want to save the weights to draw an animation later on TODO refactor
         pocket_epoch = 0
         for epoch in range(max_iter):
-            weights_per_epoch.append(self.W)
+            weights_per_epoch.append(self.W.copy())
             if shuffle:
                 inputs, targets = shuffle_two_arrays(inputs, targets)
 

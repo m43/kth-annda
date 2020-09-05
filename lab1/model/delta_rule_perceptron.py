@@ -40,7 +40,7 @@ class DeltaRulePerceptron:
         for epoch in range(max_iter):
             if shuffle:
                 inputs, targets = shuffle_two_arrays(inputs, targets)
-            weights_per_epoch.append(self.W)
+            weights_per_epoch.append(self.W.copy())
 
             acc, loss = self.epoch(inputs, targets, eta, batch_size)
             accuracies.append(acc)

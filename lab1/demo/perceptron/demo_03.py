@@ -11,7 +11,7 @@ if __name__ == '__main__':
     save_folder = "../../imgs"
     eta_values = [0.0001, 0.001, 0.002, 0.003, 0.004, 0.005, 0.01, 0.1, 0.2, 0.3]
     max_iter = 10000  # max number of epochs
-    debug = False
+    debug = True
     delta_n = 50  # number of epochs without improvements in delta learning
     delta_n_batch = 150
     bias = True

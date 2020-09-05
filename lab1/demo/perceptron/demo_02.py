@@ -11,7 +11,7 @@ if __name__ == '__main__':
     save_folder = "../../imgs"
     eta_values = [0.001, 0.005, 0.01, 0.1, 0.25, 1, 10, 25, 100, 1e3, 1e4, 1e5, 1e6, 1e7]
     max_iter = 10000  # max number of epochs
-    debug = False
+    debug = True
     inputs, targets = perpare_reproducable_separable_dataset()
 
     ####################

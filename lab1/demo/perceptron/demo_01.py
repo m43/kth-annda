@@ -6,8 +6,8 @@ if __name__ == '__main__':
     ########################
     #### CONFIGURATION #####
     ########################
-    save_folder = "../../imgs"
-    eta = 0.002  # learning rate
+    save_folder = "imgs"
+    eta = 0.001  # learning rate
     batch_size = 200
     max_iter = 10000  # max number of epochs
     debug = True
@@ -21,5 +21,6 @@ if __name__ == '__main__':
     ##########################
     ensure_dir(save_folder)
     delta_rule_learning_demo(
-        inputs, targets, f"test",
-        debug, save_folder, max_iter, eta, (delta_n if batch_size == 1 else delta_n_batch), batch_size, bias)
+        inputs, targets, f"test", debug, save_folder, max_iter, eta,
+        (delta_n if batch_size == 1 else delta_n_batch), batch_size, bias
+    )
