@@ -1,7 +1,7 @@
 import numpy as np
 
-from demo.perceptron.demo_util import perceptron_learning_demo, perpare_reproducable_separable_dataset, \
-    print_results_as_table
+from demo.perceptron.util import perceptron_learning_demo
+from demo.util import perpare_reproducable_separable_dataset, print_results_as_table
 from utils.util import ensure_dir
 
 if __name__ == '__main__':

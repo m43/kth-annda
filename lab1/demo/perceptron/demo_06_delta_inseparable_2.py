@@ -2,8 +2,8 @@ import os
 
 import numpy as np
 
-from demo.perceptron.demo_util import perpare_reproducable_inseparable_dataset_2, print_results_as_table, \
-    two_class_conf_mat_metrics, sample_two_class_dataset
+from demo.util import print_results_as_table, two_class_conf_mat_metrics, \
+    perpare_reproducable_inseparable_dataset_2_with_subsets
 from model.delta_rule_perceptron import DeltaRulePerceptron
 from utils.util import ensure_dir
 
@@ -18,25 +18,11 @@ if __name__ == '__main__':
     delta_n = 50  # number of epochs without improvements in delta learning
     delta_n_batch = 150
     loops = 100
-    inputs, targets = perpare_reproducable_inseparable_dataset_2()
 
-    inputs_1, targets_1 = sample_two_class_dataset(inputs, targets, 25, 25)
-    inputs_2, targets_2 = sample_two_class_dataset(inputs, targets, 50, 0)
-    inputs_3, targets_3 = sample_two_class_dataset(inputs, targets, 0, 50)
-    idx_4 = []
-    p_a_below = 0.2
-    p_a_above = 0.8
-    for i, t in enumerate(targets[0]):
-        if t == 1:
-            if inputs[0, i] < 0 and np.random.random() < p_a_below:
-                idx_4.append(i)
-            if inputs[0, i] > 0 and np.random.random() < p_a_above:
-                idx_4.append(i)
-    inputs_4, targets_4 = np.delete(inputs, idx_4, axis=1), np.delete(targets, idx_4, axis=1)
+    dataset, subsets = perpare_reproducable_inseparable_dataset_2_with_subsets()
 
     ensure_dir(save_folder)
-    for dataset_idx, (current_inputs, current_targets) in enumerate(zip(
-            [inputs, inputs_1, inputs_2, inputs_3, inputs_4], [targets, targets_1, targets_2, targets_3, targets_4])):
+    for dataset_idx, (current_inputs, current_targets) in enumerate(subsets):
         print(f"{'#' * 60}\n{'#' * 29}{dataset_idx:^3}{'#' * 28}\n{'#' * 60}")
         delta_results = {}
         metrics = [
@@ -50,9 +36,9 @@ if __name__ == '__main__':
                 print(f"ETA is {eta}")
                 delta_results[batch_size][eta] = {}
 
-                acumulated_metrics = {}
+                accumulated_metrics = {}
                 for m in metrics:
-                    acumulated_metrics[m] = []
+                    accumulated_metrics[m] = []
 
                 name = f"_DELTA_RULE_INSEPARABLE_d:{dataset_idx}_BATCH_eta:{eta}_max_iter:{max_iter}".replace(".", ",")
                 print(name)
@@ -60,7 +46,8 @@ if __name__ == '__main__':
                     print(".", end="")
                     perceptron = DeltaRulePerceptron(current_inputs, current_targets, False,
                                                      os.path.join(save_folder, name))
-                    weights_per_epoch, train_acc, train_loss, cepoch = perceptron.train(current_inputs, current_targets, eta, max_iter,
+                    weights_per_epoch, train_acc, train_loss, cepoch = perceptron.train(current_inputs, current_targets,
+                                                                                        eta, max_iter,
                                                                                         batch_size,
                                                                                         shuffle=True,
                                                                                         stop_after=delta_n_batch)
@@ -68,15 +55,15 @@ if __name__ == '__main__':
                     _, train_sens, train_spec, _, _ = two_class_conf_mat_metrics(
                         perceptron.conf_mat(current_inputs, current_targets))
                     real_acc, real_sens, real_spec, _, _ = two_class_conf_mat_metrics(
-                        perceptron.conf_mat(inputs, targets))
+                        perceptron.conf_mat(dataset[0], dataset[1]))
 
                     for m in metrics:
-                        acumulated_metrics[m].append(locals()[m])
+                        accumulated_metrics[m].append(locals()[m])
 
                 print()
                 for m in metrics:
-                    delta_results[batch_size][eta][m] = np.array(acumulated_metrics[m]).mean(), np.array(
-                        acumulated_metrics[m]).std()
+                    delta_results[batch_size][eta][m] = np.array(accumulated_metrics[m]).mean(), np.array(
+                        accumulated_metrics[m]).std()
 
             print(".")
             print(".")

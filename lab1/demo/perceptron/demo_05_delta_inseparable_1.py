@@ -1,7 +1,7 @@
 import numpy as np
 
-from demo.perceptron.demo_util import delta_rule_learning_demo, \
-    print_results_as_table, perpare_reproducable_inseparable_dataset_1
+from demo.perceptron.util import delta_rule_learning_demo
+from demo.util import perpare_reproducable_inseparable_dataset_1, print_results_as_table
 from utils.util import ensure_dir
 
 if __name__ == '__main__':
