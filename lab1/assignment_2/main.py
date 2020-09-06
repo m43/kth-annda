@@ -3,30 +3,48 @@ import statistics
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import os
+import time
+import sys
 
 from assignment_2.model.model import TensorFlowModel, train_step_wrapper, evaluate_step_wrapper
 from assignment_2.util.time_series import generate_time_series
 from assignment_2.util.utils import generate_in_out_tensors
 
 # constants
-LEARNING_RATE = 0.01
-REGULARIZATION_RATE = 0.1
+LEARNING_RATE = 0.1
 REGULARIZATION_METHOD = 'l2'  # l1 or l2
-HIDDEN_LAYERS = 1  # number of hidden layers
-NODES = [2]  # list of numbers of nodes in each hidden layer (HIDDEN_LAYERS number of elements)
-NUMBER_OF_TESTS = 10  # number of models to be tested before results are compiled
+REGULARIZATION_RATE = 0.1
+NODES = [8]  # list of numbers of nodes in each hidden layer
 
-MAX_EPOCHS = 10000  # number of epochs before learning stops
+# read
+if sys.argv[1:]:
+    REGULARIZATION_RATE = float(sys.argv[2])
+if sys.argv[1:]:
+    NODES = [int(sys.argv[1])]
+
+NOISE = False
+NOISE_SIGMA = 0.03
+
+NUMBER_OF_TESTS = 1  # number of models to be tested before results are compiled
+
+MAX_EPOCHS = 50000  # number of epochs before learning stops
 EARLY_STOP = 50  # number of epochs before stopping training if no improvement in the validation set is visible
+TOLERANCE = 1e-5  # amount of improvement needed
 
-SAVE_SHOW_PLOTS = True  # if True saves last model's figures to the results folder (plots)
+SAVE_SHOW_PLOTS = True
 DEBUG = False  # if True output is verbose
 SAVE_DIRECTORY = 'results/'  # folder in which figures will be saved
-CONFIG_DIRECTORY = 'lr={}_{}-reg={}_shape={}_tests={}/'.format(LEARNING_RATE,
-                                                               REGULARIZATION_METHOD,
-                                                               REGULARIZATION_RATE,
-                                                               NODES, NUMBER_OF_TESTS)
-PLOT_DPI = 500  # DPI of figures for saving
+CONFIG_DIRECTORY = 'lr={}_{}-reg={}_hidden-shape={}_tests={}_early_stop={}_tolerance={}'.format(LEARNING_RATE,
+                                                                                                REGULARIZATION_METHOD,
+                                                                                                REGULARIZATION_RATE,
+                                                                                                NODES, NUMBER_OF_TESTS,
+                                                                                                EARLY_STOP, TOLERANCE)
+if NOISE:
+    CONFIG_DIRECTORY += '_noise={}'.format(NOISE_SIGMA)
+CONFIG_DIRECTORY += '/'
+
+PLOT_DPI = 300  # DPI of figures for saving
+GLOBAL_COUNTER = 0
 
 # tensorflow additional logging
 # tf.debugging.set_log_device_placement(True)
@@ -43,9 +61,10 @@ if not os.path.exists(SAVE_DIRECTORY + 'temp'):
 tf.keras.backend.set_floatx('float64')
 
 
-def run_model():
+def run_model(index):
     # inputs and outputs
-    inputs, outputs = generate_time_series(1.5)
+    inputs, outputs = generate_time_series(1.5, noise=NOISE, noise_sigma=NOISE_SIGMA)
+
     if DEBUG:
         print('No. of inputs:', len(inputs[0]))
         print('No. of outputs:', len(outputs))
@@ -76,7 +95,7 @@ def run_model():
     test_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(32)
 
     # create an instance of the model
-    model = TensorFlowModel(learning_rate=LEARNING_RATE, hidden_layers=HIDDEN_LAYERS, nodes=NODES,
+    model = TensorFlowModel(learning_rate=LEARNING_RATE, nodes=NODES,
                             regularization_method=REGULARIZATION_METHOD, regularization_rate=REGULARIZATION_RATE)
 
     # loss and extra metric to be evaluated during training
@@ -112,7 +131,7 @@ def run_model():
         for val_patterns, val_targets in val_ds:
             evaluate_step(model, val_patterns, val_targets, loss, mae)
 
-        if loss.result() + 1.0e-4 < pocket_loss:
+        if loss.result() + TOLERANCE < pocket_loss:
             loss_unchanged_counter = 0
 
             # prevents errors with renaming (.save_weights method)
@@ -162,8 +181,9 @@ def run_model():
         plt.scatter(pocket_epoch, pocket_loss, c='#FF0000', label='point of lowest validation MSE')
         plt.xlabel('epochs')
         plt.ylabel('MSE')
+        plt.ylim(top=0.05, bottom=0.0)
         plt.legend()
-        plt.savefig(SAVE_DIRECTORY + 'learning_mse', dpi=PLOT_DPI)
+        plt.savefig(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'learning_mse_' + str(index), dpi=PLOT_DPI)
         plt.show()
         plt.close()
 
@@ -195,7 +215,7 @@ def run_model():
         plt.hist(all_weights, label='weights')
         plt.ylabel('values')
         plt.legend()
-        plt.savefig(SAVE_DIRECTORY + 'weight_histogram', dpi=PLOT_DPI)
+        plt.savefig(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'weight_histogram_' + str(index), dpi=PLOT_DPI)
         plt.show()
         plt.close()
 
@@ -217,14 +237,14 @@ def run_model():
             else:
                 test_outputs = tf.concat((test_outputs, model(test_patterns)), 0)
 
-        plt.plot(range(300, 1500), outputs, c='#0000FF', label='time series', linewidth=2.0)
-        plt.plot(range(300, 1100), train_outputs, linestyle='--', c='#7777FF', label='training predictions')
-        plt.plot(range(1100, 1300), val_outputs, linestyle='--', c='#FFFF77', label='validation predictions')
-        plt.plot(range(1300, 1500), test_outputs, linestyle='--', c='#FF0000', label='test predictions')
+        plt.plot(range(300, 1500), outputs, c='#0000FF', label='time series', linewidth=2.5)
+        plt.plot(range(300, 1100), train_outputs, c='#FFA500', label='training predictions')
+        plt.plot(range(1100, 1300), val_outputs, c='#00CC00', label='validation predictions')
+        plt.plot(range(1300, 1500), test_outputs, c='#F70000', label='test predictions')
         plt.xlabel('t')
         plt.ylabel('x(t)')
         plt.legend()
-        plt.savefig(SAVE_DIRECTORY + 'series_and_test_predictions', dpi=PLOT_DPI)
+        plt.savefig(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'series_and_test_predictions_' + str(index), dpi=PLOT_DPI)
         plt.show()
         plt.close()
 
@@ -232,6 +252,10 @@ def run_model():
 
 
 def main():
+    print('Running', NUMBER_OF_TESTS, 'test with LR=', LEARNING_RATE, ', regularization', REGULARIZATION_METHOD,
+          'with strength of', REGULARIZATION_RATE, ', shape of networks is:', NODES)
+
+    start = time.time()
     loss = []
     epoch = []
     models = []
@@ -239,7 +263,7 @@ def main():
     best_loss = float('inf')
     best_epoch = 0
     for i in range(NUMBER_OF_TESTS):
-        temp_loss, temp_epoch, temp_model = run_model()
+        temp_loss, temp_epoch, temp_model = run_model(i)
         if temp_loss < best_loss:
             best_model = temp_model
             best_loss = temp_loss
@@ -254,7 +278,7 @@ def main():
                 'Hidden layers\' nodes: {}\n' \
                 'Regularization method: {}\n' \
                 'Regularization rate of: {}\n' \
-                'Number of tests: {}\n'.format(NUMBER_OF_TESTS, LEARNING_RATE, HIDDEN_LAYERS, NODES,
+                'Number of tests: {}\n'.format(NUMBER_OF_TESTS, LEARNING_RATE, len(NODES), NODES,
                                                REGULARIZATION_RATE, REGULARIZATION_RATE, NUMBER_OF_TESTS)
 
     with open(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'log.txt', 'a') as log:
@@ -275,8 +299,6 @@ def main():
         print('Epoch mean:', epoch_mean)
         print('Epoch std:', epoch_std)
 
-        print('Best model:', best_model, 'with a MSE of', float(best_loss))
-
         with open(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'log.txt', 'a') as log:
             log.write('Losses: {}\n'
                       'Loss mean: {}\n'
@@ -286,6 +308,10 @@ def main():
                       'Epoch std: {}\n'
                       'Best model had an MSE of: {}, and stopped training after {} epochs.\n'
                       .format(loss, loss_mean, loss_std, epoch, epoch_mean, epoch_std, float(best_loss), best_epoch))
+
+    else:
+        with open(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'log.txt', 'a') as log:
+            log.write('Model had an MSE of {}\n.'.format(float(best_loss)))
 
     # plot accumulated weights
     all_weights = []
@@ -301,6 +327,10 @@ def main():
     plt.ylabel('count')
     plt.savefig(fname=SAVE_DIRECTORY + CONFIG_DIRECTORY + 'weight_histogram')
     plt.show()
+
+    end = time.time()
+    with open(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'log.txt', 'a') as log:
+        log.write('The above took: {}\n'.format(end - start))
 
     # remove temp at the end
     if os.path.exists(SAVE_DIRECTORY + '/temp'):

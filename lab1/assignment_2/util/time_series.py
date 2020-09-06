@@ -9,7 +9,7 @@ def get_x_from_series(series, t):
         return series[t]
 
 
-def generate_time_series(starting_x=1.5, verbose=False):
+def generate_time_series(starting_x=1.5, verbose=False, noise=False, noise_sigma=None):
     # generate time series
     time_series = [starting_x]
     for i in range(1505):
@@ -17,6 +17,10 @@ def generate_time_series(starting_x=1.5, verbose=False):
     if verbose:
         print(time_series)
         print(time_series[281::5])
+
+    if noise:
+        if noise_sigma:
+            raise RuntimeError('Generation of time series failed: noise was set to true but no noise_sigma was given')
 
     generated_input = []
     generated_output = []

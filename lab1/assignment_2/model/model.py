@@ -8,14 +8,11 @@ class TensorFlowModel(Model):
     def get_config(self):
         pass
 
-    def __init__(self, learning_rate, hidden_layers, nodes, regularization_method, regularization_rate):
+    def __init__(self, learning_rate, nodes, regularization_method, regularization_rate):
         super(TensorFlowModel, self).__init__()
 
-        if hidden_layers < 1:
-            raise RuntimeError('Wrong argument hidden_layers: models must have at least one hidden layer')
-        elif hidden_layers != len(nodes):
-            raise RuntimeError(
-                'Wrong argument nodes: nodes must be an array type with as many elements as there are hidden layers')
+        if len(nodes) < 1:
+            raise RuntimeError('Wrong argument nodes: models must have at least one hidden layer (len(nodes) > 1)')
 
         if regularization_method == 'l1':
             regularizer = tf.keras.regularizers.l1(regularization_rate)
@@ -32,8 +29,8 @@ class TensorFlowModel(Model):
                                  activity_regularizer=regularizer)]
 
         # other hidden layers
-        for i in range(1, hidden_layers):
-            self.layer_list.append(Dense(nodes[i], activation=tf.nn.sigmoid, dtype='float64', use_bias=True,
+        for i in nodes[1:]:
+            self.layer_list.append(Dense(i, activation=tf.nn.sigmoid, dtype='float64', use_bias=True,
                                          activity_regularizer=regularizer))
 
         # output layer
