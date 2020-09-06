@@ -9,38 +9,14 @@ def get_x_from_series(series, t):
         return series[t]
 
 
-def generate_time_series(starting_x=1.5):
-    # generate time series
-    time_series = [starting_x]
-    for i in range(1505):
-        time_series.append(next_in_series(time_series[i], i, series))
-    print(time_series)
-    print(time_series[281::5])
-
-    generated_input = [[], [], [], [], []]
-    generated_output = []
-    # generate inputs and outputs
-    for i in range(301, 1501):
-        generated_input[0].append(time_series[i - 20])
-        generated_input[1].append(time_series[i - 15])
-        generated_input[2].append(time_series[i - 10])
-        generated_input[3].append(time_series[i - 5])
-        generated_input[4].append(time_series[i])
-        generated_output.append(time_series[i + 5])
-    for row in generated_input:
-        print(row)
-    print(generated_output)
-
-    return generated_input, generated_output
-
-
-def generate_time_series_transposed(starting_x=1.5):
+def generate_time_series(starting_x=1.5, verbose=False):
     # generate time series
     time_series = [starting_x]
     for i in range(1505):
         time_series.append(next_in_series(time_series[i], i, time_series))
-    print(time_series)
-    print(time_series[281::5])
+    if verbose:
+        print(time_series)
+        print(time_series[281::5])
 
     generated_input = []
     generated_output = []
@@ -52,8 +28,10 @@ def generate_time_series_transposed(starting_x=1.5):
                                 time_series[i - 5],
                                 time_series[i]])
         generated_output.append(time_series[i + 5])
-    for row in generated_input:
-        print(row)
-    print(generated_output)
+
+    if verbose:
+        for row in generated_input:
+            print(row)
+        print(generated_output)
 
     return generated_input, generated_output
