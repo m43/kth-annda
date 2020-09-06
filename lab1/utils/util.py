@@ -113,11 +113,29 @@ class TwoClassDatasetGenerator:
         self.n_b = n_b
         self.sigma_b = sigma_b
 
-    def random(self, seed=None):
+    def random_1(self, seed=None):
         if seed:
             np.random.seed(seed)
 
         class_a = np.array([np.random.normal(mean, sigma, self.n_a) for mean, sigma in zip(self.m_a, self.sigma_a)])
+        class_b = np.array([np.random.normal(mean, sigma, self.n_a) for mean, sigma in zip(self.m_b, self.sigma_b)])
+        targets = np.concatenate((np.ones(self.n_a), np.ones(self.n_b) * -1), axis=0).reshape(1, -1)
+
+        patterns = np.concatenate((class_a, class_b), axis=1)  # column-wise concatenation
+        patterns, targets = shuffle_two_arrays(patterns, targets)
+
+        return patterns, targets
+
+    def random_2(self, seed=None):
+        if seed:
+            np.random.seed(seed)
+
+        class_a = np.concatenate((
+            np.array([np.random.normal(mean, sigma, self.n_a // 2) for mean, sigma in
+                      zip((-self.m_a[0], self.m_a[1]), self.sigma_a)]),
+            np.array([np.random.normal(mean, sigma, self.n_a - self.n_a // 2) for mean, sigma in
+                      zip(self.m_a, self.sigma_a)])
+        ), axis=1)
         class_b = np.array([np.random.normal(mean, sigma, self.n_a) for mean, sigma in zip(self.m_b, self.sigma_b)])
         targets = np.concatenate((np.ones(self.n_a), np.ones(self.n_b) * -1), axis=0).reshape(1, -1)
 
@@ -173,14 +191,14 @@ def animate_lienar_separator_for_2d_features(inputs, targets, name, weights, con
         return line, legend
 
     epochs = len(weights)
-    fps = math.ceil(epochs / 7)
+    fps = min(60, math.ceil(epochs / 7))
     ani = animation.FuncAnimation(fig, animate, init_func=init, frames=epochs, interval=10,
                                   blit=True)
 
     if save_folder is not None:
         ani.save(os.path.join(save_folder, name) + ".mp4", fps=fps, extra_args=['-vcodec', 'libx264'], dpi=300)
         print(os.path.abspath(os.path.realpath(os.path.join(save_folder, name) + ".mp4")))
-    # plt.close()
+    plt.close()
     # plt.show()
 
 

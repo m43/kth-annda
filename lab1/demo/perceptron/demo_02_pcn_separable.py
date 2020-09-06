@@ -5,18 +5,17 @@ from demo.perceptron.demo_util import perceptron_learning_demo, perpare_reproduc
 from utils.util import ensure_dir
 
 if __name__ == '__main__':
-    ########################
-    #### CONFIGURATION #####
-    ########################
+    ####################
+    #### PCN. RULE #####
+    ####################
+
     save_folder = "../../imgs"
     eta_values = [0.001, 0.005, 0.01, 0.1, 0.25, 1, 10, 25, 100, 1e3, 1e4, 1e5, 1e6, 1e7]
     max_iter = 10000  # max number of epochs
     debug = True
+    loops = 100
     inputs, targets = perpare_reproducable_separable_dataset()
 
-    ####################
-    #### PCN. RULE #####
-    ####################
     ensure_dir(save_folder)
     pcn_results = {}
     for eta in eta_values:
@@ -25,7 +24,7 @@ if __name__ == '__main__':
 
         accuracies = []
         convergence_epochs = []
-        for i in range(100):
+        for i in range(loops):
             acc, cepoch = perceptron_learning_demo(
                 inputs, targets, f"PCN.RULE_eta:{eta}_max_iter:{max_iter}_i:{i}".replace(".", ","),
                 debug and i == 0, save_folder, max_iter, eta)
@@ -50,7 +49,7 @@ if __name__ == '__main__':
     print("eta > results")
     print(pcn_results)
 
-    print_results_as_table(pcn_results, ["accuracy","co_epoch"])
+    print_results_as_table(pcn_results, ["accuracy", "co_epoch"])
 
 """
 PCN
