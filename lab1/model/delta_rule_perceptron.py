@@ -29,8 +29,7 @@ class DeltaRulePerceptron:
             correct += np.sum(np.all(np.equal(t, self.outputs), axis=0))
 
             self.W -= eta * np.dot(self.outputs_before_threshold - t, x.T)
-            loss = mse(self.outputs_before_threshold, t)
-            loss += loss
+            loss += mse(self.outputs_before_threshold, t)
 
         return correct / targets.shape[1], loss
 

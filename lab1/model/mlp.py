@@ -1,6 +1,6 @@
 import numpy as np
 
-from utils.util import extend_inputs_with_bias, sigmoid
+from utils.util import extend_inputs_with_bias, sigmoid, mse
 
 
 class MLP:
@@ -52,16 +52,34 @@ class MLP:
         self.weights1 -= self.updatew1
         self.weights2 -= self.updatew2
 
-    def train(self, inputs, targets, eta, niterations):
+    def epoch(self, inputs, targets, eta, batch_size):
+        correct = 0
+        loss = 0
+        for batch_idx in range(np.math.ceil(inputs.shape[0] / batch_size)):
+            x = inputs[batch_idx * batch_size:(batch_idx + 1) * batch_size]
+            t = targets[batch_idx * batch_size:(batch_idx + 1) * batch_size]
+
+            self.forward(x)
+            self.backward(x, t, eta)
+            if self.outtype == "logistic":  # TODO
+                correct += np.sum(np.equal(t, np.where(self.outputs > 0.5, 1., 0.)))
+            loss += mse(self.outputs, t)
+
+        if self.outtype == "logistic":  # TODO
+            self.acc = correct / targets.shape[0]
+
+        return loss
+
+    def train_for_niterations(self, inputs, targets, eta, niterations):
         for i in range(niterations):
             self.forward(inputs)
             error = np.sum((self.outputs - targets) ** 2) / 2
-            if i % 10 == 0:
-                print(f"Iteration {i} error:{error:.4f}")
+            # if i % 1000 == 0:
+            #     print(f"Iteration {i} error:{error:.4f}")
             self.backward(inputs, targets, eta)
 
-    def earlystopping(self, inputs, targets, valid, validtargets, eta, niteration, early_stop_count=2,
-                      early_stopping_threshold=1e-7, max_iterations=-1):
+    def earlystopping_primitive(self, inputs, targets, valid, validtargets, eta, niteration, early_stop_count=2,
+                                early_stopping_threshold=1e-7, max_iterations=-1):
 
         train_losses = []
         valid_losses = []
@@ -73,7 +91,7 @@ class MLP:
             if max_iterations > 0:
                 if i > max_iterations:
                     break
-            self.train(inputs, targets, eta, niteration)
+            self.train_for_niterations(inputs, targets, eta, niteration)
             train_loss = np.sum((self.outputs - targets) ** 2) / 2
             train_losses.append(train_loss)
 
@@ -95,6 +113,46 @@ class MLP:
 
         return train_losses, valid_losses
 
+    def train(self, inputs, targets, valid, validtargets, eta, epochs, early_stop_count=100,
+              early_stopping_threshold=1e-7, shuffle=False, batch_size=None):
+        if batch_size is None:
+            batch_size = targets.shape[0]
+
+        train_accuracies = []
+        valid_accuracies = []
+        train_losses = []
+        valid_losses = []
+        pocket_epoch = 0
+        pocket_weights = (self.weights1, self.weights2)
+        for epoch in range(epochs):
+            if shuffle:
+                indices = np.arange(inputs.shape[0])
+                np.random.shuffle(indices)
+                inputs, targets = inputs[indices], targets[indices]
+
+            loss = self.epoch(inputs, targets, eta, batch_size)
+            train_losses.append(loss)
+            if self.outtype == "logistic":  # TODO
+                train_accuracies.append(self.acc)
+
+            self.forward(valid)
+            valid_losses.append(mse(self.outputs, validtargets))
+            if self.outtype == "logistic":  # TODO
+                valid_accuracies.append(np.sum(np.equal(validtargets, self.outputs)))
+            # print(f"{i:>4} -- train_loss:{train_loss:>10.4f}      valid_loss:{valid_loss:>10.4f}")
+
+            # TODO should I maybe favour higher validation accuracy over validation loss? Now only loss is taken into
+            #  account
+            if valid_losses[-1] + early_stopping_threshold < valid_losses[pocket_epoch]:
+                pocket_epoch = epoch
+                pocket_weights = (self.weights1, self.weights2)
+            elif (epoch - pocket_epoch) > early_stop_count:
+                break
+
+        self.weights1, self.weights2 = pocket_weights
+
+        return train_losses, valid_losses, train_accuracies, valid_accuracies, pocket_epoch
+
     def confmat(self, inputs, targets):
         self.forward(inputs)
 
@@ -112,8 +170,4 @@ class MLP:
                 cm[i, j] = np.sum(np.where((outputs == i) & (targets == j), 1, 0))
         acc = np.trace(cm) / np.sum(cm)
 
-        print("Confusion matrix:")
-        print(cm)
-        print(f"Acc:{acc * 100:.2f}%")
-
-        return acc
+        return cm

@@ -22,8 +22,8 @@ if __name__ == '__main__':
         print(f"x-----> {i} hidden nodes <-----x")
         net = MLP(train[0], number_to_one_hoot(train[1]), i, outtype="softmax")
         # net.train(train[0], number_to_one_hoot(train[1]), 0.1, 1000)
-        net.earlystopping(train[0], number_to_one_hoot(train[1]), valid[0], number_to_one_hoot(valid[1]),
-                          eta=0.1, niteration=100, early_stop_count=2)
+        net.earlystopping_primitive(train[0], number_to_one_hoot(train[1]), valid[0], number_to_one_hoot(valid[1]),
+                                    eta=0.1, niteration=100, early_stop_count=2)
         net.confmat(train[0], number_to_one_hoot(train[1]))
         net.confmat(test[0], number_to_one_hoot(test[1]))
         print()

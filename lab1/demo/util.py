@@ -42,15 +42,18 @@ def perpare_reproducable_inseparable_dataset_2_with_subsets():
             if inputs[0, i] > 0 and np.random.random() < p_a_above:
                 idx_4.append(i)
 
-    # Create subsets list
-    subsets = [
+    # Create subsets list and a list of their negations
+    subsets, negated_subsets = [], []
+    for subset, subset_negation in [
         sample_two_class_dataset(inputs, targets, 25, 25),
         sample_two_class_dataset(inputs, targets, 50, 0),
         sample_two_class_dataset(inputs, targets, 0, 50),
-        (np.delete(inputs, idx_4, axis=1), np.delete(targets, idx_4, axis=1))
-    ]
+        ((np.delete(inputs, idx_4, axis=1), np.delete(targets, idx_4, axis=1)), (inputs[:, idx_4], targets[:, idx_4]))
+    ]:
+        subsets.append(subset)
+        negated_subsets.append(subset_negation)
 
-    return (inputs, targets), subsets
+    return (inputs, targets), subsets, negated_subsets
 
 
 def print_results_as_table(results, keys):
@@ -88,4 +91,4 @@ def sample_two_class_dataset(inputs, targets, n_a, n_b):
         if t != 1 and n_b > 0:
             idx_1.append(i)
             n_b -= 1
-    return np.delete(inputs, idx_1, axis=1), np.delete(targets, idx_1, axis=1)
+    return (np.delete(inputs, idx_1, axis=1), np.delete(targets, idx_1, axis=1)), (inputs[:, idx_1], targets[:, idx_1])

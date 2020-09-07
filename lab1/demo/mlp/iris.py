@@ -41,14 +41,14 @@ if __name__ == '__main__':
     accs = []
     for i in range(10):
         net = MLP(train[0], train[1], 10)
-        net.earlystopping(train[0], train[1], valid[0], valid[1], 0.1, 10, 2)
+        net.earlystopping_primitive(train[0], train[1], valid[0], valid[1], 0.1, 10, 2)
         # net.train(train[0], train[1], 0.1, 100000)
         print("Train")
         net.confmat(train[0], train[1])
         print("Valid")
         net.confmat(valid[0], valid[1])
         print("Test")
-        acc = net.confmat(test[0], test[1])
+        acc = conf_mat_acc(net.confmat(test[0], test[1]))
         accs.append(acc)
 
     print(f"Mean accuracy: {np.mean(np.array(accs)) * 100:2.4f}")

@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     ensure_dir(save_folder)
     delta_results = {}
-    for batch_size in [targets.shape[1], 1]:
+    for batch_size in [1, targets.shape[1]]:
         delta_results[batch_size] = {}
         for eta in eta_values:
             delta_results[batch_size][eta] = {}

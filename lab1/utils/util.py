@@ -202,7 +202,7 @@ def animate_lienar_separator_for_2d_features(inputs, targets, name, weights, con
     # plt.show()
 
 
-def scatter_plot_2d_features(inputs, targets, name, line_coefficients=None, save_folder=None):
+def scatter_plot_2d_features(inputs, targets, name, line_coefficients=None, save_folder=None, show_plot=True):
     # plt.figure(figsize=(9, 6))
     plt.title(name)
 
@@ -223,4 +223,47 @@ def scatter_plot_2d_features(inputs, targets, name, line_coefficients=None, save
 
     if save_folder is not None:
         plt.savefig(os.path.join(save_folder, name) + ".png", dpi=300)
+    if show_plot:
+        plt.show()
+
+
+def graph_surface(function, rect, offset=0.5, width=512, height=512):
+    """Creates a surface plot (visualize with plt.show).
+    Code from: http://www.zemris.fer.hr/~ssegvic/du/src/data.py
+
+    Arguments:
+      function: surface to be plotted
+      rect:     function domain provided as:
+                ([x_min,y_min], [x_max,y_max])
+      offset:   the level plotted as a contour plot
+
+    Returns:
+      None
+    """
+
+    lsw = np.linspace(rect[0][1], rect[1][1], width)
+    lsh = np.linspace(rect[0][0], rect[1][0], height)
+    xx0, xx1 = np.meshgrid(lsh, lsw)
+    grid = np.stack((xx0.flatten(), xx1.flatten()), axis=1)
+
+    # get the values and reshape them
+    values = function(grid).reshape((width, height))
+
+    # fix the range and offset
+    delta = offset if offset else 0
+    maxval = max(np.max(values) - delta, - (np.min(values) - delta))
+
+    # draw the surface and the offset
+    plt.pcolormesh(xx0, xx1, values, vmin=delta - maxval, vmax=delta + maxval)
+
+    if offset != None:
+        plt.contour(xx0, xx1, values, colors='black', levels=[offset])
+
+
+def conf_mat_acc(cm):
+    return np.trace(cm) / np.sum(cm)
+
+if __name__ == '__main__':
+    graph_surface(lambda x: x[:, 0] ** 2 + x[:, 1] - 10, ([-10, -10], [10, 10]), 0, 512, 512)
+    plt.text(0.5, 0.5, f"TEST", ha='center')
     plt.show()

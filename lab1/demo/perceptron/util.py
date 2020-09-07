@@ -67,5 +67,3 @@ def delta_rule_learning_demo(inputs, targets, name, debug, save_folder, max_iter
         perceptron.debug = debug
 
     return acc, loss, convergence_epoch
-
-

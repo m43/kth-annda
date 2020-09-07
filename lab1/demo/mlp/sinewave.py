@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     net = MLP(standardize(train), traintarget, 25, outtype="linear")
     # net.train(standardize(train), traintarget, 0.25, 100)
-    net.earlystopping(standardize(train), traintarget, standardize(valid), validtarget, 0.25, 100, 2)
+    net.earlystopping_primitive(standardize(train), traintarget, standardize(valid), validtarget, 0.25, 100, 2)
     net.forward(standardize(x))
 
     plt.plot(x, t, "b.")

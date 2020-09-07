@@ -19,7 +19,7 @@ if __name__ == '__main__':
     delta_n_batch = 150
     loops = 100
 
-    dataset, subsets = perpare_reproducable_inseparable_dataset_2_with_subsets()
+    dataset, subsets, _ = perpare_reproducable_inseparable_dataset_2_with_subsets()
 
     ensure_dir(save_folder)
     for dataset_idx, (current_inputs, current_targets) in enumerate(subsets):
