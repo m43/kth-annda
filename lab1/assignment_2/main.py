@@ -10,28 +10,33 @@ from assignment_2.model.model import TensorFlowModel, train_step_wrapper, evalua
 from assignment_2.util.time_series import generate_time_series
 from assignment_2.util.utils import generate_in_out_tensors
 
-# constants
-LEARNING_RATE = 0.1
-REGULARIZATION_METHOD = 'l2'  # l1 or l2
-REGULARIZATION_RATE = 0.1
-NODES = [8]  # list of numbers of nodes in each hidden layer
-
-# read
-if sys.argv[1:]:
-    REGULARIZATION_RATE = float(sys.argv[2])
-if sys.argv[1:]:
-    NODES = [int(sys.argv[1])]
-
-NOISE = False
-NOISE_SIGMA = 0.03
-
-NUMBER_OF_TESTS = 1  # number of models to be tested before results are compiled
-
-MAX_EPOCHS = 50000  # number of epochs before learning stops
+# length of training - parameters
+NUMBER_OF_TESTS = 10  # number of models to be tested before results are compiled ( > 0)
+MAX_EPOCHS = 20000  # number of epochs before learning stops
 EARLY_STOP = 50  # number of epochs before stopping training if no improvement in the validation set is visible
 TOLERANCE = 1e-5  # amount of improvement needed
 
-SAVE_SHOW_PLOTS = True
+# model - parameters
+LEARNING_RATE = 0.15
+REGULARIZATION_METHOD = 'l2'  # l1 or l2
+REGULARIZATION_RATE = 0.1
+NODES = [8]  # list of numbers of nodes in each hidden layer
+NOISE = True
+NOISE_SIGMA = 0.09
+# read arguments if there are any
+if sys.argv[1:]:
+    # if noise is used as an argument add a second layer instead of using the value for the first one
+    if sys.argv[3:]:
+        NODES.append(int(sys.argv[1]))
+    else:
+        NODES = [int(sys.argv[1])]
+if sys.argv[2:]:
+    REGULARIZATION_RATE = float(sys.argv[2])
+if sys.argv[3:]:
+    NOISE = True
+    NOISE_SIGMA = float(sys.argv[3])
+
+SHOW_PLOTS = False
 DEBUG = False  # if True output is verbose
 SAVE_DIRECTORY = 'results/'  # folder in which figures will be saved
 CONFIG_DIRECTORY = 'lr={}_{}-reg={}_hidden-shape={}_tests={}_early_stop={}_tolerance={}'.format(LEARNING_RATE,
@@ -69,14 +74,20 @@ def run_model(index):
         print('No. of inputs:', len(inputs[0]))
         print('No. of outputs:', len(outputs))
 
-    if SAVE_SHOW_PLOTS:
-        # plot Mackey-Glass time series
-        plt.plot(range(300, 1500), outputs, label='Mackey-Glass time series')
-        plt.savefig(SAVE_DIRECTORY + 'series', dpi=PLOT_DPI)
-        plt.xlabel('t')
-        plt.ylabel('x(t)')
-        plt.legend()
+    if not NOISE:
+        save_folder = SAVE_DIRECTORY + 'series'
+    else:
+        save_folder = SAVE_DIRECTORY + CONFIG_DIRECTORY + 'noisy_series_' + str(index)
+
+    # plot Mackey-Glass time series
+    plt.plot(range(300, 1500), outputs, label='Mackey-Glass time series')
+    plt.xlabel('t')
+    plt.ylabel('x(t)')
+    plt.legend()
+    plt.savefig(save_folder, dpi=PLOT_DPI)
+    if SHOW_PLOTS:
         plt.show()
+    plt.close()
 
     # training data
     x_train, y_train = generate_in_out_tensors(inputs, outputs, start=0, end=800, verbose=DEBUG)
@@ -175,17 +186,17 @@ def run_model(index):
         val_loss_log.append(loss.result())
 
     # plot learning process
-    if SAVE_SHOW_PLOTS:
-        plt.plot(range(0, last_epoch), train_loss_log[0:last_epoch], label='train MSE')
-        plt.plot(range(0, last_epoch), val_loss_log[0:last_epoch], label='validation MSE')
-        plt.scatter(pocket_epoch, pocket_loss, c='#FF0000', label='point of lowest validation MSE')
-        plt.xlabel('epochs')
-        plt.ylabel('MSE')
-        plt.ylim(top=0.05, bottom=0.0)
-        plt.legend()
-        plt.savefig(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'learning_mse_' + str(index), dpi=PLOT_DPI)
+    plt.plot(range(0, last_epoch), train_loss_log[0:last_epoch], label='train MSE')
+    plt.plot(range(0, last_epoch), val_loss_log[0:last_epoch], label='validation MSE')
+    plt.scatter(pocket_epoch, pocket_loss, c='#FF0000', label='point of lowest validation MSE')
+    plt.xlabel('epochs')
+    plt.ylabel('MSE')
+    plt.ylim(top=0.05, bottom=0.0)
+    plt.legend()
+    plt.savefig(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'learning_mse_' + str(index), dpi=PLOT_DPI)
+    if SHOW_PLOTS:
         plt.show()
-        plt.close()
+    plt.close()
 
     # reset metrics for final evaluation
     loss.reset_states()
@@ -201,74 +212,101 @@ def run_model(index):
     print(template.format(loss.result(),
                           mae.result()))
 
+    test_loss = float(loss.result())
+
     if DEBUG:
         print('Final weights:')
         for layer in model.layer_list:
             print(layer, layer.get_weights())
 
     # histogram of weights
-    if SAVE_SHOW_PLOTS:
-        all_weights = []
-        for weights in model.layer_list[0].get_weights()[0]:
-            for weight in weights:
-                all_weights.append(float(weight))
-        plt.hist(all_weights, label='weights')
-        plt.ylabel('values')
-        plt.legend()
-        plt.savefig(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'weight_histogram_' + str(index), dpi=PLOT_DPI)
+    all_weights = []
+    for weights in model.layer_list[0].get_weights()[0]:
+        for weight in weights:
+            all_weights.append(float(weight))
+    plt.hist(all_weights, label='weights')
+    plt.ylabel('values')
+    plt.legend()
+    plt.savefig(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'weight_histogram_' + str(index), dpi=PLOT_DPI)
+    if SHOW_PLOTS:
         plt.show()
-        plt.close()
+    plt.close()
 
-    if SAVE_SHOW_PLOTS:
-        # get outputs and plot them against real data
-        train_outputs = model(x_train)
-        val_outputs = None
-        test_outputs = None
+    # get outputs and plot them against real data
+    train_outputs = model(x_train)
+    val_outputs = None
+    test_outputs = None
 
-        for test_patterns, test_targets in val_ds:
-            if val_outputs is None:
-                val_outputs = model(test_patterns)
-            else:
-                val_outputs = tf.concat((val_outputs, model(test_patterns)), 0)
+    for test_patterns, test_targets in val_ds:
+        if val_outputs is None:
+            val_outputs = model(test_patterns)
+        else:
+            val_outputs = tf.concat((val_outputs, model(test_patterns)), 0)
 
-        for test_patterns, test_targets in test_ds:
-            if test_outputs is None:
-                test_outputs = model(test_patterns)
-            else:
-                test_outputs = tf.concat((test_outputs, model(test_patterns)), 0)
+    for test_patterns, test_targets in test_ds:
+        if test_outputs is None:
+            test_outputs = model(test_patterns)
+        else:
+            test_outputs = tf.concat((test_outputs, model(test_patterns)), 0)
 
-        plt.plot(range(300, 1500), outputs, c='#0000FF', label='time series', linewidth=2.5)
-        plt.plot(range(300, 1100), train_outputs, c='#FFA500', label='training predictions')
-        plt.plot(range(1100, 1300), val_outputs, c='#00CC00', label='validation predictions')
-        plt.plot(range(1300, 1500), test_outputs, c='#F70000', label='test predictions')
-        plt.xlabel('t')
-        plt.ylabel('x(t)')
-        plt.legend()
-        plt.savefig(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'series_and_test_predictions_' + str(index), dpi=PLOT_DPI)
+    plt.plot(range(300, 1500), outputs, c='#0000FF', label='time series', linewidth=2.5)
+    plt.plot(range(300, 1100), train_outputs, c='#FFA500', label='training predictions')
+    plt.plot(range(1100, 1300), val_outputs, c='#00CC00', label='validation predictions')
+    plt.plot(range(1300, 1500), test_outputs, c='#F70000', label='test predictions')
+    plt.xlabel('t')
+    plt.ylabel('x(t)')
+    plt.legend()
+    plt.savefig(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'series_and_test_predictions_' + str(index), dpi=PLOT_DPI)
+    if SHOW_PLOTS:
         plt.show()
-        plt.close()
+    plt.close()
 
-    return pocket_loss, pocket_epoch, model
+    # get last train error
+    loss.reset_states()
+    mae.reset_states()
+
+    for train_patterns, train_targets in train_ds:
+        evaluate_step(model, train_patterns, train_targets, loss, mae)
+
+    train_loss = float(loss.result())
+
+    # get last validation error
+    loss.reset_states()
+    mae.reset_states()
+
+    for val_patterns, val_targets in val_ds:
+        evaluate_step(model, val_patterns, val_targets, loss, mae)
+
+    val_loss = float(loss.result())
+
+    return test_loss, float(pocket_epoch), model, train_loss, val_loss
 
 
 def main():
     print('Running', NUMBER_OF_TESTS, 'test with LR=', LEARNING_RATE, ', regularization', REGULARIZATION_METHOD,
           'with strength of', REGULARIZATION_RATE, ', shape of networks is:', NODES)
 
+    if NOISE:
+        print('Using noise with sigma =', NOISE_SIGMA)
+
     start = time.time()
     loss = []
+    train_loss = []
+    val_loss = []
     epoch = []
     models = []
     best_model = None
     best_loss = float('inf')
     best_epoch = 0
     for i in range(NUMBER_OF_TESTS):
-        temp_loss, temp_epoch, temp_model = run_model(i)
+        temp_loss, temp_epoch, temp_model, temp_train_loss, temp_val_loss = run_model(i)
         if temp_loss < best_loss:
             best_model = temp_model
             best_loss = temp_loss
             best_epoch = temp_epoch
         loss.append(float(temp_loss))
+        train_loss.append(temp_train_loss)
+        val_loss.append(temp_val_loss)
         epoch.append(temp_epoch)
         models.append(temp_model)
 
@@ -293,6 +331,9 @@ def main():
         print('Loss mean:', loss_mean)
         print('Loss std:', loss_std)
 
+        val_loss_mean = statistics.mean(val_loss)
+        train_loss_mean = statistics.mean(train_loss)
+
         epoch_mean = statistics.mean(epoch)
         epoch_std = statistics.stdev(epoch)
 
@@ -303,15 +344,20 @@ def main():
             log.write('Losses: {}\n'
                       'Loss mean: {}\n'
                       'Loss std: {}\n'
+                      'Training loss mean: {}\n'
+                      'Validation loss mean: {}\n'
                       'Epochs: {}\n'
                       'Epoch mean: {}\n'
                       'Epoch std: {}\n'
                       'Best model had an MSE of: {}, and stopped training after {} epochs.\n'
-                      .format(loss, loss_mean, loss_std, epoch, epoch_mean, epoch_std, float(best_loss), best_epoch))
+                      .format(loss, loss_mean, loss_std, train_loss_mean, val_loss_mean, epoch, epoch_mean, epoch_std,
+                              float(best_loss), best_epoch))
 
     else:
         with open(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'log.txt', 'a') as log:
-            log.write('Model had an MSE of {}\n.'.format(float(best_loss)))
+            log.write('Model had an MSE of {} on the test set\n'
+                      'The train error was {}, and the validation error {}\n'.format(float(best_loss), train_loss[0],
+                                                                                     val_loss[0]))
 
     # plot accumulated weights
     all_weights = []
@@ -326,7 +372,9 @@ def main():
     plt.xlabel('weight value')
     plt.ylabel('count')
     plt.savefig(fname=SAVE_DIRECTORY + CONFIG_DIRECTORY + 'weight_histogram')
-    plt.show()
+    if SHOW_PLOTS:
+        plt.show()
+    plt.close()
 
     end = time.time()
     with open(SAVE_DIRECTORY + CONFIG_DIRECTORY + 'log.txt', 'a') as log:
