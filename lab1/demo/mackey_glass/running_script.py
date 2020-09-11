@@ -1,5 +1,4 @@
 import os
-import time
 
 node_argument = [6, 8]
 regularization_argument = [0.0, 0.01, 1.0]

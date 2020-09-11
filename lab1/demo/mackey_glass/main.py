@@ -1,16 +1,18 @@
+import os
 import shutil
 import statistics
-import tensorflow as tf
-import matplotlib.pyplot as plt
-import os
-import time
 import sys
+import time
 
-from assignment_2.model.model import TensorFlowModel, train_step_wrapper, evaluate_step_wrapper
-from assignment_2.util.time_series import generate_time_series
-from assignment_2.util.utils import generate_in_out_tensors
+import matplotlib.pyplot as plt
+import tensorflow as tf
 
+from demo.mackey_glass.tensorflow_model import TensorFlowModel, train_step_wrapper, evaluate_step_wrapper
+from demo.mackey_glass.time_series import generate_time_series
+from demo.mackey_glass.utils import generate_in_out_tensors
 # length of training - parameters
+from utils.util import ensure_dir
+
 NUMBER_OF_TESTS = 10  # number of models to be tested before results are compiled ( > 0)
 MAX_EPOCHS = 20000  # number of epochs before learning stops
 EARLY_STOP = 50  # number of epochs before stopping training if no improvement in the validation set is visible
@@ -38,7 +40,8 @@ if sys.argv[3:]:
 
 SHOW_PLOTS = False
 DEBUG = False  # if True output is verbose
-SAVE_DIRECTORY = 'results/'  # folder in which figures will be saved
+SAVE_DIRECTORY = '../../imgs/mackey-glass/'  # folder in which figures will be saved
+ensure_dir(SAVE_DIRECTORY)
 CONFIG_DIRECTORY = 'lr={}_{}-reg={}_hidden-shape={}_tests={}_early_stop={}_tolerance={}'.format(LEARNING_RATE,
                                                                                                 REGULARIZATION_METHOD,
                                                                                                 REGULARIZATION_RATE,
