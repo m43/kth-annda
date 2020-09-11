@@ -3,33 +3,33 @@ import numpy as np
 from utils.util import TwoClassDatasetGenerator
 
 
-def perpare_reproducable_separable_dataset():
+def perpare_reproducable_separable_dataset(seed=72):
     return TwoClassDatasetGenerator(
         m_a=(1.5, 1.5), n_a=100, sigma_a=(0.5, 0.5),
         m_b=(-1.5, -1.5), n_b=100, sigma_b=(0.5, 0.5)
     ).random_1(seed=72)
 
 
-def perpare_reproducable_separable_dataset_impossible_with_no_bias():
+def perpare_reproducable_separable_dataset_impossible_with_no_bias(seed=72):
     TwoClassDatasetGenerator(
         m_a=(1, 1), n_a=100, sigma_a=(0.5, 1),
         m_b=(4, 4), n_b=100, sigma_b=(0.6, 0.3)
-    ).random_1(seed=72)
+    ).random_1(seed=seed)
 
 
-def perpare_reproducable_inseparable_dataset_1():
+def perpare_reproducable_inseparable_dataset_1(seed=72):
     return TwoClassDatasetGenerator(
         m_a=(1.8, 1.8), n_a=100, sigma_a=(1, 1),
         m_b=(0, 0), n_b=100, sigma_b=(0.5, 0.7)
-    ).random_1(seed=72)
+    ).random_1(seed=seed)
 
 
-def perpare_reproducable_inseparable_dataset_2_with_subsets():
+def perpare_reproducable_inseparable_dataset_2_with_subsets(seed=72):
     # Get the original dataset from which will subsets be taken
     inputs, targets = TwoClassDatasetGenerator(
         m_a=(1.0, 0.3), n_a=100, sigma_a=(0.2, 0.2),
         m_b=(0.0, -0.1), n_b=100, sigma_b=(0.3, 0.3)
-    ).random_2(seed=72)
+    ).random_2(seed=seed)
 
     # Prepare 4th subsample
     idx_4 = []
@@ -54,7 +54,6 @@ def perpare_reproducable_inseparable_dataset_2_with_subsets():
         negated_subsets.append(subset_negation)
 
     return (inputs, targets), subsets, negated_subsets
-
 
 def print_results_as_table(results, keys):
     print("", end="\t")

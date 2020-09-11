@@ -85,7 +85,7 @@ def shuffle_two_arrays(a, b):
     return a, b
 
 
-def plot_metric(data, name, save, *more_data, point=None):
+def plot_metric(data, name, save, *more_data, point=None, show_plot=True):
     # plt.figure(figsize=(9, 6))
     x = np.arange(len(data))
     plt.title(name)
@@ -96,8 +96,8 @@ def plot_metric(data, name, save, *more_data, point=None):
         plt.scatter(point[0], point[1], color="red")
     if save:
         plt.savefig(name, dpi=300)
-    plt.show()
-
+    if show_plot:
+        plt.show()
 
 def accuracy(outputs, targets, targets_are_rows: bool):
     n = targets.shape[0] if targets_are_rows else targets.shape[1]
@@ -202,22 +202,23 @@ def animate_lienar_separator_for_2d_features(inputs, targets, name, weights, con
     # plt.show()
 
 
-def scatter_plot_2d_features(inputs, targets, name, line_coefficients=None, save_folder=None, show_plot=True):
+def scatter_plot_2d_features(inputs, targets, name, line_coefficients=None, save_folder=None, show_plot=True,
+                             fmt=("bo", "rx")):
     # plt.figure(figsize=(9, 6))
     plt.title(name)
 
     positive = np.where(targets.flatten() == 1)
     negative = np.where(targets.flatten() != 1)
 
-    plt.plot(inputs[0][positive].T, inputs[1][positive].T, "bo")
-    plt.plot(inputs[0][negative].T, inputs[1][negative].T, "rx")
+    plt.plot(inputs[0][positive].T, inputs[1][positive].T, fmt[0])
+    plt.plot(inputs[0][negative].T, inputs[1][negative].T, fmt[1])
 
     plt.xlabel('feature 1')
     plt.ylabel('feature 2')
     plt.xlim(plt.xlim())  # lock limit on the x axis
     plt.ylim(plt.ylim())  # lock limit on the y axis
     if line_coefficients is not None:
-        x = np.linspace(-5, 5, 100)
+        x = np.linspace(inputs[0].min() - 1, inputs[0].max() + 1, 100)
         y = (- line_coefficients[0, 0] * x - line_coefficients[0, 2]) / line_coefficients[0, 1]
         plt.plot(x, y)
 
@@ -262,8 +263,3 @@ def graph_surface(function, rect, offset=0.5, width=512, height=512):
 
 def conf_mat_acc(cm):
     return np.trace(cm) / np.sum(cm)
-
-if __name__ == '__main__':
-    graph_surface(lambda x: x[:, 0] ** 2 + x[:, 1] - 10, ([-10, -10], [10, 10]), 0, 512, 512)
-    plt.text(0.5, 0.5, f"TEST", ha='center')
-    plt.show()

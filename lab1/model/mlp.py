@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm.auto import tqdm
 
 from utils.util import extend_inputs_with_bias, sigmoid, mse
 
@@ -55,6 +56,7 @@ class MLP:
     def epoch(self, inputs, targets, eta, batch_size):
         correct = 0
         loss = 0
+
         for batch_idx in range(np.math.ceil(inputs.shape[0] / batch_size)):
             x = inputs[batch_idx * batch_size:(batch_idx + 1) * batch_size]
             t = targets[batch_idx * batch_size:(batch_idx + 1) * batch_size]
@@ -124,7 +126,8 @@ class MLP:
         valid_losses = []
         pocket_epoch = 0
         pocket_weights = (self.weights1, self.weights2)
-        for epoch in range(epochs):
+        for epoch in tqdm(range(epochs)):
+        # for epoch in range(epochs):
             if shuffle:
                 indices = np.arange(inputs.shape[0])
                 np.random.shuffle(indices)
@@ -138,11 +141,9 @@ class MLP:
             self.forward(valid)
             valid_losses.append(mse(self.outputs, validtargets))
             if self.outtype == "logistic":  # TODO
-                valid_accuracies.append(np.sum(np.equal(validtargets, self.outputs)))
-            # print(f"{i:>4} -- train_loss:{train_loss:>10.4f}      valid_loss:{valid_loss:>10.4f}")
+                valid_accuracies.append(
+                    np.sum(np.equal(validtargets, np.where(self.outputs > 0.5, 1., 0.))) / validtargets.shape[0])
 
-            # TODO should I maybe favour higher validation accuracy over validation loss? Now only loss is taken into
-            #  account
             if valid_losses[-1] + early_stopping_threshold < valid_losses[pocket_epoch]:
                 pocket_epoch = epoch
                 pocket_weights = (self.weights1, self.weights2)
