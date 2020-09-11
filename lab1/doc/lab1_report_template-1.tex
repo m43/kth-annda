@@ -4,6 +4,8 @@
 \usepackage[latin1]{inputenc}
 \usepackage{amssymb}
 \usepackage{framed}
+\usepackage{graphicx}
+\graphicspath{ {./img/} }
 
 \usepackage{graphicx}
 \usepackage{subcaption}
@@ -24,7 +26,7 @@
   \vspace{8mm}  
   {\Large Ivan Stresec, Frano Rajic\\}
   \vspace{4mm}
-  {\large September 11, 2020\\}
+  {\large September 9, 2020\\}
 \end{center}
 
 %\begin{framed}
@@ -38,18 +40,30 @@
 %\textit{List here a concise list of your major intended goals, what you planned to do and what you wanted to learn/what problems you were set to address or investigate, e.g.}\\
 Our major goals in the assignment were  
 \begin{itemize}
-\item to investigate the performance of classification single-layer perceptrons (SLPs) in various settings
-\item to observe the capabilities of MLPs in the context of solving non-linearly separable patterns in both classification and regression problems 
-\item to implement MLPs in a chaotic time-series prediction\footnote{FIX THIS ONE}
+\item to recognize risks associated with backpropagation and minimize them for
+robust learning of multi-layer perceptrons
+\item to configure and monitor the behavior of learning algorithms for single- and
+multi-layer perceptrons networks
+\item to identify key limitations of single-layer networks
+\item to design and apply networks in classification, function approximation and generalisation tasks
 \end{itemize}
 
-%\textit{Then you can write two or three sentences about the scope, limitations and assumptions made for the lab assignment}\\
+%\textit{Then you can write two or three sentences about the scope, limitations and assumptions made for the lab assignment}
+% In this lab we implemented single- and multi-layer perceptrons with focus
+% on the associated learning algorithms. Furthermore, we studied their properties by
+% means of simulations.
+
+In the first part of the lab, the focus was on two learning algorithms: the Delta rule for a
+ single-layer perceptron and the generalized Delta rule for two-layer perceptron.
+We used the created neural networks for classification, data compression, and function approximation.
+
+In the second part of the lab assignment, we worked with multi-layer perceptrons to solve the problem of chaotic time series prediction. In this task we designed, trained, validated (including model selection) and evaluated the modeled neural
+network with the ambition to deliver a robust solution with good generalization capabilities. % For this purpose, we exploited sckit-learn and TensorFlow libraries in Python.
 
 \section{Methods}
-
 %\textit{Mention here in just a couple of sentences what tools you have used, e.g. programming/scripting environment, toolboxes. If you use some unconventional method or introduce a clearly different performance measure, you can briefly mention or define it here.}\\
+We have set up an Python 3.8 development environment in PyCharm IDE. Python libraries used include numpy, matplotlib, TensorFlow and scikit-learn. % We used GitHub to version the software.
 
-For the first assignment we used Python as a programming language and its library Numpy for data representation and matrix operations. For graphs we used the Matplotlib library. In the second assignment we used Pytorch, as well as the aforementioned libraries. As an IDE, we've used JetBrains' PyCharm for both assignments.
 
 \section{Results and discussion - Part I}
 
@@ -61,7 +75,88 @@ For the first assignment we used Python as a programming language and its librar
 %\end{framed}
 
 \subsection{Classification with a single-layer perceptron \textit{(ca.1 page)}}
-\textit{Combine results and findings from perceptron simulations on both linearly separable and non-separable datasets. Answer the questions, quantify the outcomes, discuss your interpretations and summarise key findings as conclusions.}
+%\textit{Combine results and findings from perceptron simulations on both linearly separable and non-separable datasets. Answer the questions, quantify the outcomes, discuss your interpretations and summarise key findings as conclusions.}
+
+%Single layer perceptron - Perceptron learning rule (P.R.) and delta learning rule (D.R.). Through empirical ------something?(reasoning?)------ we came to all the following.
+%The table with means and standard deviations of accuracy and convergence epochs can be seen in table \ref{TBD}.
+%Note that the term convergence epoch is here used to describe the learning epoch in which the best solution was found and selected among others. The algorithm explored 50-150 more epochs than that to make see if a better solution can be found.
+Perceptron learning rule (PR) converges faster for higher values of learning rate (ETA), as shown in table \ref{tab:pcn}. Delta learning rule (DR) converges faster for optimal learning rate. We have found that for batch learning the optimal is around 0.002 with 118 epochs, 100\% accuracy and MSE loss of 0.06. % Making the learning rate a bit higher like 0.003 makes the convergence faster: 3 as the average epochs and with accuracy of 100\%, but in the tradeoff for loss value which goes much higher with mean of 0.0?.
+% On graphs in figure \ref{TBD} one can notice that the algorithm converges faster on 0.003 because the loss is only getting worse. % Furthermore, the values of loss that gets worse over epochs for learning rate 0.003 can be seen \ref{TBD}.
+PR and DR both achieve accuracy of 100\% for separable dataset, but PR converges faster, as it takes more time for DR to minimize loss when the highest accuracy is already achieved.
+As shown in tables \ref{tab:pcn_delta_batch} and \ref{tab:pcn_delta_seq}, both sequential and batch DR achieve accuracy of 100\%, but the effect of the learning rate is different. The optimal learning rate for batch is between 0.002 and 0.003, whereas the learning rate for sequential performs well on the whole range between 0.0001 and 0.2, but with much higher loss. % The loss comparison with respect to different learning rate values for sequential and batch learning can be seen on \ref{TBD}
+The sequential converges faster than the batch DR. % In the general case where loss is preferred over convergence epochs, the sequential performs better aka converges faster than the batch D.R.
+% The loss for the sequential D.R. is much more stochastic, as can be seen on figure \ref{TBD}.
+The convergence speed is very sensitive on the initial weights for sequential learning, whereas for batch learning it is not very sensitive. % TODO check
+D.R. with batch learning with no bias weights resulted in successful separation of classes if an separating line could be drawn through the origin of the coordinate system and in unsuccessful separation if it could not be drawn.
+
+%	\label{tab:pcn}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[]
+	\centering
+	\caption{Perceptron learning rule}
+	\label{tab:pcn}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l|r|r|r|r|r|r|r|}
+			\hline
+			Learning rate            & 0.001    & 0.005    & 0.01     & 0.1      & 0.25     & 1        & 10       \\ \hline
+			Accuracy - mean          & 100.00\% & 100.00\% & 100.00\% & 100.00\% & 100.00\% & 100.00\% & 100.00\% \\ \hline
+			Accuracy - std           & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   \\ \hline
+			Convergence epoch - mean & 29.22    & 8.26     & 3.45     & 1.91     & 1.90     & 1.93     & 1.87     \\ \hline
+			Convergence epoch - std  & 27.84    & 6.80     & 2.14     & 0.38     & 0.30     & 0.32     & 0.42     \\ \hline
+		\end{tabular}%
+	}
+\end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[]
+	\centering
+	\caption{Batch delta learning rule}
+	\label{tab:pcn_delta_batch}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l|r|r|r|r|r|r|r|}
+			\hline
+			Learning rate            & 0.0001   & 0.001    & 0.002    & 0.003    & 0.004    & 0.005    & 0.01     \\ \hline
+			Accuracy - mean          & 100.00\% & 100.00\% & 100.00\% & 100.00\% & 100.00\% & 100.00\% & 100.00\% \\ \hline
+			Accuracy - std           & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   \\ \hline
+			Convergence epoch - mean & 1,081.97 & 110.99   & 117.69   & 2.10     & 1.92     & 1.91     & 2.07     \\ \hline
+			Convergence epoch - std  & 245.30   & 25.02    & 16.39    & 0.66     & 0.42     & 0.45     & 0.51     \\ \hline
+			MSE Loss - mean          & 0.06     & 0.06     & 0.06     & 8.21     & 18.40    & 33.53    & 975.81   \\ \hline
+			MSE Loss - std           & 0.00     & 0.00     & 0.00     & 9.89     & 27.26    & 50.83    & 5,597.03 \\ \hline
+		\end{tabular}%
+	}
+\end{table}
+
+\begin{table}[]
+	\centering
+	\caption{Sequential delta learning rule}
+	\label{tab:pcn_delta_seq}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l|l|l|l|l|l|l|l|}
+			\hline
+			Learning rate            & 0.00     & 0.00     & 0.00     & 0.00     & 0.00     & 0.01     & 0.01     \\ \hline
+			Accuracy - mean          & 100.00\% & 100.00\% & 100.00\% & 100.00\% & 100.00\% & 100.00\% & 100.00\% \\ \hline
+			Accuracy - std           & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   & 0.00\%   \\ \hline
+			Convergence epoch - mean & 80.00    & 40.73    & 45.93    & 43.78    & 42.24    & 42.13    & 42.67    \\ \hline
+			Convergence epoch - std  & 40.99    & 27.37    & 30.77    & 31.40    & 35.73    & 31.52    & 30.20    \\ \hline
+			MSE Loss - mean          & 0.00     & 0.00     & 0.00     & 0.00     & 0.00     & 0.00     & 0.00     \\ \hline
+			MSE Loss - std           & 0.00     & 0.00     & 0.00     & 0.00     & 0.00     & 0.00     & 0.00     \\ \hline
+		\end{tabular}%
+	}
+\end{table}
+
+We used inseparable two class datasets to train batch learning with various ways of subsampling the data to see the resulting effect on performance and boundary line position. In context of uneven class representation, the line will be drawn in such a way that the more frequent class gets higher individual accuracy. In context of non-representative class distribution, we came across a case where one part of the non-representative class was entirely disregarded and falsely classified as the opposite class by the decision boundary.
+% The resulting decision boundaries for 4 different subsamples of the dataset are shown in figure \ref{fig:inseparable_datasets_lines}.
+In all subsampling cases, we noticed that the real accuracy on the original non-subsampled dataset for all subsampled dataset was lower, which means that both non-representative sample distribution and uneven class representation decrease the generalization capability of the trained model.
+
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=10cm]{3.1.3_inseparable_datasets.png}
+%	\caption{Decision boundaries for 4 subsampled datasets}
+%	\label{fig:inseparable_datasets_lines}
+%\end{figure}
 
 In solving classification problem using an SLP one can easily observe its efficiency and its limitations.
 
