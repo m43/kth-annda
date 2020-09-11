@@ -1,11 +1,16 @@
 \documentclass[a4paper]{article}
 
-\usepackage[swedish]{babel}
+\usepackage[english]{babel}
 \usepackage[latin1]{inputenc}
 \usepackage{amssymb}
 \usepackage{framed}
 \usepackage{graphicx}
 \graphicspath{ {./img/} }
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{mwe}
+
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3ex}
@@ -48,9 +53,12 @@ multi-layer perceptrons networks
 % on the associated learning algorithms. Furthermore, we studied their properties by
 % means of simulations.
 
-In the first part of the lab, the focus was on two learning algorithms: the Delta rule for a single-layer perceptron and the generalized Delta rule for two-layer perceptron.We used the created neural networks for classification, data compression, and function approximation.
+In the first part of the lab, the focus was on two learning algorithms: the Delta rule for a
+ single-layer perceptron and the generalized Delta rule for two-layer perceptron.
+We used the created neural networks for classification, data compression, and function approximation.
 
-In the second part of the lab assignment, we worked with multi-layer perceptrons to solve the problem of chaotic time series prediction. In this task we designed, trained, validated (including model selection) and evaluated the modeled neuralnetwork with the ambition to deliver a robust solution with good generalization capabilities. % For this purpose, we exploited sckit-learn and TensorFlow libraries in Python.
+In the second part of the lab assignment, we worked with multi-layer perceptrons to solve the problem of chaotic time series prediction. In this task we designed, trained, validated (including model selection) and evaluated the modeled neural
+network with the ambition to deliver a robust solution with good generalization capabilities. % For this purpose, we exploited sckit-learn and TensorFlow libraries in Python.
 
 \section{Methods}
 %\textit{Mention here in just a couple of sentences what tools you have used, e.g. programming/scripting environment, toolboxes. If you use some unconventional method or introduce a clearly different performance measure, you can briefly mention or define it here.}\\
@@ -150,27 +158,91 @@ In all subsampling cases, we noticed that the real accuracy on the original non-
 %	\label{fig:inseparable_datasets_lines}
 %\end{figure}
 
+In solving classification problem using an SLP one can easily observe its efficiency and its limitations.
+
+Firstly, we have implemented the perceptron rule (implying a sequential learning scheme) and the Delta learning rule (batch learning) to a randomly generated, linearly separable classification dataset. Both have performed well and converged quickly...
+
+Secondly, we have tested the differences between batch and sequential learning for the Delta rule SLP. In terms of epochs, both approaches converge relatively quickly, with ... being somewhat quicker
+
+Thirdly, we have tested removing the bias term with the Delta rule in batch mode. Even without testing it, it is clear that the algorithm can converge only when the data is linearly separable by a line which goes through the center of the coordinate system. 
+
+
+
 \subsection{Classification and regression with a two-layer perceptron \textit{(ca.2 pages)}}
 
 \subsubsection{Classification of linearly non-separable data}
-\textit{It seems that one (decision boundary) or two plots (inclusing learning curves) should suffice. Build a story around the questions in the assignment. Include concise motivation for your findings and potential interpretations/speculations.}
+%\textit{It seems that one (decision boundary) or two plots (inclusing learning curves) should suffice. Build a story around the questions in the assignment. Include concise motivation for your findings and potential interpretations/speculations.}
 
 \subsubsection{The encoder problem}
-\textit{Here you do not really need any illustrations, this could be a very short section reporting on your experiments in line with the assignment questions.}
+%\textit{Here you do not really need any illustrations, this could be a very short section reporting on your experiments in line with the assignment questions.}
 
 \subsubsection{Function approximation}
-\textit{This subsection requires plots to reflect intuitive visual interpretation of the results. Make sure that you condense information and avoid any excessive plotting. Here you might also need to incorporate some illustration of the network's generalisation performance or use a table to systematically report the results requested in the assignment.}
+%\textit{This subsection requires plots to reflect intuitive visual interpretation of the results. Make sure that you condense information and avoid any excessive plotting. Here you might also need to incorporate some illustration of the network's generalisation performance or use a table to systematically report the results requested in the assignment.}
 
+\pagebreak
 \section{Results and discussion - Part II \textit{(ca.2 pages)}}
 
-\textit{Here you do not have to introduce the problem or define Mackey-Glass time series, as you should focus on the results. You could divide them into two parts as the following two suggested subsections but you might as well keep your story under the main heading of Part II of the assignment. Importantly, always clearly state what network architecture you use, crucially with the number of hidden nodes, systematically report average results with various manipulations (regularisation etc.) and pay attention to differences between training, validation and test errors. Illustrating the outcome of your network predictions along with the original chaotic time series can also be very helpful. Finally, since you compare two- and three-layer architectures, make sure that you do not jump to any conclusions based on a small number of simulations unless you have statistically convincing evidence (when you comare the mean performance measures, their second moment is also relevant). In this part it may be particularly desirable to rely on tables.}
+%\textit{Here you do not have to introduce the problem or define Mackey-Glass time series, as you should focus on the results. You could divide them into two parts as the following two suggested subsections but you might as well keep your story under the main heading of Part II of the assignment. Importantly, always clearly state what network architecture you use, crucially with the number of hidden nodes, systematically report average results with various manipulations (regularisation etc.) and pay attention to differences between training, validation and test errors. Illustrating the outcome of your network predictions along with the original chaotic time series can also be very helpful. Finally, since you compare two- and three-layer architectures, make sure that you do not jump to any conclusions based on a small number of simulations unless you have statistically convincing evidence (when you comare the mean performance measures, their second moment is also relevant). In this part it may be particularly desirable to rely on tables.}
+
+For this assignment, we have used the Mackey-Glass time series to evaluate a two-layer perceptron network. The data was simply generated by using the starting conditions and sequentially calculating values using the iterative formula given in the assignment. Furthermore, the data was split into three consecutive non-overlapping blocks for training, validation, and testing using 800, 200, and 200 values, respectively. For the regularisation method we have used weight decay with the L2 norm. Early stopping is implemented in such a way that if improvement (by at least $10^{-5}$) in the validation mean square error (MSE) is not visible for 50 iterations the learning stops. Also, the maximum number of epochs allowed is capped at 10000.
 
 \subsection{Two-layer perceptron for time series prediction - model selection, regularisation and validation}
+Using a rate of learning rate of 0.1 which showed good results and relatively fast convergence as well as a medium regularization coefficient $\lambda = 0.1$ several two-layer perceptrons were tested, the results of which we can see in table \ref{tab:learning_outcomes}. Each configuration was tested 10 times to calculate mean values and standard deviation. We opted for the networks with 8 nodes in the hidden layer as those show the best results on the test set.
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|p{1.5cm}|p{2cm}|p{1.5cm}|}
+		\hline
+		nodes & MSE mean & MSE std\\
+		\hline
+		1 & 0.01413 & 0.01153 \\ \hline
+		2 & 0.00916 & 0.00188 \\ \hline
+		4 & 0.00870 & 0.00384 \\ \hline
+		6 & 0.00806 & 0.00173 \\ \hline
+		8 & 0.00774 & 0.00135 \\ \hline
+	\end{tabular}
+	\caption{Evaluation of various network configurations}
+	\label{tab:learning_outcomes}
+\end{table}
+
+Furthermore, we have tested the impact of regularization strength on the selected network. Generally, one could expect that the weights of a network with stronger regularization tend to be closer to 0, but this effect was not obvious in our case, probably due to the fact that our networks are too simple to have problems with overfitting and larger weights. The described effect can to some extent be seen in figure \ref{fig:weight_histogram}.
+
+\begin{figure}[h!]
+	\begin{subfigure}{.5\linewidth}
+		\includegraphics[width=165px]{images/weight_histogram_0.png}
+		\centering
+		\caption{\small No regularization}
+	\end{subfigure}
+	\begin{subfigure}{.5\linewidth}
+		\centering
+		\includegraphics[width=165px]{images/weight_histogram_0_1.png}
+		\caption{\small L2 regularization $\lambda = 0.1$}
+	\end{subfigure}
+	\caption{Weight distributions}
+	\label{fig:weight_histogram}
+\end{figure}
+
+Finally, figure \ref{fig:learning_process} shows an example of the learning process and the outputs of our selected network with 8 nodes in the hidden layer, a learning rate of 0.1 and an L2 weight decay with $\lambda = 0.1$. The MSE on the test set of such a network can be seen in table \ref{tab:learning_outcomes}. The best of the 10 tested networks had an MSE of 0.00621 which demonstrates its good generalisation capabilities.
+
+\begin{figure}[h!]
+	\begin{subfigure}{.5\linewidth}
+		\includegraphics[width=165px]{images/learning_mse.png}
+		\centering
+		\caption{\small Learning process}
+	\end{subfigure}
+	\begin{subfigure}{.5\linewidth}
+		\centering
+		\includegraphics[width=165px]{images/predictions.png}
+		\caption{\small Predictions after training}
+	\end{subfigure}
+	\caption{Weight distributions}
+	\label{fig:learning_process}
+\end{figure}
 
 \subsection{Comparison of two- and three-layer perceptron for noisy time series prediction}
 
 \section{Final remarks \normalsize{\textit{(max 0.5 page)}}}
-\textit{Please share your final reflections on the lab, its content and your own learning. Which parts of the lab assignment did you find confusing or not necessarily helping in understanding important concepts and which parts you have found interesting and relevant to your learning experience? \\
-Here you can also formulate your opinion, interpretation or speculation about some of the simulation outcomes. Please add any follow-up questions that you might have regarding the lab tasks and the results you have produced.}
+% \textit{Please share your final reflections on the lab, its content and your own learning. Which parts of the lab assignment did you find confusing or not necessarily helping in understanding important concepts and which parts you have found interesting and relevant to your learning experience? \\
+% Here you can also formulate your opinion, interpretation or speculation about some of the simulation outcomes. Please add any follow-up questions that you might have regarding the lab tasks and the results you have produced.}
 
 \end{document}
