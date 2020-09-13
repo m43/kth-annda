@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
-from mpl_toolkits.mplot3d import axes3d, Axes3D
 
 from model.mlp import MLP
 from utils.util import ensure_dir
@@ -83,9 +82,9 @@ def demo_run(t):
             print(f"Loop starting. {loops} loops left to go.")
             for loop_idx in range(loops):
                 name = f"MLP{i:05}_GAUSS" \
-                       f"_h:{n_hidden_nodes}" \
-                       f"_eta:{eta}" \
-                       f"_b:{batch_size}{'' if momentum == 0 else 'momentum:' + str(momentum)}".replace(".", ",")
+                       f"_h-{n_hidden_nodes}" \
+                       f"_eta-{eta}" \
+                       f"_b-{batch_size}{'' if momentum == 0 else 'momentum:' + str(momentum)}".replace(".", ",")
                 i += 1
                 print(name)
                 net = MLP(train[0], train[1], n_hidden_nodes, momentum=momentum, outtype="linear")

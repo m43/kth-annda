@@ -40,7 +40,7 @@ if __name__ == '__main__':
                 for m in metrics:
                     accumulated_metrics[m] = []
 
-                name = f"_DELTA_RULE_INSEPARABLE_d:{dataset_idx}_BATCH_eta:{eta}_max_iter:{max_iter}".replace(".", ",")
+                name = f"_DELTA_RULE_INSEPARABLE_d-{dataset_idx}_BATCH_eta-{eta}_max_iter-{max_iter}".replace(".", ",")
                 print(name)
                 for i in range(loops):
                     print(".", end="")

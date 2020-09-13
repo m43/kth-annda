@@ -39,7 +39,7 @@ if __name__ == '__main__':
         for eta in eta_values:
             for batch_size in [dataset[0].shape[0], 1]:
                 for _ in range(loops):
-                    name = f"MLP{i:05}_3_n:{n}_b:{batch_size}_h:{n_hidden_nodes}_eta:{eta}_m:{momentum}".replace(".",
+                    name = f"MLP{i:05}_3_n-{n}_b-{batch_size}_h-{n_hidden_nodes}_eta-{eta}_m-{momentum}".replace(".",
                                                                                                                  ",")
                     i += 1
 

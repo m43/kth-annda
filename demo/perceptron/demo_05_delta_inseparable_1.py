@@ -35,7 +35,7 @@ if __name__ == '__main__':
             for i in range(loops):
                 acc, loss, cepoch = delta_rule_learning_demo(
                     inputs, targets,
-                    f"DELTA_RULE_INSEPARABLE_d:0_{'' if bias else '_NO_BIAS'}_b:{batch_size}_eta:{eta}_max_iter:{max_iter}".replace(
+                    f"DELTA_RULE_INSEPARABLE_d:0_{'' if bias else '_NO_BIAS'}_b-{batch_size}_eta-{eta}_max_iter-{max_iter}".replace(
                         ".", ","), debug and i == 0, save_folder, max_iter, eta,
                     (delta_n if batch_size == 1 else delta_n_batch), batch_size, bias, plots_with_debug=plots,
                     confusion_matrix=eval and i == 0)
