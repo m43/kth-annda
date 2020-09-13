@@ -99,6 +99,7 @@ def plot_metric(data, name, save, *more_data, point=None, show_plot=True):
     if show_plot:
         plt.show()
 
+
 def accuracy(outputs, targets, targets_are_rows: bool):
     n = targets.shape[0] if targets_are_rows else targets.shape[1]
     return np.sum(np.all(np.equal(targets, outputs), axis=(1 if targets_are_rows else 0))) * 100 / n
@@ -263,3 +264,15 @@ def graph_surface(function, rect, offset=0.5, width=512, height=512):
 
 def conf_mat_acc(cm):
     return np.trace(cm) / np.sum(cm)
+
+
+def gaussian_exp(x, mean, variance):
+    """
+    Returns the exponential part of the Gaussian distribution density function
+    for a given variable - x, and mean and variance of the Gaussian distribution.
+    :param x: variable
+    :param mean: mean of the Gaussian distribution
+    :param variance: variance of the Gaussian distribution
+    :return: the exponential part of the Gaussian function
+    """
+    return math.exp(math.pow(-(x - mean), 2) / (2 * variance))
