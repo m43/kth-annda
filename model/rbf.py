@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 from utils.util import gaussian_exp
 
@@ -11,6 +12,7 @@ class Rbf:
     def __init__(self, hidden_layer_shape):
         """
         Constructs an RBF network with a single input and a given number of RBF nodes.
+
         :param hidden_layer_shape: number of RBF nodes.
         """
         self.hidden_layer_shape = hidden_layer_shape
@@ -24,37 +26,67 @@ class Rbf:
     def initialize_weights(self):
         """
         (Re)Initializes the weight column of a RBF network.
+
         """
-        self.weights = np.random.normal(size=self.hidden_layer_shape).T
+        self.weights = np.array([np.random.normal(size=self.hidden_layer_shape)]).T
 
     # TODO: see initialization possibilities
     def initialize_nodes(self):
         """
         (Re)Initializes the RBF nodes.
-        """
-        self.nodes = [(0.0, 1.0) for i in range(self.hidden_layer_shape)]
 
-    # TODO: implement
-    def least_squares_training(self, input, target):
+        """
+        self.nodes = [(random.gauss(0, 1), random.gauss(1, 0.25)) for i in range(self.hidden_layer_shape)]
+
+    def least_squares_training(self, inputs, targets):
         """
         Changes weights according to the least squares method.
-        :param input: input data
-        :param target: target data
-        """
-        pass
 
-    # TODO: implement
-    def delta_training_step(self, input, target, learning_rate):
+        :param inputs: input data
+        :param targets: target data
+        """
+        hidden_matrix = self.calculate_hidden_matrix(inputs)
+        hidden_matrix_inverse = np.linalg.inv(hidden_matrix)
+        self.weights = np.matmul(hidden_matrix_inverse, np.array([[target for target in targets]]).T)
+
+    def delta_training_step(self, single_input, target, learning_rate):
         """
         Changes weights according to the on-line delta rule.
-        :param input:
-        """
-        pass
 
-    def calculate_hidden_output(self, input):
+        :param single_input: the input for which the learning is applied
+        :param target: the expected output
+        :param learning_rate: the learning rate for the delta rule
         """
-        Returns the output of the RBF nodes in the hidden layer of the RBF network.
-        :param input: a number for which to calculate the hidden output
+        self.weights += learning_rate * (target - self.forward_pass(single_input)) ** 2 * self.calculate_hidden_output(
+            single_input) / 2
+
+    def forward_pass(self, single_input):
+        """
+        Calculates the output of the network for a single given input.
+
+        :param single_input: a single input for the RBF network
+        :return: the output of the network
+        """
+
+        return np.matmul(self.calculate_hidden_output(single_input).T, self.weights)
+
+    def calculate_hidden_matrix(self, inputs):
+        """
+        Calculates a matrix of the hidden layer outputs based on input data.
+
+        :param inputs: an iterable object of input numbers
+        :return: returns a numpy matrix with each row containing the hidden output for a single input
+        """
+        hidden_matrix = []
+        for single_input in inputs:
+            hidden_matrix.append(self.calculate_hidden_output(single_input).T[0])
+        return np.array(hidden_matrix)
+
+    def calculate_hidden_output(self, single_input):
+        """
+        Returns the output of the RBF nodes in the hidden layer of the RBF network for a single given input.
+
+        :param single_input: a number for which to calculate the hidden output
         :return: hidden output as a numpy column
         """
-        return np.array([gaussian_exp(input, node[0], node[1]) for node in self.nodes]).T
+        return np.array([[gaussian_exp(single_input, node[0], node[1]) for node in self.nodes]]).T

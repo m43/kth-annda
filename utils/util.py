@@ -270,6 +270,7 @@ def gaussian_exp(x, mean, variance):
     """
     Returns the exponential part of the Gaussian distribution density function
     for a given variable - x, and mean and variance of the Gaussian distribution.
+
     :param x: variable
     :param mean: mean of the Gaussian distribution
     :param variance: variance of the Gaussian distribution
