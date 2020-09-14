@@ -3,7 +3,7 @@ from utils.util import horse
 
 from model.rbf import Rbf
 
-my_model = Rbf(5)
+my_model = Rbf(7)
 test_list = [1, 2, 3]
 
 test_output_columns = None

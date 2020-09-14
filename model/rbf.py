@@ -46,8 +46,9 @@ class Rbf:
         :param targets: target data
         """
         hidden_matrix = self.calculate_hidden_matrix(inputs)
-        hidden_matrix_inverse = np.linalg.inv(hidden_matrix)
-        self.weights = np.matmul(hidden_matrix_inverse, np.array([[target for target in targets]]).T)
+        a = np.matmul(hidden_matrix.T, hidden_matrix)
+        b = np.matmul(hidden_matrix.T, np.array([[target for target in targets]]).T)
+        self.weights = np.linalg.solve(a, b)
 
     def delta_training_step(self, single_input, target, learning_rate):
         """
