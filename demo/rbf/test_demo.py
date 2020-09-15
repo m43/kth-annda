@@ -3,7 +3,7 @@ from utils.util import horse
 
 from model.rbf import Rbf
 
-my_model = Rbf(7)
+my_model = Rbf(6)
 test_list = [1, 2, 3]
 
 test_output_columns = None
@@ -26,7 +26,7 @@ test_input = 0.5
 expected_output = 2
 print(f'For input {test_input} the output is currently: {my_model.forward_pass(test_input)}')
 print('Before delta learning on the test input the weights were:\n', my_model.weights)
-my_model.delta_training_step(test_input, expected_output, 0.01)
+my_model.delta_training_step(test_input, expected_output, 0.001)
 print('After delta learning on the test input the weights were:\n', my_model.weights)
 print(f'For input {test_input} the output is currently: {my_model.forward_pass(test_input)}')
 

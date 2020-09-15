@@ -69,7 +69,7 @@ class Rbf:
         :return: the output of the network
         """
 
-        return np.matmul(self.calculate_hidden_output(single_input).T, self.weights)
+        return float(np.matmul(self.calculate_hidden_output(single_input).T, self.weights))
 
     def calculate_hidden_matrix(self, inputs):
         """
