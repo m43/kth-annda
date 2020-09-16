@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import random
 
 from utils.util import gaussian_exp
@@ -9,7 +10,7 @@ class Rbf:
     A class that represents a radial basis function (RBF) network with a single input.
     """
 
-    def __init__(self, hidden_layer_shape):
+    def __init__(self, hidden_layer_shape, rbf_init=None, rbf_init_data=None):
         """
         Constructs an RBF network with a single input and a given number of RBF nodes.
 
@@ -19,24 +20,52 @@ class Rbf:
         self.weights = None
         self.nodes = None
 
-        self.initialize_weights()
-        self.initialize_nodes()
+        self.random_weight_initialization()
 
-    # TODO: see initialization possibilities
-    def initialize_weights(self):
-        """
-        (Re)Initializes the weight column of a RBF network.
+        if rbf_init is None:
+            self.random_node_initialization()
+            print('RBF model initialized randomly, no initialization method stated.')
+        elif rbf_init == 'uniform':
+            try:
+                start = rbf_init_data[0]
+                end = rbf_init_data[1]
+            except RuntimeError:
+                raise RuntimeError(
+                    f'Uniform RBF initialization error: rbf_init_data ({rbf_init_data}) '
+                    f'wrong, needs to have two elements.')
+            self.uniform_node_initialization(start=start, end=end)
 
+    def random_weight_initialization(self, mean=0, scale=1):
         """
-        self.weights = np.array([np.random.normal(size=self.hidden_layer_shape)]).T
+        (Re)Initializes the weight column of a RBF network picking weights randomly from a  Gaussian distribution.
 
-    # TODO: see initialization possibilities
-    def initialize_nodes(self):
+        :param mean: mean value of the Gaussian distribution
+        :param scale: the standard deviation of the Gaussian distribution (non-negative)
         """
-        (Re)Initializes the RBF nodes.
+        self.weights = np.array([np.random.normal(mean, scale, size=self.hidden_layer_shape)]).T
 
+    def random_node_initialization(self):
         """
-        self.nodes = [(random.gauss(0, 1), random.gauss(1, 0.25)) for i in range(self.hidden_layer_shape)]
+        (Re)Initializes the RBF nodes picking means randomly from a (0,1) Gaussian distribution and a fixed
+        standard deviation equal to 1.
+        """
+
+        self.nodes = [(random.gauss(0, 1), 1) for i in range(self.hidden_layer_shape)]
+
+    def uniform_node_initialization(self, start, end):
+        """
+        (Re)Initializes the RBF nodes by distributing their means equally on an interval.
+
+        :param start: start of the interval
+        :param end: end of the interval
+        """
+
+        if self.hidden_layer_shape == 1:
+            distance = abs((end - start) / 2)
+        else:
+            distance = abs((end - start) / (self.hidden_layer_shape - 1))
+        self.nodes = [(start + i * distance, 4 * (distance ** 2)) for i in
+                      range(self.hidden_layer_shape)]
 
     def least_squares_training(self, inputs, targets):
         """

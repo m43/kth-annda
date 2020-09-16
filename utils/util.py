@@ -276,4 +276,4 @@ def gaussian_exp(x, mean, variance):
     :param variance: variance of the Gaussian distribution
     :return: the exponential part of the Gaussian function
     """
-    return math.exp(math.pow(-(x - mean), 2) / (2 * variance))
+    return math.exp(- ((x - mean)**2) / (2 * variance))
