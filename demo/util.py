@@ -55,6 +55,7 @@ def perpare_reproducable_inseparable_dataset_2_with_subsets(seed=72):
 
     return (inputs, targets), subsets, negated_subsets
 
+
 def print_results_as_table(results, keys):
     print("", end="\t")
     for k, v in results.items():
