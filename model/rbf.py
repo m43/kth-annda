@@ -29,11 +29,17 @@ class Rbf:
             try:
                 start = rbf_init_data[0]
                 end = rbf_init_data[1]
+                variance = None
+                if len(rbf_init_data) > 2:
+                    variance = rbf_init_data[2]
             except RuntimeError:
                 raise RuntimeError(
                     f'Uniform RBF initialization error: rbf_init_data ({rbf_init_data}) '
-                    f'wrong, needs to have two elements.')
-            self.uniform_node_initialization(start=start, end=end)
+                    f'wrong, needs to have three elements, start, end and variance.')
+            if variance is not None and variance != 0:
+                self.uniform_node_initialization(start=start, end=end, variance=variance)
+            else:
+                self.uniform_node_initialization(start=start, end=end)
 
     def random_weight_initialization(self, mean=0, scale=1):
         """
@@ -52,20 +58,25 @@ class Rbf:
 
         self.nodes = [(random.gauss(0, 1), 1) for i in range(self.hidden_layer_shape)]
 
-    def uniform_node_initialization(self, start, end):
+    def uniform_node_initialization(self, start, end, variance=None):
         """
         (Re)Initializes the RBF nodes by distributing their means equally on an interval.
 
         :param start: start of the interval
         :param end: end of the interval
+        :param variance: variance of RBF nodes
         """
 
         if self.hidden_layer_shape == 1:
             distance = abs((end - start) / 2)
         else:
             distance = abs((end - start) / (self.hidden_layer_shape - 1))
-        self.nodes = [(start + i * distance, 4 * (distance ** 2)) for i in
-                      range(self.hidden_layer_shape)]
+        if variance:
+            self.nodes = [(start + i * distance, variance) for i in
+                          range(self.hidden_layer_shape)]
+        else:
+            self.nodes = [(start + i * distance, math.sqrt(distance)) for i in
+                          range(self.hidden_layer_shape)]
 
     def least_squares_training(self, inputs, targets):
         """
