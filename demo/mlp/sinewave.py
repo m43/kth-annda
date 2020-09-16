@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from model.mlp import MLP
-from MLCode.Ch4.mlp import mlp
 
 if __name__ == '__main__':
     x = np.ones((1, 40)) * np.linspace(0, 1, 40)
