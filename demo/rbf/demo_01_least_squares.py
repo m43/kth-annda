@@ -4,8 +4,6 @@ import os
 import matplotlib.pyplot as plt
 from model.rbf import Rbf
 
-
-# TODO: add noise
 MAX_NODES = 32
 # 0 uses default variance for the uniform RBF initialization (a square root of the distance between RBF centers)
 VARIANCES = [0]

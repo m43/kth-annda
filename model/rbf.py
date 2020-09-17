@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import random
+import statistics
 
 from utils.util import gaussian_exp
 
@@ -90,9 +91,59 @@ class Rbf:
         b = np.matmul(hidden_matrix.T, np.array([[target for target in targets]]).T)
         self.weights = np.linalg.solve(a, b)
 
-    def delta_training_step(self, single_input, target, learning_rate):
+    def delta_learning(self, inputs, targets, learning_rate, val_inputs=None, val_targets=None,
+                       early_stop_threshold=10e-5, early_stop_tolerance=100):
         """
         Changes weights according to the on-line delta rule.
+
+        :param inputs: training inputs
+        :param targets: training targets
+        :param val_inputs: validation inputs for early stopping (if None training is used for stopping)
+        :param val_targets: validation targets for early stopping (if None training is used for stopping)
+        :param learning_rate: learning rate, eta of the delta rule
+        :param early_stop_threshold: the threshold value for improvement in the early stopping technique
+        :param early_stop_tolerance: allowed number of iterations without improvement
+        :return: the best MAE on the validation set and the number of iterations it took to converge
+        """
+
+        stop = False
+        pocket_mae = float('inf')
+        pocket_epoch = 0
+        pocket_weights = None
+        epoch = 0
+        no_improvement = 0
+        learning_data = list(zip(inputs, targets))
+
+        while not stop:
+            random.shuffle(learning_data)
+
+            # one epoch
+            for train_input, train_target in learning_data:
+                self.delta_training_step(train_input, train_target, learning_rate)
+            epoch += 1
+
+            # use validation for early stopping if it is available
+            if val_inputs and val_targets:
+                error = self.evaluate_mae(val_inputs, val_targets)
+            else:
+                error = self.evaluate_mae(inputs, targets)
+
+            if error + early_stop_threshold < pocket_mae:
+                no_improvement = 0
+                pocket_mae = error
+                pocket_epoch = epoch
+                pocket_weights = self.weights.copy()
+            else:
+                no_improvement += 1
+                if no_improvement > early_stop_tolerance:
+                    break
+
+        self.weights = pocket_weights
+        return pocket_mae, pocket_epoch
+
+    def delta_training_step(self, single_input, target, learning_rate):
+        """
+        Changes weights according to one step of the on-line delta rule.
 
         :param single_input: the input for which the learning is applied
         :param target: the expected output
@@ -100,6 +151,21 @@ class Rbf:
         """
         self.weights += learning_rate * (target - self.forward_pass(single_input)) ** 2 * self.calculate_hidden_output(
             single_input) / 2
+
+    def evaluate_mae(self, input_data, target_data, transform_function=None):
+        """
+        Evaluates the MAE of the RBF network. Can transform outputs if a function is given.
+
+        :param input_data: input data for the network
+        :param target_data: target data
+        :param transform_function: function to use on output data, optional
+        :return: return MAE of the network's output compared to the target data
+        """
+        output_data = [self.forward_pass(value) for value in input_data]
+        if transform_function:
+            output_data = [transform_function(x) for x in output_data]
+        mae = statistics.mean([abs(output_data[i] - target_data[i]) for i in range(len(target_data))])
+        return mae
 
     def forward_pass(self, single_input):
         """
