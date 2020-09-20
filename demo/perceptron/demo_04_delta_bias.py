@@ -1,7 +1,7 @@
 from demo.perceptron.util import delta_rule_learning_demo
 from demo.util import perpare_reproducable_separable_dataset, \
     perpare_reproducable_separable_dataset_impossible_with_no_bias
-from utils.util import ensure_dir, TwoClassDatasetGenerator
+from utils.util import ensure_dir
 
 if __name__ == '__main__':
     ##################################################

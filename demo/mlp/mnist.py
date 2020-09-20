@@ -29,7 +29,6 @@ if __name__ == '__main__':
         print()
         print()
 
-
 """
 Confusion matrix:
 [[4827    0   15    6   13   16   23    5   15   21]
