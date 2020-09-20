@@ -1,9 +1,8 @@
 import numpy as np
-from utils.util import horse
 
-from model.rbf import Rbf
+from model.rbf import RBF
 
-my_model = Rbf(6)
+my_model = RBF(6)
 test_list = [1, 2, 3]
 
 test_output_columns = None
@@ -25,15 +24,15 @@ for step, row in enumerate(test_matrix):
 test_input = 0.5
 expected_output = 2
 print(f'For input {test_input} the output is currently: {my_model.forward_pass(test_input)}')
-print('Before delta learning on the test input the weights were:\n', my_model.weights)
+print('Before delta learning on the test input the weights were:\n', my_model.slp_weights)
 my_model.delta_training_step(test_input, expected_output, 0.001)
-print('After delta learning on the test input the weights were:\n', my_model.weights)
+print('After delta learning on the test input the weights were:\n', my_model.slp_weights)
 print(f'For input {test_input} the output is currently: {my_model.forward_pass(test_input)}')
 
 test_inputs = [0.5, -0.5, 1, -0.75, 2]
 expected_outputs = [2, -2, 2, -2, 2]
 print(f'For input {test_inputs} the output is currently: {[my_model.forward_pass(i) for i in test_inputs]}')
-print('Before least square learning on the test input the weights were:\n', my_model.weights)
+print('Before least square learning on the test input the weights were:\n', my_model.slp_weights)
 my_model.least_squares_training(test_inputs, expected_outputs)
-print('After least square learning on the test input the weights were:\n', my_model.weights)
+print('After least square learning on the test input the weights were:\n', my_model.slp_weights)
 print(f'For input {test_inputs} the output is currently: {[my_model.forward_pass(i) for i in test_inputs]}')

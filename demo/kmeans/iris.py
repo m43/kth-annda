@@ -60,7 +60,7 @@ if __name__ == '__main__':
     ]:
         print(f"{'-' * 12} Class: {name} {'-' * 12}")
         for i in range(3):
-            kmeans.fit(inputs, 0.1, 5000)
+            kmeans.fit(inputs, 0.1, 1000)
             predict = kmeans.predict(inputs)
             n = len(predict)
             print(f"Clusters:\n{predict[:n // 3]}\n{predict[n // 3:2 * n // 3]}\n{predict[2 * n // 3:]}")

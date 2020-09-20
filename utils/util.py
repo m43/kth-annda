@@ -50,6 +50,10 @@ def mse(outputs, targets):
     return np.sum((targets - outputs) ** 2) / targets.size / 2
 
 
+def mae(outputs, targets):
+    return np.sum(np.abs((targets - outputs))) / targets.size
+
+
 def standardize(x, mean, std):
     return (x - mean) / std
 
@@ -266,14 +270,15 @@ def conf_mat_acc(cm):
     return np.trace(cm) / np.sum(cm)
 
 
-def gaussian_exp(x, mean, variance):
-    """
-    Returns the exponential part of the Gaussian distribution density function
-    for a given variable - x, and mean and variance of the Gaussian distribution.
+def rbf(x, c, variance):
+    if variance == 0:
+        return 0
 
-    :param x: variable
-    :param mean: mean of the Gaussian distribution
-    :param variance: variance of the Gaussian distribution
-    :return: the exponential part of the Gaussian function
-    """
-    return math.exp(- ((x - mean)**2) / (2 * variance))
+    return np.exp(- np.sum((x - c) ** 2) / (2 * variance)).item()
+
+
+def normalize_vectors(data, vectors_in_rows=True):
+    if vectors_in_rows:
+        return (data.T / np.sqrt(np.sum(data ** 2, axis=1))).T
+    else:
+        return data / np.sqrt(np.sum(data ** 2, axis=0))

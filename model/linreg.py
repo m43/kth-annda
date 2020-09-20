@@ -14,5 +14,5 @@ def linreg(inputs, targets, log=False) -> np.array:
         print(f"outputs:{outputs}")
         sse(outputs, targets)
         print()
-        
+
     return beta
