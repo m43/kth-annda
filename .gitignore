@@ -4,7 +4,10 @@
 
 imgs
 
+# datasets  # Used datasets are not memory heavy but are convenient to have because most of the demos will work
 
+# Bigger datasets:
+datasets/mnist.pkl.gz
 
 
 
@@ -118,7 +121,7 @@ ENV/
 data/
 input/
 saved/
-datasets/
+# datasets/
 
 # editor, os cache directory
 .vscode/
