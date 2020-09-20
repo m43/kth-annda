@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from util import normalize_vectors
+from utils.util import normalize_vectors
 
 
 class KMeans(ABC):
@@ -69,6 +69,26 @@ class KMeans(ABC):
         """
         pass
 
+    def cluster_variances(self, inputs):
+        """
+        Return the variances for each cluster. Variance is here defined as the average squared distance of cluster
+        points to respective cluster center.
+
+        :param inputs: either (n_of_examples x n_features) matrix input or (n_features,) vector input
+        :return: (k,) vector of variances, one for each of k cluster center
+        """
+        squared_distances = [[] for _ in range(self.k)]
+        for point, cluster in zip(inputs, self.predict(inputs)):
+            squared_distances[cluster].append(np.sum((point - self.w[:, cluster]) ** 2).item())
+        return np.array([np.mean(np.array(ds)) for ds in squared_distances])
+
+    def get_weights(self):
+        """
+        Return the weights of this network.
+        :returns: (n_features, k) weight matrix
+        """
+        return self.w
+
 
 class KMeansEuclidean(KMeans):
     """
@@ -97,15 +117,19 @@ class KMeansEuclidean(KMeans):
                     winner = self.outputs[0]
                     self.w[:, winner] += eta * (inputs[i] - self.w[:, winner])
                 else:
-                    # TODO check if this is a good idea for avoiding dead units - which was the goal
+                    raise Exception(
+                        "More winners not implemented. To avoid having dead units, set the init_from_data flag to True."
+                        "Initialization with random data points avoids dead units.")
+
+                    # TODO
 
                     # maybe update each according to relative activation to others?
                     # winners = normalize_vectors(1 - normalize_vectors(self.hidden))  # 1xK
                     # self.w += eta * winners * (inputs[i:i + 1].T - self.w)
 
                     # maybe update 2 winners?
-                    for winner, factor in zip(list(reversed(np.argpartition(self.hidden[0], -2)[-2:])), [1, 0.5]):
-                        self.w[:, winner] += factor * eta * (inputs[i] - self.w[:, winner])
+                    # for winner, factor in zip(list(reversed(np.argpartition(self.hidden[0], -2)[-2:])), [1, 0.5]):
+                    #     self.w[:, winner] += factor * eta * (inputs[i] - self.w[:, winner])
 
             if np.all(old_weights == self.w):
                 break
