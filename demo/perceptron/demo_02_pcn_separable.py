@@ -26,7 +26,7 @@ if __name__ == '__main__':
         convergence_epochs = []
         for i in range(loops):
             acc, cepoch = perceptron_learning_demo(
-                inputs, targets, f"PCN.RULE_eta:{eta}_max_iter:{max_iter}_i:{i}".replace(".", ","),
+                inputs, targets, f"PCN.RULE_eta-{eta}_max_iter-{max_iter}_i-{i}".replace(".", ","),
                 debug and i == 0, save_folder, max_iter, eta)
             cepoch += 1  # cepoch=0 means that it was the end of the first epoch, but we want this to be noted as 1
             accuracies.append(acc)

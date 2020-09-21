@@ -50,6 +50,10 @@ def mse(outputs, targets):
     return np.sum((targets - outputs) ** 2) / targets.size / 2
 
 
+def mae(outputs, targets):
+    return np.sum(np.abs((targets - outputs))) / targets.size
+
+
 def standardize(x, mean, std):
     return (x - mean) / std
 
@@ -98,6 +102,7 @@ def plot_metric(data, name, save, *more_data, point=None, show_plot=True):
         plt.savefig(name, dpi=300)
     if show_plot:
         plt.show()
+
 
 def accuracy(outputs, targets, targets_are_rows: bool):
     n = targets.shape[0] if targets_are_rows else targets.shape[1]
@@ -263,3 +268,17 @@ def graph_surface(function, rect, offset=0.5, width=512, height=512):
 
 def conf_mat_acc(cm):
     return np.trace(cm) / np.sum(cm)
+
+
+def rbf(x, c, variance):
+    if variance == 0:
+        return 0
+
+    return np.exp(- np.sum((x - c) ** 2) / (2 * variance)).item()
+
+
+def normalize_vectors(data, vectors_in_rows=True):
+    if vectors_in_rows:
+        return (data.T / np.sqrt(np.sum(data ** 2, axis=1))).T
+    else:
+        return data / np.sqrt(np.sum(data ** 2, axis=0))

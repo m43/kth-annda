@@ -14,7 +14,7 @@ def show_best(best, save_folder, train, valid):
         best['net'].forward(x)
         return np.where(best['net'].outputs > 0.5, 1, 0)
 
-    print(f"Best: v_acc:{best['best_acc']} v_loss:{best['best_loss']} name:{best['name']}\n{best}")
+    print(f"Best: v_acc-{best['best_acc']} v_loss-{best['best_loss']} name-{best['name']}\n{best}")
     save_prefix = os.path.join(save_folder, best['name'])
     fig, ax1 = plt.subplots()
     plt.title(best["name"] + " Learning curve")
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     #### MLP on inseparable two class data  #####
     #############################################
 
-    save_folder = "../../imgs/mlp/demo_01_6_no_early_stopping_for_d:3"
+    save_folder = "../../imgs/mlp/demo_01_6_no_early_stopping_for_d-3"
     ensure_dir(save_folder)
     hidden_nodes = [3]
     # hidden_nodes = [5, 8, 10, 100]
@@ -103,8 +103,8 @@ if __name__ == '__main__':
                 for m in metrics:
                     accumulated_metrics[m] = []
 
-                name = f"MLP{i:05}_d:{dataset_idx}_b:{batch_size}_h:{n_hidden_nodes}_eta:{eta}".replace(".", ",")
-                i+=1
+                name = f"MLP{i:05}_d-{dataset_idx}_b-{batch_size}_h-{n_hidden_nodes}_eta-{eta}".replace(".", ",")
+                i += 1
                 print(name)
                 best = {"best_acc": 0, "best_loss": np.inf}
                 for _ in range(loops):

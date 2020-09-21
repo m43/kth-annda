@@ -1,4 +1,5 @@
 import numpy as np
+
 from model.mlp import MLP
 
 if __name__ == '__main__':

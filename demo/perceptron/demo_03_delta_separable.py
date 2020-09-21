@@ -32,7 +32,7 @@ if __name__ == '__main__':
             convergence_epochs = []
             for i in range(loops):
                 acc, loss, cepoch = delta_rule_learning_demo(inputs, targets,
-                                                             f"DELTA_RULE{'' if bias else '_NO_BIAS'}_b:{batch_size}_eta:{eta}_max_iter:{max_iter}_i:{i}".replace(
+                                                             f"DELTA_RULE{'' if bias else '_NO_BIAS'}_b-{batch_size}_eta-{eta}_max_iter-{max_iter}_i-{i}".replace(
                                                                  ".", ","), debug and i == 0, save_folder, max_iter,
                                                              eta, (delta_n if batch_size == 1 else delta_n_batch),
                                                              batch_size, bias)

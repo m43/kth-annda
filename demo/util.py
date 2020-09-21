@@ -1,4 +1,9 @@
+import math
+
 import numpy as np
+from matplotlib import pyplot as plt, cm
+from matplotlib.patches import Circle
+from mpl_toolkits.mplot3d import art3d as art3d
 
 from utils.util import TwoClassDatasetGenerator
 
@@ -55,6 +60,7 @@ def perpare_reproducable_inseparable_dataset_2_with_subsets(seed=72):
 
     return (inputs, targets), subsets, negated_subsets
 
+
 def print_results_as_table(results, keys):
     print("", end="\t")
     for k, v in results.items():
@@ -91,3 +97,57 @@ def sample_two_class_dataset(inputs, targets, n_a, n_b):
             idx_1.append(i)
             n_b -= 1
     return (np.delete(inputs, idx_1, axis=1), np.delete(targets, idx_1, axis=1)), (inputs[:, idx_1], targets[:, idx_1])
+
+
+def prepare_dataset(function):
+    inputs = [[i / 100.0] for i in range(0, int(2 * math.pi * 100), 10)]
+    train_inputs, valid_inputs = np.array(inputs[::2] + inputs[1::4]), np.array(inputs[3::4])
+    train_targets = np.array([[function(x)] for x in train_inputs])
+    valid_targets = np.array([[function(x)] for x in valid_inputs])
+
+    test_inputs = np.array([[i / 100.0] for i in range(5, int(2 * math.pi * 100), 10)])
+    test_targets = np.array([[function(x)] for x in test_inputs])
+
+    return (train_inputs, train_targets), (valid_inputs, valid_targets), (test_inputs, test_targets)
+
+
+def plot_ballist(x, y, z1, z2, clusters, centres_x, centres_y, sigmas, save_filename="", show_plot=True,
+                 title="Ballist dataset: <angle, velocity> --> <distance, height>"):
+    fig = plt.figure(figsize=(12, 8))
+    fig.suptitle(title)
+    ax1 = fig.add_subplot(221, projection="3d")
+    for cx, cy, cs, cluster in zip(centres_x, centres_y, sigmas, range(len(centres_x))):
+        c = Circle((cx, cy), cs, color=cm.rainbow(cluster / (len(centres_x) - 1)), alpha=0.3)
+        ax1.add_patch(c)
+        art3d.pathpatch_2d_to_3d(c, z=0, zdir="z")
+    ax1.scatter(centres_x, centres_y, c="black", linewidth=1, marker="o", alpha=1)
+    ax1.scatter(x, y, z1, c=clusters, cmap=cm.rainbow, linewidth=3, alpha=1)
+    ax1.set_xlabel('angle')
+    ax1.set_ylabel('velocity')
+    ax1.set_zlabel('distance')
+    ax2 = fig.add_subplot(222, projection="3d")
+    ax2.plot_trisurf(x, y, z1, cmap=cm.rainbow, edgecolor='none')
+    ax2.set_xlabel('angle')
+    ax2.set_ylabel('velocity')
+    ax2.set_zlabel('distance')
+    ax3 = fig.add_subplot(223, projection="3d")
+    for cx, cy, cs, cluster in zip(centres_x, centres_y, sigmas, range(len(centres_x))):
+        c = Circle((cx, cy), cs, color=cm.viridis(cluster / (len(centres_x) - 1)), alpha=0.3)
+        ax3.add_patch(c)
+        art3d.pathpatch_2d_to_3d(c, z=0, zdir="z")
+    ax3.scatter(centres_x, centres_y, c="black", linewidth=1, marker="o", alpha=1)
+    ax3.scatter(x, y, z2, c=clusters, cmap=cm.viridis, linewidth=3, alpha=1)
+    ax3.set_xlabel('angle')
+    ax3.set_ylabel('velocity')
+    ax3.set_zlabel('height')
+    ax4 = fig.add_subplot(224, projection="3d")
+    ax4.plot_trisurf(x, y, z2, cmap=cm.viridis, edgecolor='none')
+    # ax4.scatter(x, y, z2, c=clusters, cmap=cm.viridis, linewidth=3)
+    ax4.set_xlabel('angle')
+    ax4.set_ylabel('velocity')
+    ax4.set_zlabel('height')
+    if save_filename:
+        plt.savefig(save_filename, dpi=300)
+    if show_plot:
+        plt.show()
+    plt.close()

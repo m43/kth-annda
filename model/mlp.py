@@ -127,7 +127,7 @@ class MLP:
         pocket_epoch = 0
         pocket_weights = (self.weights1, self.weights2)
         for epoch in tqdm(range(epochs)):
-        # for epoch in range(epochs):
+            # for epoch in range(epochs):
             if shuffle:
                 indices = np.arange(inputs.shape[0])
                 np.random.shuffle(indices)

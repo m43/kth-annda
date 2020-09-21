@@ -1,0 +1,680 @@
+Outputs for ballistical experiments dataset for different RBF and KMeans configurations.
+
+######################################
+#########   (0.02, 2) False  #########
+######################################
+
+/usr/bin/python /snap/pycharm-professional/215/plugins/python/helpers/pydev/pydevconsole.py --mode=client --port=37569
+import sys; print('Python %s on %s' % (sys.version, sys.platform))
+sys.path.extend(['/mnt/terra/xoding/kth-annda', '/mnt/terra/xoding/kth-ml/dectrees/python', '/mnt/terra/xoding/kth-ann&da/MLCode', '/mnt/terra/xoding/fer-ui'])
+Python 3.8.5 (default, Sep  5 2020, 10:50:12) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.18.1 -- An enhanced Interactive Python. Type '?' for help.
+PyDev console: using IPython 7.18.1
+Python 3.8.5 (default, Sep  5 2020, 10:50:12) 
+[GCC 10.2.0] on linux
+runfile('/mnt/terra/xoding/kth-annda/demo/rbf/ballist.py', wdir='/mnt/terra/xoding/kth-annda/demo/rbf')
+(75, 2)
+(25, 2)
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.05_i=0 VALID_MAE:0.03820461148064495 TEST_MAE:0.05105845329128598 P_EPOCH:588
+Test MAE:0.05105845329128598
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.05_i=1 VALID_MAE:0.045129350009469535 TEST_MAE:0.05488618315472681 P_EPOCH:300
+Test MAE:0.05488618315472681
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.05_i=2 VALID_MAE:0.04554339761888603 TEST_MAE:0.051343520684503596 P_EPOCH:527
+Test MAE:0.051343520684503596
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.05_i=0 VALID_MAE:0.042282851940980234 TEST_MAE:0.04512240674125916 P_EPOCH:367
+Test MAE:0.04512240674125916
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.05_i=1 VALID_MAE:0.047872669124332384 TEST_MAE:0.05305046509768799 P_EPOCH:314
+Test MAE:0.05305046509768799
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.05_i=2 VALID_MAE:0.05763579549366908 TEST_MAE:0.048352902937670014 P_EPOCH:428
+Test MAE:0.048352902937670014
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.25_i=0 VALID_MAE:0.03845849310329351 TEST_MAE:0.03419550867917694 P_EPOCH:39
+Test MAE:0.03419550867917694
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.25_i=1 VALID_MAE:0.04503295778387921 TEST_MAE:0.05354955375192239 P_EPOCH:125
+Test MAE:0.05354955375192239
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.25_i=2 VALID_MAE:0.04223030714355211 TEST_MAE:0.04546528795017057 P_EPOCH:66
+Test MAE:0.04546528795017057
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.25_i=0 VALID_MAE:0.04944869593595466 TEST_MAE:0.04584779457470241 P_EPOCH:98
+Test MAE:0.04584779457470241
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.25_i=1 VALID_MAE:0.048949132672834184 TEST_MAE:0.0481520959902039 P_EPOCH:123
+Test MAE:0.0481520959902039
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.25_i=2 VALID_MAE:0.04502214555699468 TEST_MAE:0.03981239546947407 P_EPOCH:292
+Test MAE:0.03981239546947407
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.05_i=0 VALID_MAE:0.040504921136308936 TEST_MAE:0.03028055548510145 P_EPOCH:750
+Test MAE:0.03028055548510145
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.05_i=1 VALID_MAE:0.029222454910911112 TEST_MAE:0.021011184581802945 P_EPOCH:1651
+Test MAE:0.021011184581802945
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.05_i=2 VALID_MAE:0.032523722684610464 TEST_MAE:0.02985358582999097 P_EPOCH:740
+Test MAE:0.02985358582999097
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.05_i=0 VALID_MAE:0.025080564037268358 TEST_MAE:0.02336824784953464 P_EPOCH:921
+Test MAE:0.02336824784953464
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.05_i=1 VALID_MAE:0.027783928983984522 TEST_MAE:0.021008720357018076 P_EPOCH:1400
+Test MAE:0.021008720357018076
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.05_i=2 VALID_MAE:0.03678126325519159 TEST_MAE:0.023804656767938717 P_EPOCH:1161
+Test MAE:0.023804656767938717
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.25_i=0 VALID_MAE:0.02169104279140812 TEST_MAE:0.020154480666258343 P_EPOCH:458
+Test MAE:0.020154480666258343
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.25_i=1 VALID_MAE:0.01954429876772185 TEST_MAE:0.018626566519006103 P_EPOCH:534
+Test MAE:0.018626566519006103
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.25_i=2 VALID_MAE:0.02018200845909825 TEST_MAE:0.019513729996142915 P_EPOCH:198
+Test MAE:0.019513729996142915
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.25_i=0 VALID_MAE:0.02478629857696362 TEST_MAE:0.018420628353667524 P_EPOCH:898
+Test MAE:0.018420628353667524
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.25_i=1 VALID_MAE:0.031232204632302207 TEST_MAE:0.030031298475523188 P_EPOCH:82
+Test MAE:0.030031298475523188
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.25_i=2 VALID_MAE:0.033498564041134736 TEST_MAE:0.03272567955668617 P_EPOCH:366
+Test MAE:0.03272567955668617
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.05_i=0 VALID_MAE:0.029412179668898798 TEST_MAE:0.028215854215045598 P_EPOCH:909
+Test MAE:0.028215854215045598
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.05_i=1 VALID_MAE:0.04382685229841526 TEST_MAE:0.031993281205528266 P_EPOCH:1337
+Test MAE:0.031993281205528266
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.05_i=2 VALID_MAE:0.02995302318015217 TEST_MAE:0.027750687456411037 P_EPOCH:1765
+Test MAE:0.027750687456411037
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.05_i=0 VALID_MAE:0.025158686732794294 TEST_MAE:0.02210560094316187 P_EPOCH:1506
+Test MAE:0.02210560094316187
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.05_i=1 VALID_MAE:0.030178974234053656 TEST_MAE:0.02106576862330426 P_EPOCH:1750
+Test MAE:0.02106576862330426
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.05_i=2 VALID_MAE:0.026391718128736755 TEST_MAE:0.02401611491371568 P_EPOCH:989
+Test MAE:0.02401611491371568
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.25_i=0 VALID_MAE:0.018809086663397822 TEST_MAE:0.021104598942919973 P_EPOCH:357
+Test MAE:0.021104598942919973
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.25_i=1 VALID_MAE:0.029782724493122803 TEST_MAE:0.023997053272229864 P_EPOCH:373
+Test MAE:0.023997053272229864
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.25_i=2 VALID_MAE:0.019544676051631828 TEST_MAE:0.017690210391995444 P_EPOCH:481
+Test MAE:0.017690210391995444
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.25_i=0 VALID_MAE:0.023936505166110233 TEST_MAE:0.020690339653331013 P_EPOCH:403
+Test MAE:0.020690339653331013
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.25_i=1 VALID_MAE:0.024310284447600118 TEST_MAE:0.020479386300479928 P_EPOCH:729
+Test MAE:0.020479386300479928
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.25_i=2 VALID_MAE:0.024396616142378248 TEST_MAE:0.018490386238261207 P_EPOCH:546
+Test MAE:0.018490386238261207
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.05_i=0 VALID_MAE:0.02482474007111033 TEST_MAE:0.01912437596681562 P_EPOCH:2196
+Test MAE:0.01912437596681562
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.05_i=1 VALID_MAE:0.030498704370807084 TEST_MAE:0.02308363666541493 P_EPOCH:1600
+Test MAE:0.02308363666541493
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.05_i=2 VALID_MAE:0.023268486854089984 TEST_MAE:0.028411649463984855 P_EPOCH:1571
+Test MAE:0.028411649463984855
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.05_i=0 VALID_MAE:0.030841396383784116 TEST_MAE:0.029466717758655656 P_EPOCH:1071
+Test MAE:0.029466717758655656
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.05_i=1 VALID_MAE:0.03401759383843126 TEST_MAE:0.029231956917784636 P_EPOCH:1067
+Test MAE:0.029231956917784636
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.05_i=2 VALID_MAE:0.02671624307465792 TEST_MAE:0.02343337381485097 P_EPOCH:1195
+Test MAE:0.02343337381485097
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.25_i=0 VALID_MAE:0.021467471781242208 TEST_MAE:0.021726002362327163 P_EPOCH:353
+Test MAE:0.021726002362327163
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.25_i=1 VALID_MAE:0.025279719804364803 TEST_MAE:0.024315560803794753 P_EPOCH:220
+Test MAE:0.024315560803794753
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.25_i=2 VALID_MAE:0.027906908300869494 TEST_MAE:0.020657741263564518 P_EPOCH:422
+Test MAE:0.020657741263564518
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.25_i=0 VALID_MAE:0.01812587021932869 TEST_MAE:0.013854819859245535 P_EPOCH:686
+Test MAE:0.013854819859245535
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.25_i=1 VALID_MAE:0.01958198539424001 TEST_MAE:0.02291863370964061 P_EPOCH:112
+Test MAE:0.02291863370964061
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.25_i=2 VALID_MAE:0.028239143555556474 TEST_MAE:0.022508605379415965 P_EPOCH:371
+Test MAE:0.022508605379415965
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.05_i=0 VALID_MAE:0.029333715030273953 TEST_MAE:0.0220178611278569 P_EPOCH:1885
+Test MAE:0.0220178611278569
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.05_i=1 VALID_MAE:0.02398466789102933 TEST_MAE:0.02005248712905674 P_EPOCH:2026
+Test MAE:0.02005248712905674
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.05_i=2 VALID_MAE:0.027484920676154177 TEST_MAE:0.02282624955945696 P_EPOCH:659
+Test MAE:0.02282624955945696
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.05_i=0 VALID_MAE:0.02318666477044151 TEST_MAE:0.022567382930001472 P_EPOCH:801
+Test MAE:0.022567382930001472
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.05_i=1 VALID_MAE:0.024095635320150594 TEST_MAE:0.023501995115890878 P_EPOCH:886
+Test MAE:0.023501995115890878
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.05_i=2 VALID_MAE:0.017945907213883748 TEST_MAE:0.01755563724655306 P_EPOCH:1797
+Test MAE:0.01755563724655306
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.25_i=0 VALID_MAE:0.024908668012456982 TEST_MAE:0.022505494078965623 P_EPOCH:530
+Test MAE:0.022505494078965623
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.25_i=1 VALID_MAE:0.02448109884865053 TEST_MAE:0.022851991539886554 P_EPOCH:394
+Test MAE:0.022851991539886554
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.25_i=2 VALID_MAE:0.02090930200122227 TEST_MAE:0.017300598410594573 P_EPOCH:283
+Test MAE:0.017300598410594573
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.25_i=0 VALID_MAE:0.02432935485766095 TEST_MAE:0.02337159151726077 P_EPOCH:208
+Test MAE:0.02337159151726077
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.25_i=1 VALID_MAE:0.018270441389343247 TEST_MAE:0.019382934541695172 P_EPOCH:1005
+Test MAE:0.019382934541695172
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.25_i=2 VALID_MAE:0.020701148954209655 TEST_MAE:0.023317950462254922 P_EPOCH:482
+Test MAE:0.023317950462254922
+
+
+
+
+######################################
+#########   (0.03, 1) False  #########
+######################################
+
+/usr/bin/python /snap/pycharm-professional/215/plugins/python/helpers/pydev/pydevconsole.py --mode=client --port=40745
+import sys; print('Python %s on %s' % (sys.version, sys.platform))
+sys.path.extend(['/mnt/terra/xoding/kth-annda', '/mnt/terra/xoding/kth-ml/dectrees/python', '/mnt/terra/xoding/kth-ann&da/MLCode', '/mnt/terra/xoding/fer-ui'])
+Python 3.8.5 (default, Sep  5 2020, 10:50:12) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.18.1 -- An enhanced Interactive Python. Type '?' for help.
+PyDev console: using IPython 7.18.1
+Python 3.8.5 (default, Sep  5 2020, 10:50:12) 
+[GCC 10.2.0] on linux
+runfile('/mnt/terra/xoding/kth-annda/demo/rbf/ballist.py', wdir='/mnt/terra/xoding/kth-annda/demo/rbf')
+(75, 2)
+(25, 2)
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.05_i=0 VALID_MAE:0.054813404295948255 TEST_MAE:0.06698531655249222 P_EPOCH:252
+Test MAE:0.06698531655249222
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.05_i=1 VALID_MAE:0.05898846753087256 TEST_MAE:0.0530288955389981 P_EPOCH:137
+Test MAE:0.0530288955389981
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.05_i=2 VALID_MAE:0.05257388736341071 TEST_MAE:0.040783386896208036 P_EPOCH:255
+Test MAE:0.040783386896208036
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.05_i=0 VALID_MAE:0.052872940628358185 TEST_MAE:0.058085575074781765 P_EPOCH:103
+Test MAE:0.058085575074781765
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.05_i=1 VALID_MAE:0.05560012716206246 TEST_MAE:0.04680699372957974 P_EPOCH:305
+Test MAE:0.04680699372957974
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.05_i=2 VALID_MAE:0.05252216751429714 TEST_MAE:0.0613029298416153 P_EPOCH:203
+Test MAE:0.0613029298416153
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.25_i=0 VALID_MAE:0.0532857543268282 TEST_MAE:0.04739172365190797 P_EPOCH:63
+Test MAE:0.04739172365190797
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.25_i=1 VALID_MAE:0.0577748858692154 TEST_MAE:0.06596597854103034 P_EPOCH:27
+Test MAE:0.06596597854103034
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=10_eta=0.25_i=2 VALID_MAE:0.05379633524261518 TEST_MAE:0.06567309627173609 P_EPOCH:21
+Test MAE:0.06567309627173609
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.25_i=0 VALID_MAE:0.05376711454956827 TEST_MAE:0.06675214073806754 P_EPOCH:158
+Test MAE:0.06675214073806754
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.25_i=1 VALID_MAE:0.04697296845552776 TEST_MAE:0.05015208555702522 P_EPOCH:33
+Test MAE:0.05015208555702522
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=10_eta=0.25_i=2 VALID_MAE:0.05702484217266042 TEST_MAE:0.049747202393029995 P_EPOCH:61
+Test MAE:0.049747202393029995
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.05_i=0 VALID_MAE:0.030881415868466485 TEST_MAE:0.02781103469923436 P_EPOCH:1300
+Test MAE:0.02781103469923436
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.05_i=1 VALID_MAE:0.03732169930489887 TEST_MAE:0.02743780638230056 P_EPOCH:538
+Test MAE:0.02743780638230056
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.05_i=2 VALID_MAE:0.04284088009042047 TEST_MAE:0.0463026811547467 P_EPOCH:201
+Test MAE:0.0463026811547467
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.05_i=0 VALID_MAE:0.037569065436524614 TEST_MAE:0.03291417982889635 P_EPOCH:1063
+Test MAE:0.03291417982889635
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.05_i=1 VALID_MAE:0.034787623241739604 TEST_MAE:0.031017037229454113 P_EPOCH:585
+Test MAE:0.031017037229454113
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.05_i=2 VALID_MAE:0.02931664444299004 TEST_MAE:0.02337244849105837 P_EPOCH:553
+Test MAE:0.02337244849105837
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.25_i=0 VALID_MAE:0.042551676181580664 TEST_MAE:0.04556055611260756 P_EPOCH:435
+Test MAE:0.04556055611260756
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.25_i=1 VALID_MAE:0.03743288643274623 TEST_MAE:0.031580301162022276 P_EPOCH:470
+Test MAE:0.031580301162022276
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=20_eta=0.25_i=2 VALID_MAE:0.03033768555403254 TEST_MAE:0.02822312722340992 P_EPOCH:338
+Test MAE:0.02822312722340992
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.25_i=0 VALID_MAE:0.029037657384804197 TEST_MAE:0.02488324882271651 P_EPOCH:346
+Test MAE:0.02488324882271651
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.25_i=1 VALID_MAE:0.03649466307870368 TEST_MAE:0.03233646761802873 P_EPOCH:335
+Test MAE:0.03233646761802873
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=20_eta=0.25_i=2 VALID_MAE:0.03242928302116333 TEST_MAE:0.03635822624209854 P_EPOCH:748
+Test MAE:0.03635822624209854
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.05_i=0 VALID_MAE:0.029955557304586 TEST_MAE:0.026689015151510845 P_EPOCH:2839
+Test MAE:0.026689015151510845
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.05_i=1 VALID_MAE:0.03451836144270736 TEST_MAE:0.025737806448150064 P_EPOCH:1094
+Test MAE:0.025737806448150064
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.05_i=2 VALID_MAE:0.021419682998631586 TEST_MAE:0.016731802391698528 P_EPOCH:2223
+Test MAE:0.016731802391698528
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.05_i=0 VALID_MAE:0.031432827980605274 TEST_MAE:0.023351371734701303 P_EPOCH:2032
+Test MAE:0.023351371734701303
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.05_i=1 VALID_MAE:0.030156723266058057 TEST_MAE:0.02923748446659168 P_EPOCH:1329
+Test MAE:0.02923748446659168
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.05_i=2 VALID_MAE:0.028046528480082204 TEST_MAE:0.02358742435449665 P_EPOCH:1872
+Test MAE:0.02358742435449665
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.25_i=0 VALID_MAE:0.028750664521030873 TEST_MAE:0.02893276548211956 P_EPOCH:294
+Test MAE:0.02893276548211956
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.25_i=1 VALID_MAE:0.019811413280741808 TEST_MAE:0.016837036836455595 P_EPOCH:549
+Test MAE:0.016837036836455595
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=30_eta=0.25_i=2 VALID_MAE:0.0301268951399722 TEST_MAE:0.02696655570498539 P_EPOCH:757
+Test MAE:0.02696655570498539
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.25_i=0 VALID_MAE:0.03015775641250851 TEST_MAE:0.023173989825195605 P_EPOCH:421
+Test MAE:0.023173989825195605
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.25_i=1 VALID_MAE:0.02522781185808698 TEST_MAE:0.02267368709018049 P_EPOCH:781
+Test MAE:0.02267368709018049
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=30_eta=0.25_i=2 VALID_MAE:0.028227863257127915 TEST_MAE:0.024468719587366003 P_EPOCH:213
+Test MAE:0.024468719587366003
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.05_i=0 VALID_MAE:0.0269042650129426 TEST_MAE:0.020334416353208252 P_EPOCH:2298
+Test MAE:0.020334416353208252
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.05_i=1 VALID_MAE:0.030543607141469135 TEST_MAE:0.024626090618320048 P_EPOCH:1318
+Test MAE:0.024626090618320048
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.05_i=2 VALID_MAE:0.028420978311678023 TEST_MAE:0.020977108694887992 P_EPOCH:2149
+Test MAE:0.020977108694887992
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.05_i=0 VALID_MAE:0.023047189227199102 TEST_MAE:0.01871077222899842 P_EPOCH:2598
+Test MAE:0.01871077222899842
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.05_i=1 VALID_MAE:0.031353680353221926 TEST_MAE:0.024617852587997698 P_EPOCH:1023
+Test MAE:0.024617852587997698
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.05_i=2 VALID_MAE:0.03142656585018586 TEST_MAE:0.025817481752299604 P_EPOCH:847
+Test MAE:0.025817481752299604
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.25_i=0 VALID_MAE:0.026354645303098813 TEST_MAE:0.022956516196807532 P_EPOCH:393
+Test MAE:0.022956516196807532
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.25_i=1 VALID_MAE:0.032309444627112514 TEST_MAE:0.026623975391571957 P_EPOCH:392
+Test MAE:0.026623975391571957
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=40_eta=0.25_i=2 VALID_MAE:0.02070807290756199 TEST_MAE:0.01814337954700412 P_EPOCH:390
+Test MAE:0.01814337954700412
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.25_i=0 VALID_MAE:0.021462469805142884 TEST_MAE:0.018225774039169803 P_EPOCH:638
+Test MAE:0.018225774039169803
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.25_i=1 VALID_MAE:0.028876418990344682 TEST_MAE:0.024045222773756595 P_EPOCH:485
+Test MAE:0.024045222773756595
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=40_eta=0.25_i=2 VALID_MAE:0.022072180127830018 TEST_MAE:0.019990804298949224 P_EPOCH:601
+Test MAE:0.019990804298949224
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.05_i=0 VALID_MAE:0.03691280620170802 TEST_MAE:0.031121916117441143 P_EPOCH:1548
+Test MAE:0.031121916117441143
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.05_i=1 VALID_MAE:0.021517080818556807 TEST_MAE:0.02335850030725588 P_EPOCH:1791
+Test MAE:0.02335850030725588
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.05_i=2 VALID_MAE:0.0274952731713552 TEST_MAE:0.023040654407911046 P_EPOCH:1879
+Test MAE:0.023040654407911046
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.05_i=0 VALID_MAE:0.022281995441408676 TEST_MAE:0.021051626855691348 P_EPOCH:1422
+Test MAE:0.021051626855691348
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.05_i=1 VALID_MAE:0.026841056141530345 TEST_MAE:0.026098374145789142 P_EPOCH:1046
+Test MAE:0.026098374145789142
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.05_i=2 VALID_MAE:0.024353010982047854 TEST_MAE:0.024533497128788103 P_EPOCH:1104
+Test MAE:0.024533497128788103
+------------ Class: e-one ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.25_i=0 VALID_MAE:0.022182881871180074 TEST_MAE:0.021609852305225104 P_EPOCH:644
+Test MAE:0.021609852305225104
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.25_i=1 VALID_MAE:0.028409079355965306 TEST_MAE:0.025788810813562178 P_EPOCH:227
+Test MAE:0.025788810813562178
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one_k=50_eta=0.25_i=2 VALID_MAE:0.024433677207792576 TEST_MAE:0.02123627588819578 P_EPOCH:612
+Test MAE:0.02123627588819578
+------------ Class: e-one-random ------------
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.25_i=0 VALID_MAE:0.03323481686508463 TEST_MAE:0.028666443194087107 P_EPOCH:300
+Test MAE:0.028666443194087107
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.25_i=1 VALID_MAE:0.03285457111774139 TEST_MAE:0.03492360797599419 P_EPOCH:586
+Test MAE:0.03492360797599419
+Training finished in epoch 1000 of 1000 epochs.
+RUN_NAME:ballist_e-one-random_k=50_eta=0.25_i=2 VALID_MAE:0.027523897478224126 TEST_MAE:0.034215064493040626 P_EPOCH:303
+Test MAE:0.034215064493040626
+
+
+
+
+
+######################################
+#########   (0.02, 2) True  #########
+######################################
+
+├── ballist_11_nakon_bubolova_0.02_2_norm
+│     ├── k10
+│     │     ├── eta0.05
+│     │     │     ├── ballist_e-one_k=10_eta=0.05_i=0_testmae=0.029237139247020837.png
+│     │     │     ├── ballist_e-one_k=10_eta=0.05_i=0_train_validmae=0.024162050935487712_coepoch=1929.png
+│     │     │     ├── ballist_e-one_k=10_eta=0.05_i=1_testmae=0.02611538236367131.png
+│     │     │     ├── ballist_e-one_k=10_eta=0.05_i=1_train_validmae=0.0318807009920407_coepoch=2060.png
+│     │     │     ├── ballist_e-one_k=10_eta=0.05_i=2_testmae=0.034128903911009284.png
+│     │     │     ├── ballist_e-one_k=10_eta=0.05_i=2_train_validmae=0.030057398213927725_coepoch=1446.png
+│     │     │     ├── ballist_e-one-random_k=10_eta=0.05_i=0_testmae=0.025225006405287183.png
+│     │     │     ├── ballist_e-one-random_k=10_eta=0.05_i=0_train_validmae=0.029561338795602098_coepoch=1483.png
+│     │     │     ├── ballist_e-one-random_k=10_eta=0.05_i=1_testmae=0.034333012605557975.png
+│     │     │     ├── ballist_e-one-random_k=10_eta=0.05_i=1_train_validmae=0.030192376869219554_coepoch=1879.png
+│     │     │     ├── ballist_e-one-random_k=10_eta=0.05_i=2_testmae=0.029115207132734265.png
+│     │     │     └── ballist_e-one-random_k=10_eta=0.05_i=2_train_validmae=0.03564452363434197_coepoch=1798.png
+│     │     └── eta0.25
+│     │         ├── ballist_e-one_k=10_eta=0.25_i=0_testmae=0.02582329793215121.png
+│     │         ├── ballist_e-one_k=10_eta=0.25_i=0_train_validmae=0.033480364129466623_coepoch=586.png
+│     │         ├── ballist_e-one_k=10_eta=0.25_i=1_testmae=0.016444642781591242.png
+│     │         ├── ballist_e-one_k=10_eta=0.25_i=1_train_validmae=0.02435744491089058_coepoch=566.png
+│     │         ├── ballist_e-one_k=10_eta=0.25_i=2_testmae=0.0302266160329434.png
+│     │         ├── ballist_e-one_k=10_eta=0.25_i=2_train_validmae=0.025300641434747397_coepoch=448.png
+│     │         ├── ballist_e-one-random_k=10_eta=0.25_i=0_testmae=0.01566219489609573.png
+│     │         ├── ballist_e-one-random_k=10_eta=0.25_i=0_train_validmae=0.023572971476812806_coepoch=367.png
+│     │         ├── ballist_e-one-random_k=10_eta=0.25_i=1_testmae=0.020994978959716946.png
+│     │         ├── ballist_e-one-random_k=10_eta=0.25_i=1_train_validmae=0.029027315393201053_coepoch=486.png
+│     │         ├── ballist_e-one-random_k=10_eta=0.25_i=2_testmae=0.038550713215905856.png
+│     │         └── ballist_e-one-random_k=10_eta=0.25_i=2_train_validmae=0.03509351738839431_coepoch=79.png
+│     ├── k20
+│     │     ├── eta0.05
+│     │     │     ├── ballist_e-one_k=20_eta=0.05_i=0_testmae=0.01306835389170173.png
+│     │     │     ├── ballist_e-one_k=20_eta=0.05_i=0_train_validmae=0.017467717035072775_coepoch=5899.png
+│     │     │     ├── ballist_e-one_k=20_eta=0.05_i=1_testmae=0.012113875549558575.png
+│     │     │     ├── ballist_e-one_k=20_eta=0.05_i=1_train_validmae=0.01943392796278212_coepoch=3819.png
+│     │     │     ├── ballist_e-one_k=20_eta=0.05_i=2_testmae=0.011960615516806298.png
+│     │     │     ├── ballist_e-one_k=20_eta=0.05_i=2_train_validmae=0.018912099333298772_coepoch=3633.png
+│     │     │     ├── ballist_e-one-random_k=20_eta=0.05_i=0_testmae=0.016040918554755576.png
+│     │     │     ├── ballist_e-one-random_k=20_eta=0.05_i=0_train_validmae=0.021933381594030483_coepoch=2959.png
+│     │     │     ├── ballist_e-one-random_k=20_eta=0.05_i=1_testmae=0.01447781972590139.png
+│     │     │     ├── ballist_e-one-random_k=20_eta=0.05_i=1_train_validmae=0.017080484773361798_coepoch=3488.png
+│     │     │     ├── ballist_e-one-random_k=20_eta=0.05_i=2_testmae=0.02255166801644501.png
+│     │     │     └── ballist_e-one-random_k=20_eta=0.05_i=2_train_validmae=0.0262507360023545_coepoch=497.png
+│     │     └── eta0.25
+│     │         ├── ballist_e-one_k=20_eta=0.25_i=0_testmae=0.014364917020290129.png
+│     │         ├── ballist_e-one_k=20_eta=0.25_i=0_train_validmae=0.019709218129362834_coepoch=1288.png
+│     │         ├── ballist_e-one_k=20_eta=0.25_i=1_testmae=0.006589812868896264.png
+│     │         ├── ballist_e-one_k=20_eta=0.25_i=1_train_validmae=0.009514489518972246_coepoch=2405.png
+│     │         ├── ballist_e-one_k=20_eta=0.25_i=2_testmae=0.011339692118829531.png
+│     │         ├── ballist_e-one_k=20_eta=0.25_i=2_train_validmae=0.014478573700183088_coepoch=4217.png
+│     │         ├── ballist_e-one-random_k=20_eta=0.25_i=0_testmae=0.009631862983224949.png
+│     │         ├── ballist_e-one-random_k=20_eta=0.25_i=0_train_validmae=0.014520892726159971_coepoch=4051.png
+│     │         ├── ballist_e-one-random_k=20_eta=0.25_i=1_testmae=0.007288335486451817.png
+│     │         ├── ballist_e-one-random_k=20_eta=0.25_i=1_train_validmae=0.009236943793822344_coepoch=1928.png
+│     │         ├── ballist_e-one-random_k=20_eta=0.25_i=2_testmae=0.013212118832133095.png
+│     │         └── ballist_e-one-random_k=20_eta=0.25_i=2_train_validmae=0.02089523553996693_coepoch=2706.png
+│     ├── k30
+│     │     ├── eta0.05
+│     │     │     ├── ballist_e-one_k=30_eta=0.05_i=0_testmae=0.011001765504968408.png
+│     │     │     ├── ballist_e-one_k=30_eta=0.05_i=0_train_validmae=0.01645249872278917_coepoch=6367.png
+│     │     │     ├── ballist_e-one_k=30_eta=0.05_i=1_testmae=0.013737026248705155.png
+│     │     │     ├── ballist_e-one_k=30_eta=0.05_i=1_train_validmae=0.01943963566495018_coepoch=5231.png
+│     │     │     ├── ballist_e-one_k=30_eta=0.05_i=2_testmae=0.011220844981155782.png
+│     │     │     ├── ballist_e-one_k=30_eta=0.05_i=2_train_validmae=0.014540688020013088_coepoch=5760.png
+│     │     │     ├── ballist_e-one-random_k=30_eta=0.05_i=0_testmae=0.011020220839614885.png
+│     │     │     ├── ballist_e-one-random_k=30_eta=0.05_i=0_train_validmae=0.01674670567619446_coepoch=6248.png
+│     │     │     ├── ballist_e-one-random_k=30_eta=0.05_i=1_testmae=0.010489528739005927.png
+│     │     │     ├── ballist_e-one-random_k=30_eta=0.05_i=1_train_validmae=0.014312438302025738_coepoch=6645.png
+│     │     │     ├── ballist_e-one-random_k=30_eta=0.05_i=2_testmae=0.011607503514567226.png
+│     │     │     └── ballist_e-one-random_k=30_eta=0.05_i=2_train_validmae=0.017280878843465804_coepoch=7214.png
+│     │     └── eta0.25
+│     │         ├── ballist_e-one_k=30_eta=0.25_i=0_testmae=0.008090137676630976.png
+│     │         ├── ballist_e-one_k=30_eta=0.25_i=0_train_validmae=0.012774121598398873_coepoch=3513.png
+│     │         ├── ballist_e-one_k=30_eta=0.25_i=1_testmae=0.0064591030841775554.png
+│     │         ├── ballist_e-one_k=30_eta=0.25_i=1_train_validmae=0.00870959106757344_coepoch=4047.png
+│     │         ├── ballist_e-one_k=30_eta=0.25_i=2_testmae=0.009980181207338878.png
+│     │         ├── ballist_e-one_k=30_eta=0.25_i=2_train_validmae=0.017040381498084175_coepoch=2084.png
+│     │         ├── ballist_e-one-random_k=30_eta=0.25_i=0_testmae=0.008188908216787487.png
+│     │         ├── ballist_e-one-random_k=30_eta=0.25_i=0_train_validmae=0.011820989841263665_coepoch=3104.png
+│     │         ├── ballist_e-one-random_k=30_eta=0.25_i=1_testmae=0.007243674655018495.png
+│     │         ├── ballist_e-one-random_k=30_eta=0.25_i=1_train_validmae=0.008885460105658965_coepoch=4362.png
+│     │         ├── ballist_e-one-random_k=30_eta=0.25_i=2_testmae=0.011658594727832976.png
+│     │         └── ballist_e-one-random_k=30_eta=0.25_i=2_train_validmae=0.016757690255696584_coepoch=4085.png
+│     ├── k40
+│     │     ├── eta0.05
+│     │     │     ├── ballist_e-one_k=40_eta=0.05_i=0_testmae=0.009061290186700986.png
+│     │     │     ├── ballist_e-one_k=40_eta=0.05_i=0_train_validmae=0.008944321091225553_coepoch=6476.png
+│     │     │     ├── ballist_e-one_k=40_eta=0.05_i=1_testmae=0.012676741056233707.png
+│     │     │     ├── ballist_e-one_k=40_eta=0.05_i=1_train_validmae=0.017327932929154938_coepoch=9909.png
+│     │     │     ├── ballist_e-one_k=40_eta=0.05_i=2_testmae=0.012207684115905497.png
+│     │     │     ├── ballist_e-one_k=40_eta=0.05_i=2_train_validmae=0.019014881098759963_coepoch=4921.png
+│     │     │     ├── ballist_e-one-random_k=40_eta=0.05_i=0_testmae=0.012339649444626722.png
+│     │     │     ├── ballist_e-one-random_k=40_eta=0.05_i=0_train_validmae=0.016841325766261624_coepoch=6497.png
+│     │     │     ├── ballist_e-one-random_k=40_eta=0.05_i=1_testmae=0.01504482423380738.png
+│     │     │     ├── ballist_e-one-random_k=40_eta=0.05_i=1_train_validmae=0.017750604723563254_coepoch=6239.png
+│     │     │     ├── ballist_e-one-random_k=40_eta=0.05_i=2_testmae=0.01247830602493333.png
+│     │     │     └── ballist_e-one-random_k=40_eta=0.05_i=2_train_validmae=0.016688295279961633_coepoch=4163.png
+│     │     └── eta0.25
+│     │         ├── ballist_e-one_k=40_eta=0.25_i=0_testmae=0.007698634738036797.png
+│     │         ├── ballist_e-one_k=40_eta=0.25_i=0_train_validmae=0.010519629813348929_coepoch=2522.png
+│     │         ├── ballist_e-one_k=40_eta=0.25_i=1_testmae=0.006702315624240246.png
+│     │         ├── ballist_e-one_k=40_eta=0.25_i=1_train_validmae=0.011277081289271816_coepoch=5274.png
+│     │         ├── ballist_e-one_k=40_eta=0.25_i=2_testmae=0.008615307841707644.png
+│     │         ├── ballist_e-one_k=40_eta=0.25_i=2_train_validmae=0.013256860825781893_coepoch=3367.png
+│     │         ├── ballist_e-one-random_k=40_eta=0.25_i=0_testmae=0.00873032027386946.png
+│     │         ├── ballist_e-one-random_k=40_eta=0.25_i=0_train_validmae=0.01159367247272997_coepoch=3677.png
+│     │         ├── ballist_e-one-random_k=40_eta=0.25_i=1_testmae=0.0072292774391702185.png
+│     │         ├── ballist_e-one-random_k=40_eta=0.25_i=1_train_validmae=0.011857613116311833_coepoch=4929.png
+│     │         ├── ballist_e-one-random_k=40_eta=0.25_i=2_testmae=0.00929219988548713.png
+│     │         └── ballist_e-one-random_k=40_eta=0.25_i=2_train_validmae=0.012793822763740142_coepoch=3727.png
+│     └── k50
+│         ├── eta0.05
+│         │     ├── ballist_e-one_k=50_eta=0.05_i=0_testmae=0.012164415073059981.png
+│         │     ├── ballist_e-one_k=50_eta=0.05_i=0_train_validmae=0.01605819503892436_coepoch=7632.png
+│         │     ├── ballist_e-one_k=50_eta=0.05_i=1_testmae=0.009391607190209223.png
+│         │     ├── ballist_e-one_k=50_eta=0.05_i=1_train_validmae=0.01417490211953718_coepoch=4530.png
+│         │     ├── ballist_e-one_k=50_eta=0.05_i=2_testmae=0.014073181567845554.png
+│         │     ├── ballist_e-one_k=50_eta=0.05_i=2_train_validmae=0.016976560647690854_coepoch=3890.png
+│         │     ├── ballist_e-one-random_k=50_eta=0.05_i=0_testmae=0.01266254498098846.png
+│         │     ├── ballist_e-one-random_k=50_eta=0.05_i=0_train_validmae=0.017467408985540504_coepoch=7520.png
+│         │     ├── ballist_e-one-random_k=50_eta=0.05_i=1_testmae=0.013361867154519409.png
+│         │     ├── ballist_e-one-random_k=50_eta=0.05_i=1_train_validmae=0.021020729717974605_coepoch=6947.png
+│         │     ├── ballist_e-one-random_k=50_eta=0.05_i=2_testmae=0.012484544323770335.png
+│         │     └── ballist_e-one-random_k=50_eta=0.05_i=2_train_validmae=0.01605855014312296_coepoch=6191.png
+│         └── eta0.25
+│             ├── ballist_e-one_k=50_eta=0.25_i=0_testmae=0.006833535012311309.png
+│             ├── ballist_e-one_k=50_eta=0.25_i=0_train_validmae=0.00794392759509632_coepoch=2373.png
+│             ├── ballist_e-one_k=50_eta=0.25_i=1_testmae=0.00711700861417972.png
+│             ├── ballist_e-one_k=50_eta=0.25_i=1_train_validmae=0.00934651502676012_coepoch=4480.png
+│             ├── ballist_e-one_k=50_eta=0.25_i=2_testmae=0.006329618783913455.png
+│             ├── ballist_e-one_k=50_eta=0.25_i=2_train_validmae=0.01085286908341401_coepoch=3651.png
+│             ├── ballist_e-one-random_k=50_eta=0.25_i=0_testmae=0.0066854328170940155.png
+│             ├── ballist_e-one-random_k=50_eta=0.25_i=0_train_validmae=0.008953251322796856_coepoch=3965.png
+│             ├── ballist_e-one-random_k=50_eta=0.25_i=1_testmae=0.010128054111666767.png
+│             ├── ballist_e-one-random_k=50_eta=0.25_i=1_train_validmae=0.015130432380891522_coepoch=3883.png
+│             ├── ballist_e-one-random_k=50_eta=0.25_i=2_testmae=0.008820439834765367.png
+│             └── ballist_e-one-random_k=50_eta=0.25_i=2_train_validmae=0.012225489041485677_coepoch=4292.png
+
+
+######################################
+#########   (0.03, 1) True  #########
+######################################
+
+└── ballist_11_nakon_bubolova_0.03_1_norm
+    ├── k10
+    │   ├── eta0.05
+    │   │   ├── ballist_e-one_k=10_eta=0.05_i=0_testmae=0.04067579737499598.png
+    │   │   ├── ballist_e-one_k=10_eta=0.05_i=0_train_validmae=0.03304698400425255_coepoch=606.png
+    │   │   ├── ballist_e-one_k=10_eta=0.05_i=1_testmae=0.03464930093617556.png
+    │   │   ├── ballist_e-one_k=10_eta=0.05_i=1_train_validmae=0.044529301003720295_coepoch=165.png
+    │   │   ├── ballist_e-one_k=10_eta=0.05_i=2_testmae=0.031654329457279334.png
+    │   │   ├── ballist_e-one_k=10_eta=0.05_i=2_train_validmae=0.03641567913574073_coepoch=554.png
+    │   │   ├── ballist_e-one-random_k=10_eta=0.05_i=0_testmae=0.0381461948877663.png
+    │   │   ├── ballist_e-one-random_k=10_eta=0.05_i=0_train_validmae=0.042664518718788125_coepoch=1499.png
+    │   │   ├── ballist_e-one-random_k=10_eta=0.05_i=1_testmae=0.022612515551435158.png
+    │   │   ├── ballist_e-one-random_k=10_eta=0.05_i=1_train_validmae=0.032500153981912666_coepoch=349.png
+    │   │   ├── ballist_e-one-random_k=10_eta=0.05_i=2_testmae=0.036493288801571946.png
+    │   │   └── ballist_e-one-random_k=10_eta=0.05_i=2_train_validmae=0.04842557090621869_coepoch=902.png
+    │   └── eta0.25
+    │       ├── ballist_e-one_k=10_eta=0.25_i=0_testmae=0.027812131462750224.png
+    │       ├── ballist_e-one_k=10_eta=0.25_i=0_train_validmae=0.03491208059059574_coepoch=453.png
+    │       ├── ballist_e-one_k=10_eta=0.25_i=1_testmae=0.04181261875517912.png
+    │       ├── ballist_e-one_k=10_eta=0.25_i=1_train_validmae=0.03912479260794437_coepoch=136.png
+    │       ├── ballist_e-one_k=10_eta=0.25_i=2_testmae=0.034349121418637794.png
+    │       ├── ballist_e-one_k=10_eta=0.25_i=2_train_validmae=0.04461788478889078_coepoch=51.png
+    │       ├── ballist_e-one-random_k=10_eta=0.25_i=0_testmae=0.023770132635761845.png
+    │       ├── ballist_e-one-random_k=10_eta=0.25_i=0_train_validmae=0.030095630398924468_coepoch=383.png
+    │       ├── ballist_e-one-random_k=10_eta=0.25_i=1_testmae=0.043167603606565914.png
+    │       ├── ballist_e-one-random_k=10_eta=0.25_i=1_train_validmae=0.036659202429045835_coepoch=43.png
+    │       ├── ballist_e-one-random_k=10_eta=0.25_i=2_testmae=0.03559560767628255.png
+    │       └── ballist_e-one-random_k=10_eta=0.25_i=2_train_validmae=0.030479805161074486_coepoch=256.png
+    ├── k20
+    │   ├── eta0.05
+    │   │   ├── ballist_e-one_k=20_eta=0.05_i=0_testmae=0.011751219257186299.png
+    │   │   ├── ballist_e-one_k=20_eta=0.05_i=0_train_validmae=0.013255428798368244_coepoch=2614.png
+    │   │   ├── ballist_e-one_k=20_eta=0.05_i=1_testmae=0.016536022460756302.png
+    │   │   ├── ballist_e-one_k=20_eta=0.05_i=1_train_validmae=0.018467740111349953_coepoch=3018.png
+    │   │   ├── ballist_e-one_k=20_eta=0.05_i=2_testmae=0.019638646465023404.png
+    │   │   ├── ballist_e-one_k=20_eta=0.05_i=2_train_validmae=0.028221578362002547_coepoch=778.png
+    │   │   ├── ballist_e-one-random_k=20_eta=0.05_i=0_testmae=0.011553785448064522.png
+    │   │   ├── ballist_e-one-random_k=20_eta=0.05_i=0_train_validmae=0.014295752261412307_coepoch=3910.png
+    │   │   ├── ballist_e-one-random_k=20_eta=0.05_i=1_testmae=0.017536759060724553.png
+    │   │   ├── ballist_e-one-random_k=20_eta=0.05_i=1_train_validmae=0.02958265339682307_coepoch=3815.png
+    │   │   ├── ballist_e-one-random_k=20_eta=0.05_i=2_testmae=0.01691022268651491.png
+    │   │   └── ballist_e-one-random_k=20_eta=0.05_i=2_train_validmae=0.023719891796300997_coepoch=2498.png
+    │   └── eta0.25
+    │       ├── ballist_e-one_k=20_eta=0.25_i=0_testmae=0.013158877754477145.png
+    │       ├── ballist_e-one_k=20_eta=0.25_i=0_train_validmae=0.020681360628497025_coepoch=1959.png
+    │       ├── ballist_e-one_k=20_eta=0.25_i=1_testmae=0.009067526741637758.png
+    │       ├── ballist_e-one_k=20_eta=0.25_i=1_train_validmae=0.01136598691726789_coepoch=3114.png
+    │       ├── ballist_e-one_k=20_eta=0.25_i=2_testmae=0.010475899254022113.png
+    │       ├── ballist_e-one_k=20_eta=0.25_i=2_train_validmae=0.015570043687569346_coepoch=1260.png
+    │       ├── ballist_e-one-random_k=20_eta=0.25_i=0_testmae=0.01508071936577922.png
+    │       ├── ballist_e-one-random_k=20_eta=0.25_i=0_train_validmae=0.023505534883168585_coepoch=1086.png
+    │       ├── ballist_e-one-random_k=20_eta=0.25_i=1_testmae=0.012639241699719795.png
+    │       ├── ballist_e-one-random_k=20_eta=0.25_i=1_train_validmae=0.017776357624798372_coepoch=1936.png
+    │       ├── ballist_e-one-random_k=20_eta=0.25_i=2_testmae=0.012938710162146332.png
+    │       └── ballist_e-one-random_k=20_eta=0.25_i=2_train_validmae=0.018029169580528297_coepoch=1626.png
+    ├── k30
+    │   ├── eta0.05
+    │   │   ├── ballist_e-one_k=30_eta=0.05_i=0_testmae=0.012792406377657271.png
+    │   │   ├── ballist_e-one_k=30_eta=0.05_i=0_train_validmae=0.01962148055273615_coepoch=4912.png
+    │   │   ├── ballist_e-one_k=30_eta=0.05_i=1_testmae=0.009822319940312114.png
+    │   │   ├── ballist_e-one_k=30_eta=0.05_i=1_train_validmae=0.013174653044428962_coepoch=4897.png
+    │   │   ├── ballist_e-one_k=30_eta=0.05_i=2_testmae=0.01309622645344827.png
+    │   │   ├── ballist_e-one_k=30_eta=0.05_i=2_train_validmae=0.014126297053616206_coepoch=1630.png
+    │   │   ├── ballist_e-one-random_k=30_eta=0.05_i=0_testmae=0.010003201498317318.png
+    │   │   ├── ballist_e-one-random_k=30_eta=0.05_i=0_train_validmae=0.012353738795056322_coepoch=4258.png
+    │   │   ├── ballist_e-one-random_k=30_eta=0.05_i=1_testmae=0.011179269590153544.png
+    │   │   ├── ballist_e-one-random_k=30_eta=0.05_i=1_train_validmae=0.01330642724536974_coepoch=5498.png
+    │   │   ├── ballist_e-one-random_k=30_eta=0.05_i=2_testmae=0.01334134917983278.png
+    │   │   └── ballist_e-one-random_k=30_eta=0.05_i=2_train_validmae=0.012752506159599972_coepoch=5051.png
+    │   └── eta0.25
+    │       ├── ballist_e-one_k=30_eta=0.25_i=0_testmae=0.00858748523996634.png
+    │       ├── ballist_e-one_k=30_eta=0.25_i=0_train_validmae=0.01025344267953362_coepoch=1467.png
+    │       ├── ballist_e-one_k=30_eta=0.25_i=1_testmae=0.006988663242396886.png
+    │       ├── ballist_e-one_k=30_eta=0.25_i=1_train_validmae=0.011679005857665608_coepoch=2911.png
+    │       ├── ballist_e-one_k=30_eta=0.25_i=2_testmae=0.00657308984732492.png
+    │       ├── ballist_e-one_k=30_eta=0.25_i=2_train_validmae=0.007185742253511874_coepoch=2581.png
+    │       ├── ballist_e-one-random_k=30_eta=0.25_i=0_testmae=0.009213371243454775.png
+    │       ├── ballist_e-one-random_k=30_eta=0.25_i=0_train_validmae=0.01331426367902058_coepoch=2600.png
+    │       ├── ballist_e-one-random_k=30_eta=0.25_i=1_testmae=0.005286018804066079_vs=0.03,0.1.png
+    │       ├── ballist_e-one-random_k=30_eta=0.25_i=1_train_validmae=0.00847846199125445_coepoch=2684.png
+    │       ├── ballist_e-one-random_k=30_eta=0.25_i=2_testmae=0.00958193638827817.png
+    │       └── ballist_e-one-random_k=30_eta=0.25_i=2_train_validmae=0.012849661188729789_coepoch=2810.png
+    └── k40
+        └── eta0.05
+            ├── ballist_e-one_k=40_eta=0.05_i=0_testmae=0.009725341885580108.png
+            ├── ballist_e-one_k=40_eta=0.05_i=0_train_validmae=0.01237225683256926_coepoch=4730.png
+            ├── ballist_e-one_k=40_eta=0.05_i=1_testmae=0.010873050455339177.png
+            ├── ballist_e-one_k=40_eta=0.05_i=1_train_validmae=0.012408689112678395_coepoch=4468.png
+            ├── ballist_e-one_k=40_eta=0.05_i=2_testmae=0.011228634611279036.png
+            ├── ballist_e-one_k=40_eta=0.05_i=2_train_validmae=0.01732558023300641_coepoch=6690.png
+            └── ballist_e-one-random_k=40_eta=0.05_i=0_train_validmae=0.013728442295393843_coepoch=6225.png
