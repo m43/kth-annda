@@ -1,5 +1,4 @@
 import numpy as np
-import sys
 
 
 class Hopfield:
@@ -17,8 +16,8 @@ class Hopfield:
         """
         self.number_of_neurons = number_of_neurons
         self.debug = debug_mode
-        self.weights = None
-        self.state = None
+        self.weights = None  # network weights
+        self.state = None  # current output of the network's neurons
 
     def learn_patterns(self, patterns, scaling=True, self_connections=False):
         """
@@ -40,7 +39,7 @@ class Hopfield:
         if not self_connections:
             np.fill_diagonal(self.weights, 0)  # deletes self-connections (sets weight matrix diagonal to 0)
 
-    def update_automatically(self, batch=True, update_cap=100000, sequential_stability_cap=100, step_callback=None):
+    def update_automatically(self, batch=True, update_cap=100000, sequential_stability_cap=10, step_callback=None):
         """
         Calculates states using the update rule until convergence, oscillation (only when using synchronous updates) or reaching a defined cap.
 
@@ -48,7 +47,7 @@ class Hopfield:
         :param update_cap: Optional. Determines how many updates will happen are done without convergence. If the cap is reached updating stops and the function returns the last and current state. 10000 by default.
         :param sequential_stability_cap: Optional. Determines how many times the update step has to return the same step for it to be stable. 10 by default.
         :param step_callback: Optional. A callback function called after each step update. Arguments given are a copy of the current state and the number of update starting with 1.
-        :return: Current state of the Hopfield network after doing one full update.
+        :return: State of the Hopfield network; None if failed to converge in update_cap steps or detected oscillations in batch mode.
         """
         if self.debug:
             print('\t-----------------------------')
@@ -62,21 +61,25 @@ class Hopfield:
                       f'\tLearning stops after reaching the same state {sequential_stability_cap} times.')
             print('\t-----------------------------')
 
-        step = 0
-        sequential_stable_counter = 0
-        previous_states = set()
-        previous_states.add(tuple(np.copy(self.state)))
-        last_state = np.copy(self.state)
+        step = 0  # update step counter
+        sequential_stable_counter = 0  # number of stable updates (for sequential updating)
+        previous_states = set()  # set of previously seen states (for detection of oscillations in batch learning)
+        previous_states.add(tuple(np.copy(self.state)))  # add current state to set of previously seen states
+        previous_state = np.copy(self.state)  # remember previous state
+
+        # main updating loop
         while step <= update_cap:
 
-            self.update_step(batch=batch)
+            # update and increase step counter
+            self.update_step(batch=batch, starting_step=step * 1024, step_callback=step_callback)
             step += 1
 
-            if step_callback is not None:
+            # call callback function if defined
+            if step_callback is not None and batch:
                 step_callback(np.copy(self.state), step)
 
             # check convergence
-            if (last_state == self.state).all():
+            if (previous_state == self.state).all():
                 if batch:
                     if self.debug:
                         print(f'\tStable point reached after {step} steps, stopping learning process.')
@@ -91,14 +94,20 @@ class Hopfield:
             # check oscillation
             elif batch and tuple(self.state) in previous_states:
                 if self.debug:
-                    print('\tOscillation appeared while synchronously updating state, stopping learning process.')
+                    print(
+                        f'\tOscillation appeared while synchronously updating state (step {step}), stopping learning process.')
+                self.state = None
                 break
+            # prepare for next update
             else:
-                last_state = np.copy(self.state)
+                previous_state = np.copy(self.state)
                 sequential_stable_counter = 0
                 if batch:
                     previous_states.add(tuple(np.copy(self.state)))
 
+        # return state or None for oscillations and divergence
+        if self.state is None or step >= update_cap:
+            return None
         return np.copy(self.state)
 
     def set_state(self, pattern):
@@ -110,11 +119,13 @@ class Hopfield:
 
         self.state = np.copy(pattern)
 
-    def update_step(self, batch=True):
+    def update_step(self, batch=True, starting_step=None, step_callback=None):
         """
         Calculates the next state of a Hopfield network using the current state and the weight matrix.
 
         :param batch: Optional. Determines if the update step is done synchronously (batch) or asynchronously (sequential). True (synchronous) by default.
+        :param starting_step: Optional. Starting step to be used in step_callback function. Useless if step_callback not defined.
+        :param step_callback: Callback function for sequential (batch=False) learning. Arguments given are a copy of the current state and the number of update starting with 1.
         :return: Current state of the Hopfield network after doing one full update.
         """
         if self.weights is None:
@@ -134,7 +145,9 @@ class Hopfield:
         else:
             random_sequence = np.array([i for i in range(self.number_of_neurons)])
             np.random.shuffle(random_sequence)
-            for neuron_idx in random_sequence:
+            for step, neuron_idx in enumerate(random_sequence):
+                if step_callback is not None:
+                    step_callback(np.copy(self.state), starting_step + step)
                 # calculate new state and use the sign function on the result
                 self.state[neuron_idx] = 1 if np.matmul(self.state, self.weights.T[neuron_idx]) >= 0 else -1
 
