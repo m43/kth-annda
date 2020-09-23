@@ -39,13 +39,12 @@ class Hopfield:
         if not self_connections:
             np.fill_diagonal(self.weights, 0)  # deletes self-connections (sets weight matrix diagonal to 0)
 
-    def update_automatically(self, batch=True, update_cap=100000, sequential_stability_cap=10, step_callback=None):
+    def update_automatically(self, batch=True, update_cap=100000, step_callback=None):
         """
         Calculates states using the update rule until convergence, oscillation (only when using synchronous updates) or reaching a defined cap.
 
         :param batch: Optional. Determines if updating is done synchronously (batch) or asynchronously (sequential). True (synchronous) by default.
         :param update_cap: Optional. Determines how many updates will happen are done without convergence. If the cap is reached updating stops and the function returns the last and current state. 10000 by default.
-        :param sequential_stability_cap: Optional. Determines how many times the update step has to return the same step for it to be stable. 10 by default.
         :param step_callback: Optional. A callback function called after each step update. Arguments given are a copy of the current state and the number of update starting with 1.
         :return: State of the Hopfield network; None if failed to converge in update_cap steps or detected oscillations in batch mode.
         """
@@ -62,11 +61,9 @@ class Hopfield:
             print('\t-----------------------------')
 
         step = 0  # update step counter
-        sequential_stable_counter = 0  # number of stable updates (for sequential updating)
         previous_states = set()  # set of previously seen states (for detection of oscillations in batch learning)
         previous_states.add(tuple(np.copy(self.state)))  # add current state to set of previously seen states
         previous_state = np.copy(self.state)  # remember previous state
-
         # main updating loop
         while step <= update_cap:
 
@@ -80,17 +77,9 @@ class Hopfield:
 
             # check convergence
             if (previous_state == self.state).all():
-                if batch:
-                    if self.debug:
-                        print(f'\tStable point reached after {step} steps, stopping learning process.')
-                    break
-                elif not batch and sequential_stable_counter >= sequential_stability_cap:
-                    if self.debug:
-                        print(
-                            f'\tStable point reached after {step} steps (sequential learning had the same state for {sequential_stability_cap} updates), stopping learning process.')
-                    break
-                else:
-                    sequential_stable_counter += 1
+                if self.debug:
+                    print(f'\tStable point reached after {step} steps, stopping learning process.')
+                break
             # check oscillation
             elif batch and tuple(self.state) in previous_states:
                 if self.debug:
