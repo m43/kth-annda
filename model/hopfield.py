@@ -60,6 +60,10 @@ class Hopfield:
                       f'\tLearning stops after reaching the same state {sequential_stability_cap} times.')
             print('\t-----------------------------')
 
+        if not batch and step_callback is not None:
+            step_callback(np.copy(self.state), 0)
+
+
         step = 0  # update step counter
         previous_states = set()  # set of previously seen states (for detection of oscillations in batch learning)
         previous_states.add(tuple(np.copy(self.state)))  # add current state to set of previously seen states
@@ -134,10 +138,10 @@ class Hopfield:
         else:
             random_sequence = np.array([i for i in range(self.number_of_neurons)])
             np.random.shuffle(random_sequence)
-            for step, neuron_idx in enumerate(random_sequence):
-                if step_callback is not None:
-                    step_callback(np.copy(self.state), starting_step + step)
+            for step, neuron_idx in enumerate(random_sequence, 1):
                 # calculate new state and use the sign function on the result
                 self.state[neuron_idx] = 1 if np.matmul(self.state, self.weights.T[neuron_idx]) >= 0 else -1
+                if step_callback:
+                    step_callback(np.copy(self.state), starting_step + step)
 
         return np.copy(self.state)
