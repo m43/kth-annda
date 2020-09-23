@@ -1,6 +1,11 @@
 import numpy as np
 
-from model.hopfield import Hopfield
+
+import sys
+sys.path.append('../../model/')
+from hopfield import Hopfield
+
+#from model.hopfield import Hopfield
 
 
 def plus_one(binary_pattern):

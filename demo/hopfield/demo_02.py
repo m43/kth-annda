@@ -3,14 +3,19 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from model.hopfield import Hopfield
+import sys
+sys.path.append('../../model/')
+from hopfield import Hopfield
+# from model.hopfield import Hopfield
 
 PICTURE_SIZE = 1024
 SAVE_FOLDER = 'demo_02/pictures/'
 BATCH = False
 DEBUG = False
 
-os.makedirs(SAVE_FOLDER)
+
+if not os.path.exists(SAVE_FOLDER):
+    os.makedirs(SAVE_FOLDER)
 
 # load pictures into a numpy float 2D array, 1 row per picture
 with open('../../datasets/pict.dat', 'r') as source:
@@ -55,18 +60,17 @@ for degraded_pic in degraded_pics:
 
 # define callback function for drawing pictures
 def picture_callback(current_state, current_step):
-    if current_step % 50 == 0:
+    if current_step % 128 == 0:
         image = [current_state[i:i + int(PICTURE_SIZE ** (1 / 2))] for i in
                  range(0, PICTURE_SIZE, int(PICTURE_SIZE ** (1 / 2)))]
         plt.imshow(image)
         plt.title(f'Step={current_step}')
-        plt.savefig(fname=f'{SAVE_FOLDER}pic_step={current_step}')
+        plt.savefig(fname=f'{SAVE_FOLDER}pic_step={current_step:06d}')
         plt.close()
 
 
 # check random pattern for results
 random_pattern = np.random.normal(size=1024)
-random_pattern = np.sign(random_pattern)
 random_pattern = np.where(random_pattern >= 0, 1, -1)
 print('\nUsing random picture to see convergence...')
 my_model.set_state(random_pattern)

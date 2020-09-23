@@ -19,7 +19,17 @@ class Hopfield:
         self.weights = None  # network weights
         self.state = None  # current output of the network's neurons
 
-    def learn_patterns(self, patterns, scaling=True, self_connections=False):
+
+    def energy(self, x):
+        """
+        Computes the energy of a given pattern for our network
+
+        :param x: The pattern to compute energy on
+        """
+        return -np.sum(np.multiply(self.weights, np.outer(x, x)))
+
+
+    def learn_patterns(self, patterns, scaling=True, self_connections=True):
         """
         Sets weights of a Hopfield network using the Hebbian one-shot rule using the given patterns. Will delete previous weights if there were any.
 

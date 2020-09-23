@@ -1,6 +1,9 @@
 import numpy as np
 
-from model.hopfield import Hopfield
+import sys
+sys.path.append('../../model/')
+from hopfield import Hopfield
+# from model.hopfield import Hopfield
 
 np.set_printoptions(precision=3)  # limit NumPy printing to 3 decimal points
 
