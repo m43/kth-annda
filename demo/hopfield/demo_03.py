@@ -9,7 +9,7 @@ from hopfield import Hopfield
 # from model.hopfield import Hopfield
 
 PICTURE_SIZE = 1024
-SAVE_FOLDER = 'demo_02/pictures/'
+SAVE_FOLDER = 'demo_03/pictures/'
 BATCH = False
 DEBUG = False
 

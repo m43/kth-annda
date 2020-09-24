@@ -11,7 +11,7 @@ from hopfield import Hopfield
 PICTURE_SIZE = 1024
 SAVE_FOLDER = 'demo_02/pictures/'
 BATCH = False
-DEBUG = False
+DEBUG = True
 
 
 if not os.path.exists(SAVE_FOLDER):
@@ -65,7 +65,7 @@ def picture_callback(current_state, current_step):
                  range(0, PICTURE_SIZE, int(PICTURE_SIZE ** (1 / 2)))]
         plt.imshow(image)
         plt.title(f'Step={current_step}')
-        plt.savefig(fname=f'{SAVE_FOLDER}pic_step={current_step:06d}')
+        plt.savefig(fname=f'{SAVE_FOLDER}pic_step={current_step:06d}', bbox_inches='tight')
         plt.close()
 
 

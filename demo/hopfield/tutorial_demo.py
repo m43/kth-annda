@@ -24,7 +24,7 @@ x3 = np.array([-1, +1, +1, -1, -1, +1, -1, +1])
 patterns = np.array([x1, x2, x3])
 
 # create an instance of the model
-my_model = Hopfield(8, debug_mode=True)  # needs to have as much neurons as each pattern has features
+my_model = Hopfield(8, debug_mode=False)  # needs to have as much neurons as each pattern has features
 
 # learn the patterns
 print(f'Learning model on the following patterns:\n{patterns}\n')

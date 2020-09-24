@@ -19,7 +19,6 @@ class Hopfield:
         self.weights = None  # network weights
         self.state = None  # current output of the network's neurons
 
-
     def energy(self, x):
         """
         Computes the energy of a given pattern for our network
@@ -28,14 +27,14 @@ class Hopfield:
         """
         return -np.sum(np.multiply(self.weights, np.outer(x, x)))
 
-
-    def learn_patterns(self, patterns, scaling=True, self_connections=True):
+    def learn_patterns(self, patterns, scaling=True, self_connections=True, imbalance=0.0):
         """
         Sets weights of a Hopfield network using the Hebbian one-shot rule using the given patterns. Will delete previous weights if there were any.
 
         :param patterns: A NumPy matrix of patterns to be learned. Each row represents a pattern. The length of each row (the number of columns) must be equal to the number of neurons in the network.
         :param scaling: Optional. Determines if weights will be scaled with the reciprocal value of the number of patterns or not. True by default.
         :param self_connections: Optional. Determines if neurons are connected to themselves or not. False by default.
+        :param imbalance: Optional. Additional term reduced from each feature of each sample
         """
         if patterns.shape[1] != self.number_of_neurons:
             raise RuntimeError(
@@ -43,19 +42,24 @@ class Hopfield:
                 f'the network has {self.number_of_neurons} neurons. These two must be equal.')
 
         # one-shot Hebbian learning
+        patterns = patterns - imbalance
         self.weights = np.matmul(patterns.T, patterns) / (patterns.shape[0] if scaling else 1)
 
         # delete self-connections
         if not self_connections:
             np.fill_diagonal(self.weights, 0)  # deletes self-connections (sets weight matrix diagonal to 0)
 
-    def update_automatically(self, batch=True, update_cap=100000, step_callback=None):
+    def update_automatically(self, batch=True, update_cap=100000, step_callback=None, bias=0.0, output_bias=0.0,
+                             output_scaling=1.0):
         """
         Calculates states using the update rule until convergence, oscillation (only when using synchronous updates) or reaching a defined cap.
 
         :param batch: Optional. Determines if updating is done synchronously (batch) or asynchronously (sequential). True (synchronous) by default.
         :param update_cap: Optional. Determines how many updates will happen are done without convergence. If the cap is reached updating stops and the function returns the last and current state. 10000 by default.
         :param step_callback: Optional. A callback function called after each step update. Arguments given are a copy of the current state and the number of update starting with 1.
+        :param bias: Optional. Adds bias to updating term.
+        :param output_bias: Optional. Adds a bias to all outputs.
+        :param output_scaling: Optional. Multiplies output. Multiplication happens before adding output bias.
         :return: State of the Hopfield network; None if failed to converge in update_cap steps or detected oscillations in batch mode.
         """
         if self.debug:
@@ -66,13 +70,11 @@ class Hopfield:
             if batch:
                 print('\tUsing synchronous (batch) updating.')
             else:
-                print(f'\tUsing asynchronous (sequentital) updating.\n'
-                      f'\tLearning stops after reaching the same state {sequential_stability_cap} times.')
+                print(f'\tUsing asynchronous (sequential) updating.')
             print('\t-----------------------------')
 
         if not batch and step_callback is not None:
             step_callback(np.copy(self.state), 0)
-
 
         step = 0  # update step counter
         previous_states = set()  # set of previously seen states (for detection of oscillations in batch learning)
@@ -82,7 +84,8 @@ class Hopfield:
         while step <= update_cap:
 
             # update and increase step counter
-            self.update_step(batch=batch, starting_step=step * 1024, step_callback=step_callback)
+            self.update_step(batch=batch, starting_step=step * self.number_of_neurons, step_callback=step_callback,
+                             bias=bias)
             step += 1
 
             # call callback function if defined
@@ -122,13 +125,17 @@ class Hopfield:
 
         self.state = np.copy(pattern)
 
-    def update_step(self, batch=True, starting_step=None, step_callback=None):
+    def update_step(self, batch=True, starting_step=None, step_callback=None, bias=0.0, output_bias=0.0,
+                    output_scaling=1.0):
         """
         Calculates the next state of a Hopfield network using the current state and the weight matrix.
 
         :param batch: Optional. Determines if the update step is done synchronously (batch) or asynchronously (sequential). True (synchronous) by default.
         :param starting_step: Optional. Starting step to be used in step_callback function. Useless if step_callback not defined.
         :param step_callback: Callback function for sequential (batch=False) learning. Arguments given are a copy of the current state and the number of update starting with 1.
+        :param bias: Optional. Adds negative bias to updating term.
+        :param output_bias: Optional. Adds a bias to all outputs.
+        :param output_scaling: Optional. Multiplies output. Multiplication happens before adding output bias.
         :return: Current state of the Hopfield network after doing one full update.
         """
         if self.weights is None:
@@ -142,15 +149,17 @@ class Hopfield:
 
         # synchronous update
         if batch:
-            self.state = np.matmul(self.state, self.weights)
+            self.state = np.matmul(self.state, self.weights) - bias
             self.state = np.where(self.state >= 0, 1, -1)  # sign function across new state
+            self.state = output_bias + output_scaling * self.state
         # asynchronous update
         else:
             random_sequence = np.array([i for i in range(self.number_of_neurons)])
             np.random.shuffle(random_sequence)
             for step, neuron_idx in enumerate(random_sequence, 1):
                 # calculate new state and use the sign function on the result
-                self.state[neuron_idx] = 1 if np.matmul(self.state, self.weights.T[neuron_idx]) >= 0 else -1
+                self.state[neuron_idx] = 1 if (np.matmul(self.state, self.weights.T[neuron_idx]) - bias) >= 0 else -1
+                self.state[neuron_idx] = output_bias + output_scaling * self.state[neuron_idx]
                 if step_callback:
                     step_callback(np.copy(self.state), starting_step + step)
 
