@@ -12,7 +12,8 @@ class Hopfield:
         Constructs a Hopfield network with a given number of neurons.
 
         :param number_of_neurons: The number of neurons the Hopfield network have.
-        :param debug_mode: Optional. Determines if the model is in debug mode or not. Debug mode has verbose printing. False by default.
+        :param debug_mode: Optional. Determines if the model is in debug mode or not. Debug mode has verbose printing.
+        False by default.
         """
         self.number_of_neurons = number_of_neurons
         self.debug = debug_mode
@@ -29,11 +30,14 @@ class Hopfield:
 
     def learn_patterns(self, patterns, scaling=True, self_connections=True, imbalance=0.0):
         """
-        Sets weights of a Hopfield network using the Hebbian one-shot rule using the given patterns. Will delete previous weights if there were any.
+        Sets weights of a Hopfield network using the Hebbian one-shot rule using the given patterns. Will delete
+        previous weights if there were any.
 
-        :param patterns: A NumPy matrix of patterns to be learned. Each row represents a pattern. The length of each row (the number of columns) must be equal to the number of neurons in the network.
-        :param scaling: Optional. Determines if weights will be scaled with the reciprocal value of the number of patterns or not. True by default.
-        :param self_connections: Optional. Determines if neurons are connected to themselves or not. False by default.
+        :param patterns: A NumPy matrix of patterns to be learned. Each row represents a pattern. The length of each
+        row (the number of columns) must be equal to the number of neurons in the network.
+        :param scaling: Optional. Determines if weights will be scaled with the reciprocal value of the number of
+        patterns or not. True by default.
+        :param self_connections: Optional. Determines if neurons are connected to themselves or not. True by default.
         :param imbalance: Optional. Additional term reduced from each feature of each sample
         """
         if patterns.shape[1] != self.number_of_neurons:
@@ -84,8 +88,7 @@ class Hopfield:
         while step <= update_cap:
 
             # update and increase step counter
-            self.update_step(batch=batch, starting_step=step * self.number_of_neurons, step_callback=step_callback,
-                             bias=bias)
+            self.update_step(batch, step * self.number_of_neurons, step_callback, bias, output_bias, output_scaling)
             step += 1
 
             # call callback function if defined
@@ -107,7 +110,6 @@ class Hopfield:
             # prepare for next update
             else:
                 previous_state = np.copy(self.state)
-                sequential_stable_counter = 0
                 if batch:
                     previous_states.add(tuple(np.copy(self.state)))
 
@@ -130,9 +132,12 @@ class Hopfield:
         """
         Calculates the next state of a Hopfield network using the current state and the weight matrix.
 
-        :param batch: Optional. Determines if the update step is done synchronously (batch) or asynchronously (sequential). True (synchronous) by default.
-        :param starting_step: Optional. Starting step to be used in step_callback function. Useless if step_callback not defined.
-        :param step_callback: Callback function for sequential (batch=False) learning. Arguments given are a copy of the current state and the number of update starting with 1.
+        :param batch: Optional. Determines if the update step is done synchronously (batch) or asynchronously (
+        sequential). True (synchronous) by default.
+        :param starting_step: Optional. Starting step to be used in step_callback function. Useless if step_callback
+        not defined.
+        :param step_callback: Callback function for sequential (batch=False) learning. Arguments given are a copy of
+        the current state and the number of update starting with 1.
         :param bias: Optional. Adds negative bias to updating term.
         :param output_bias: Optional. Adds a bias to all outputs.
         :param output_scaling: Optional. Multiplies output. Multiplication happens before adding output bias.
@@ -154,13 +159,13 @@ class Hopfield:
             self.state = output_bias + output_scaling * self.state
         # asynchronous update
         else:
-            random_sequence = np.array([i for i in range(self.number_of_neurons)])
+            random_sequence = np.array(list(range(self.number_of_neurons)))
             np.random.shuffle(random_sequence)
             for step, neuron_idx in enumerate(random_sequence, 1):
                 # calculate new state and use the sign function on the result
                 self.state[neuron_idx] = 1 if (np.matmul(self.state, self.weights.T[neuron_idx]) - bias) >= 0 else -1
                 self.state[neuron_idx] = output_bias + output_scaling * self.state[neuron_idx]
                 if step_callback:
-                    step_callback(np.copy(self.state), starting_step + step)
+                    step_callback(np.copy(self.state), (0 if starting_step is None else starting_step) + step)
 
         return np.copy(self.state)

@@ -1,10 +1,9 @@
 import os
-import sys
 import statistics
 
-import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
+import tqdm
 
 from model.hopfield import Hopfield
 
