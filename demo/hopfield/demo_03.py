@@ -1,23 +1,17 @@
-import os
-
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-import sys
-sys.path.append('../../model/')
-from hopfield import Hopfield
-# from model.hopfield import Hopfield
+from model.hopfield import Hopfield
+from utils.util import ensure_dir
 
 PICTURE_SIZE = 1024
-SAVE_FOLDER = 'demo_02/pictures/'
-BATCH = False
+SAVE_FOLDER = '../../imgs/hopfield/demo_03/'
+BATCH = True
 DEBUG = False
 
 N_SAMPLE_ATTRACTORS = 1000
 
-
-if not os.path.exists(SAVE_FOLDER):
-    os.makedirs(SAVE_FOLDER)
+ensure_dir(SAVE_FOLDER)
 
 # load pictures into a numpy float 2D array, 1 row per picture
 with open('../../datasets/pict.dat', 'r') as source:
@@ -32,15 +26,14 @@ my_model = Hopfield(PICTURE_SIZE, debug_mode=DEBUG)
 # learn first three pictures
 print("Learning pictures p1, p2, and p3.")
 my_model.learn_patterns(pics[0:3])
-
-
+# my_model.weights *= 2 # Note: doubling the weights doubles the energy values
 
 gen_pattern = lambda: np.where(np.random.normal(size=1024) >= 0, 1, -1)
 # attractors = {tuple(i) for i in pics[0:3]}
 
 
-# Try to find attractors
-print("1000 Random patterns sample to find new attractors.")
+# Try to find attractors
+print(f"{N_SAMPLE_ATTRACTORS} Random patterns sample to find new attractors.")
 for i in range(N_SAMPLE_ATTRACTORS):
     random_pattern = gen_pattern()
     my_model.set_state(random_pattern)
@@ -61,7 +54,6 @@ for current_step in range(len(attractors)):
     plt.savefig(fname=f'{SAVE_FOLDER}attractor={current_step}', bbox_inches='tight')
     plt.close()
 
-
 print("\n")
 print("Energy for distorted patterns")
 print("\t p10:", my_model.energy(pics[9]))
@@ -69,8 +61,7 @@ print("\t p11:", my_model.energy(pics[10]))
 
 
 energies = []
-energy_list_callback = lambda x,_: energies.append(my_model.energy(x))
-
+energy_list_callback = lambda x, _: energies.append(my_model.energy(x))
 
 print("\n")
 print("Using the sequential rule to approach an attractor and check the energy level")
@@ -87,3 +78,4 @@ plt.savefig(fname=f'{SAVE_FOLDER}convergence_01', bbox_inches='tight')
 plt.close()
 # plt.show()
 print('Done.')
+
