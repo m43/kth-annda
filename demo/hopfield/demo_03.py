@@ -36,7 +36,8 @@ my_model.learn_patterns(pics[0:3])
 
 
 gen_pattern = lambda: np.where(np.random.normal(size=1024) >= 0, 1, -1)
-attractors = {tuple(i) for i in pics[0:3]}
+# attractors = {tuple(i) for i in pics[0:3]}
+
 
 # Try to find attractors
 print("1000 Random patterns sample to find new attractors.")
@@ -48,7 +49,7 @@ for i in range(N_SAMPLE_ATTRACTORS):
         attractors.add(tuple(state))
 
 
-print("Found ", len(attractors), " attractors, outputing images and printting energy")
+print("Found ", len(attractors), " attractors, outputing images and printing energy")
 for current_step in range(len(attractors)):
     state = list(attractors)[current_step]
     energy = my_model.energy(state)
@@ -56,8 +57,8 @@ for current_step in range(len(attractors)):
     image = [state[i:i + int(PICTURE_SIZE ** (1 / 2))] for i in
              range(0, PICTURE_SIZE, int(PICTURE_SIZE ** (1 / 2)))]
     plt.imshow(image)
-    plt.title(f'new_attractor={current_step}; energy={energy:.2f}')
-    plt.savefig(fname=f'{SAVE_FOLDER}attractor={current_step}')
+    plt.title(f'attractor={current_step}; energy={energy:.2f}')
+    plt.savefig(fname=f'{SAVE_FOLDER}attractor={current_step}', bbox_inches='tight')
     plt.close()
 
 
@@ -67,11 +68,6 @@ print("\t p10:", my_model.energy(pics[9]))
 print("\t p11:", my_model.energy(pics[10]))
 
 
-# def picture_callback(current_state, current_step):
-
-# def print_energy_callback():
-
-  
 energies = []
 energy_list_callback = lambda x,_: energies.append(my_model.energy(x))
 
@@ -82,7 +78,12 @@ random_pattern = gen_pattern()
 print("starting energy: ", my_model.energy(random_pattern))
 my_model.set_state(random_pattern)
 my_model.update_automatically(batch=BATCH, step_callback=energy_list_callback)
-
 plt.plot(list(range(len(energies))), energies)
-plt.show()
+plt.title(f'Convergence using sequential rule to approach an attractor')
+plt.xlabel('update')
+plt.ylabel('state energy')
+plt.yscale('symlog')
+plt.savefig(fname=f'{SAVE_FOLDER}convergence_01', bbox_inches='tight')
+plt.close()
+# plt.show()
 print('Done.')
