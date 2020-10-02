@@ -1,6 +1,10 @@
-from demo.lab4.dbn import DeepBeliefNet
-from demo.lab4.rbm import RestrictedBoltzmannMachine
-from demo.lab4.util import *
+# from demo.lab4.dbn import DeepBeliefNet
+# from demo.lab4.rbm import RestrictedBoltzmannMachine
+# from demo.lab4.util import *
+
+from dbn import DeepBeliefNet
+from rbm import RestrictedBoltzmannMachine
+from util import *
 
 MNIST_LOCATION = "../../datasets/mnist"
 

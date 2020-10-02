@@ -1,8 +1,11 @@
 from pathlib import Path
 
-from demo.lab4.rbm import RestrictedBoltzmannMachine
-from demo.lab4.util import *
+# from demo.lab4.rbm import RestrictedBoltzmannMachine
+# from demo.lab4.util import *
 
+from rbm import RestrictedBoltzmannMachine
+from util import *
+import matplotlib
 
 class DeepBeliefNet():
     ''' 
@@ -112,7 +115,9 @@ class DeepBeliefNet():
             records.append([ax.imshow(vis.reshape(self.image_size), cmap="bwr", vmin=0, vmax=1, animated=True,
                                       interpolation=None)])
 
-        anim = stitch_video(fig, records).save("%s.generate%d.mp4" % (name, np.argmax(true_lbl)))
+        # writer = matplotlib.animation.PillowWriter(fps=30)
+        writervideo = matplotlib.animation.FFMpegWriter(fps=60) 
+        anim = stitch_video(fig, records).save("%s.generate%d.mp4" % (name, np.argmax(true_lbl)), writer=writervideo)
 
         return
 

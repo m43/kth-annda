@@ -1,4 +1,6 @@
-from demo.lab4.util import *
+# from demo.lab4.util import *
+from util import *
+
 
 
 class RestrictedBoltzmannMachine():
