@@ -24,11 +24,12 @@ if __name__ == "__main__":
                                      image_size=image_size,
                                      is_top=False,
                                      n_labels=10,
-                                     batch_size=10
+                                     batch_size=20
                                      )
 
-    rbm.cd1(visible_trainset=train_imgs, n_iterations=10000)
-
+    # rbm.cd1(visible_trainset=train_imgs, n_iterations=10000)
+    rbm.cd_epochs(visible_trainset=train_imgs, n_epochs=10)
+"""
     ''' deep- belief net '''
 
     print("\nStarting a Deep Belief Net..")
@@ -64,3 +65,4 @@ if __name__ == "__main__":
         digit_1hot = np.zeros(shape=(1, 10))
         digit_1hot[0, digit] = 1
         dbn.generate(digit_1hot, name="dbn")
+"""

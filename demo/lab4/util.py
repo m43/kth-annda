@@ -18,9 +18,9 @@ def sigmoid(support):
     Returns:
       on_probabilities: shape is (size of mini-batch, size of layer)      
     """
-
-    on_probabilities = 1. / (1. + np.exp(-support))
-    return on_probabilities
+    return 1. / (1. + np.exp(-support))
+    # on_probabilities = 1. / (1. + np.exp(-support))
+    # return on_probabilities
 
 
 def softmax(support):

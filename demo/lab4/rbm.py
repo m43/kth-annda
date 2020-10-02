@@ -60,7 +60,7 @@ class RestrictedBoltzmannMachine():
 
         self.momentum = 0.7
 
-        self.print_period = 5000
+        self.print_period = 2
 
         self.rf = {  # receptive-fields. Only applicable when visible layer is input data
             "period": 5000,  # iteration period to visualize
@@ -69,6 +69,36 @@ class RestrictedBoltzmannMachine():
         }
 
         return
+
+
+    def cd_epochs(self, visible_trainset, n_epochs=10):
+        print("learning CD_epoch")
+
+        n_samples = visible_trainset.shape[0]
+
+        for it in range(n_epochs):
+            print("epoch ", it, " ---")
+            for i in range(int(n_samples / self.batch_size)):
+                # indexes = list(range(i * self.batch_size, (i+1) * self.batch_size))
+                v_0 = visible_trainset[int(i * self.batch_size):int((i+1) * self.batch_size)]
+                p_h, h_0  = self.get_h_given_v(v_0)
+                p_v, v_1  = self.get_v_given_h(h_0)
+                p_h1, h_1 = self.get_h_given_v(v_1)
+                self.update_params(v_0, h_0, v_1, h_1)
+
+            # visualize once in a while when visible layer is input images
+            if it % self.rf["period"] == 0 and self.is_bottom:
+                viz_rf(weights=self.weight_vh[:, self.rf["ids"]].reshape((self.image_size[0], self.image_size[1], -1)),
+                       it=it, grid=self.rf["grid"])
+
+            # print progress
+
+            if it % self.print_period == 0:
+                print("iteration=%7d recon_loss=%4.4f" % (it, np.linalg.norm(visible_trainset - visible_trainset)))
+
+        return
+
+
 
     def cd1(self, visible_trainset, n_iterations=10000):
 
@@ -89,10 +119,18 @@ class RestrictedBoltzmannMachine():
             # you may need to use the inference functions 'get_h_given_v' and 'get_v_given_h'.
             # note that inference methods returns both probabilities and activations (samples from probablities) and you may have to decide when to use what.
 
-            # [TODO TASK 4.1] update the parameters using function 'update_params'
+            # # [TODO TASK 4.1] update the parameters using function 'update_params'
+            # self.update_params(v_0, h_0, v_1, h_1)
+
+            indexes = np.random.choice(n_samples, self.batch_size, replace=False)
+            v_0 = visible_trainset[indexes]
+            p_h, h_0  = self.get_h_given_v(v_0)
+            p_v, v_1  = self.get_v_given_h(h_0)
+            p_h1, h_1 = self.get_h_given_v(v_1)
+            self.update_params(v_0, h_0, v_1, h_1)
+
 
             # visualize once in a while when visible layer is input images
-
             if it % self.rf["period"] == 0 and self.is_bottom:
                 viz_rf(weights=self.weight_vh[:, self.rf["ids"]].reshape((self.image_size[0], self.image_size[1], -1)),
                        it=it, grid=self.rf["grid"])
@@ -119,10 +157,25 @@ class RestrictedBoltzmannMachine():
         """
 
         # [TODO TASK 4.1] get the gradients from the arguments (replace the 0s below) and update the weight and bias parameters
+        
 
-        self.delta_bias_v += 0
-        self.delta_weight_vh += 0
-        self.delta_bias_h += 0
+        n_samples = v_0.shape[0]
+        # print(v_0.shape) # 10x784
+        # print(h_0.shape) # 10x200
+        # print(v_k.shape) # 10x784
+        # print(h_k.shape) # 10x200
+
+        self.delta_weight_vh = (v_0.T @ h_0 - v_k.T @ h_k) / n_samples
+        self.delta_bias_h = np.average((h_0 - h_k), axis=0)
+        self.delta_bias_v = np.average((v_0 - v_k), axis=0)
+
+        # self.delta_weight_vh += (v_0.T @ h_0 - v_k.T @ h_k) / n_samples
+        # self.delta_bias_h += np.average((h_0 - h_k), axis=0)
+        # self.delta_bias_v += np.average((v_0 - v_k), axis=0)
+
+        # self.delta_bias_v += 0
+        # self.delta_weight_vh += 0
+        # self.delta_bias_h += 0
 
         self.bias_v += self.delta_bias_v
         self.weight_vh += self.delta_weight_vh
@@ -147,9 +200,23 @@ class RestrictedBoltzmannMachine():
 
         n_samples = visible_minibatch.shape[0]
 
+        p_h = sigmoid(self.bias_h + (visible_minibatch @ self.weight_vh)) # 10 x 200        
+        
+
+        # h = np.zeros((n_samples, self.ndim_hidden))
+        # np.random.seed(666)
+        # for i in range(len(p_h)):
+        #     for j in range(len(p_h[i])):
+        #         h[i, j] =  np.random.binomial(1, p_h[i, j])
+        
+        # TODO: Check that this is the right way of generating a matrix of bernoulli experiments
+        # h = np.random.binomial(1, p_h)
+        h = sample_binary(p_h)
+
         # [TODO TASK 4.1] compute probabilities and activations (samples from probabilities) of hidden layer (replace the zeros below) 
 
-        return np.zeros((n_samples, self.ndim_hidden)), np.zeros((n_samples, self.ndim_hidden))
+        return p_h, h
+        # return np.zeros((n_samples, self.ndim_hidden)), np.zeros((n_samples, self.ndim_hidden))
 
     def get_v_given_h(self, hidden_minibatch):
 
@@ -168,6 +235,9 @@ class RestrictedBoltzmannMachine():
 
         n_samples = hidden_minibatch.shape[0]
 
+
+
+
         if self.is_top:
 
             """
@@ -179,16 +249,26 @@ class RestrictedBoltzmannMachine():
 
             # [TODO TASK 4.1] compute probabilities and activations (samples from probabilities) of visible layer (replace the pass below). \
             # Note that this section can also be postponed until TASK 4.2, since in this task, stand-alone RBMs do not contain labels in visible layer.
-
-            pass
+            p_v, v = np.zeros((n_samples, self.ndim_visible)), np.zeros((n_samples, self.ndim_visible))
+            # pass
 
         else:
 
             # [TODO TASK 4.1] compute probabilities and activations (samples from probabilities) of visible layer (replace the pass and zeros below)             
+            
+            # print(hidden_minibatch.shape)
+            # print(self.weight_vh.shape)
+            # print(self.bias_v.shape)
+            # (10, 200)
+            # (784, 200)
+            # (784,)
+            p_v = sigmoid(self.bias_v + (hidden_minibatch @ self.weight_vh.T))        
+            v = sample_binary(p_v) 
+            # v = np.random.binomial(1, p_v)
+            # pass
 
-            pass
-
-        return np.zeros((n_samples, self.ndim_visible)), np.zeros((n_samples, self.ndim_visible))
+        return p_v, v        
+        # return np.zeros((n_samples, self.ndim_visible)), np.zeros((n_samples, self.ndim_visible))
 
     """ rbm as a belief layer : the functions below do not have to be changed until running a deep belief net """
 

@@ -115,7 +115,8 @@ class DeepBeliefNet():
             records.append([ax.imshow(vis.reshape(self.image_size), cmap="bwr", vmin=0, vmax=1, animated=True,
                                       interpolation=None)])
 
-        # writer = matplotlib.animation.PillowWriter(fps=30)
+        # writergif = matplotlib.animation.PillowWriter(fps=30)
+        # anim = stitch_video(fig, records).save("%s.generate%d.gif" % (name, np.argmax(true_lbl)), writer=writergif)
         writervideo = matplotlib.animation.FFMpegWriter(fps=60) 
         anim = stitch_video(fig, records).save("%s.generate%d.mp4" % (name, np.argmax(true_lbl)), writer=writervideo)
 
