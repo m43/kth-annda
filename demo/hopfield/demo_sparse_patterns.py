@@ -28,7 +28,7 @@ def generate_random_from_prototype(prototype, amount):
 BATCH = False
 SELF_CONNECTIONS = False
 NUMBER_OF_TESTS = 10
-MAX_NUMBER_OF_PATTERNS = 100
+MAX_NUMBER_OF_PATTERNS = 10000
 STEP = 1
 DIMENSIONS = 100
 SPARSITY = 0.1
@@ -39,7 +39,7 @@ SAVE_FOLDER = f'sparse_patterns_no_self_connections/sparsity={SPARSITY:.2f}'
 if not os.path.exists(SAVE_FOLDER):
     os.makedirs(SAVE_FOLDER)
 
-biases = [0.3]
+biases = [0.05]
 # biases = [0, 0.01, 0.1, 0.3, 0.5]
 # biases = [0, 0.001, 0.005, 0.01, 0.05, 0.1, 0.3, 0.5, 0.7]
 # biases = [0, -0.001, -0.005, -0.01, -0.05, -0.1, -0.3, -0.5, -0.7]

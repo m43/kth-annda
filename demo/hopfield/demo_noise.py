@@ -86,7 +86,7 @@ for i in range(3):
             # avg += np.sum(noisy_p != pics[i]) / pics[i].shape[0]
             
 
-            niter = len(buff) - 1
+            niter = len(buff)
             avg_it += niter
             # final_state = buff[-1]
             # attractor = find_most_similar_attractor(final_state)
@@ -113,6 +113,6 @@ plt.xlabel("percentage of noise")
 plt.ylabel("n epochs")
 plt.title(f'Average of number of iterations needed to converge')
 plt.legend()
-# plt.savefig(fname=f'{SAVE_FOLDER}noise_distortion_02.eps', format='eps', bbox_inches='tight')
+plt.savefig(fname=f'{SAVE_FOLDER}noise_distortion_02.eps', format='eps', bbox_inches='tight')
 plt.savefig(fname=f'{SAVE_FOLDER}noise_distortion_02', bbox_inches='tight')
 plt.close()
