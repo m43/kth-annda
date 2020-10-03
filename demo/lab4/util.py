@@ -32,9 +32,9 @@ def softmax(support):
     Returns:
       probabilities: shape is (size of mini-batch, number of categories)      
     """
-
-    expsup = np.exp(support - np.sum(support, axis=1)[:, None])
-    return expsup / np.sum(expsup, axis=1)[:, None]
+    return np.exp(support - np.sum(support, axis=1)[:, None])
+    # expsup = np.exp(support - np.sum(support, axis=1)[:, None])
+    # return expsup / np.sum(expsup, axis=1)[:, None]
 
 
 def sample_binary(on_probabilities):
@@ -46,9 +46,9 @@ def sample_binary(on_probabilities):
     Returns:
       activations: shape is (size of mini-batch, size of layer)      
     """
-
-    activations = 1. * (on_probabilities >= np.random.random_sample(size=on_probabilities.shape))
-    return activations
+    return 1. * (on_probabilities >= np.random.random_sample(size=on_probabilities.shape))
+    # activations = 1. * (on_probabilities >= np.random.random_sample(size=on_probabilities.shape))
+    # return activations
 
 
 def sample_categorical(probabilities):
