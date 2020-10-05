@@ -121,17 +121,17 @@ class DeepBeliefNet():
         # top to the bottom visible layer (replace 'vis' from random to your generated visible layer).
 
         vis_pl_pen = np.random.rand(n_sample, self.sizes["pen"])
-        vis_pl = np.concatenate((vis_pl_pen, lbl), axis=1)
+        pvis_pl = np.concatenate((vis_pl_pen, lbl), axis=1)
 
         for _ in range(self.n_gibbs_gener):
             # vis_pl = np.concatenate((vis_pl[:, :-lbl.shape[1]], lbl), axis=1)
-            vis_pl[:, -lbl.shape[1]:] = lbl
-            _, hid_pl = self.rbm_stack["pen+lbl--top"].get_h_given_v(vis_pl)
-            _, vis_pl = self.rbm_stack["pen+lbl--top"].get_v_given_h(hid_pl)
+            pvis_pl[:, -lbl.shape[1]:] = lbl
+            _, hid_pl = self.rbm_stack["pen+lbl--top"].get_h_given_v(pvis_pl)
+            pvis_pl, vis_pl = self.rbm_stack["pen+lbl--top"].get_v_given_h(hid_pl)
 
-            hid_pl = vis_pl[:, :-lbl.shape[1]]
-            _, hid_vh = self.rbm_stack["hid--pen"].get_v_given_h_dir(hid_pl)
-            _, vis = self.rbm_stack["vis--hid"].get_v_given_h_dir(hid_vh)
+            hid_hp = vis_pl[:, :-lbl.shape[1]]
+            _, hid_vh = self.rbm_stack["hid--pen"].get_v_given_h_dir(hid_hp)
+            vis, _ = self.rbm_stack["vis--hid"].get_v_given_h_dir(hid_vh)
             records.append([ax.imshow(vis.reshape(self.image_size), cmap="bwr", vmin=0, vmax=1, animated=True,
                                       interpolation=None)])
 
