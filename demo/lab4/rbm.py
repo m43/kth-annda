@@ -81,7 +81,13 @@ class RestrictedBoltzmannMachine():
             _, v_k = self.get_v_given_h(h_k)
         return h_0, h_k, v_k 
 
-
+    def gibbs_p(self, v_0, k):
+        _, h_0 = self.get_h_given_v(v_0)
+        h_k = h_0.copy()
+        for i in range(k):
+            pv_k, _ = self.get_v_given_h(h_k)
+            ph_k, h_k = self.get_h_given_v(pv_k)
+        return h_0, pv_k, ph_k
 
     def cd1(self, visible_trainset, n_iterations=10):
         print("learning CD1")
@@ -97,18 +103,13 @@ class RestrictedBoltzmannMachine():
             print("epoch ", it, " ---")
             for i in range(int(n_samples / self.batch_size)):
                 v_0 = trainset[int(i * self.batch_size):int((i+1) * self.batch_size)]
-                # p_h, h_0  = self.get_h_given_v(v_0)
-                # p_v, v_1  = self.get_v_given_h(h_0)
-                # p_h1, h_1 = self.get_h_given_v(v_1)
-                h_0, h_k, v_k = self.gibbs(v_0, 1)
-                self.update_params(v_0, h_0, v_k, h_k)
-
+                h_0, pv_k, ph_k = self.gibbs_p(v_0, 1)
+                self.update_params(v_0, h_0, pv_k, ph_k)
 
             # visualize once in a while when visible layer is input images
             if it % self.rf["period"] == 0 and self.is_bottom:
                 viz_rf(weights=self.weight_vh[:, self.rf["ids"]].reshape((self.image_size[0], self.image_size[1], -1)),
                        it=it, grid=self.rf["grid"])
-
 
             # if it % self.print_period == 0:
             _, hr  = self.get_h_given_v(trainset) # reconstruction loss
@@ -116,51 +117,7 @@ class RestrictedBoltzmannMachine():
             recon_losses.append((1/n_samples) * np.linalg.norm(trainset - vr))
 
             # print("iteration=%7d recon_loss=%4.4f" % (it, (1/n_samples) * np.linalg.norm(visible_trainset - vr)))
-
         return recon_losses
-
-
-
-    # def cd1(self, visible_trainset, n_iterations=10000):
-
-    #     """Contrastive Divergence with k=1 full alternating Gibbs sampling
-
-    #     Args:
-    #       visible_trainset: training data for this rbm, shape is (size of training set, size of visible layer)
-    #       n_iterations: number of iterations of learning (each iteration learns a mini-batch)
-    #     """
-    #     print("learning CD1")
-
-    #     n_samples = visible_trainset.shape[0]
-
-    #     for it in range(n_iterations):
-
-    #         # [TODO TASK 4.1] run k=1 alternating Gibbs sampling : v_0 -> h_0 ->  v_1 -> h_1.
-    #         # you may need to use the inference functions 'get_h_given_v' and 'get_v_given_h'.
-    #         # note that inference methods returns both probabilities and activations (samples from probablities) and you may have to decide when to use what.
-
-    #         # # [TODO TASK 4.1] update the parameters using function 'update_params'
-    #         # self.update_params(v_0, h_0, v_1, h_1)
-
-    #         indexes = np.random.choice(n_samples, self.batch_size, replace=False)
-    #         v_0 = visible_trainset[indexes]
-    #         p_h, h_0  = self.get_h_given_v(v_0)
-    #         p_v, v_1  = self.get_v_given_h(h_0)
-    #         p_h1, h_1 = self.get_h_given_v(v_1)
-    #         self.update_params(v_0, h_0, v_1, h_1)
-
-
-    #         # visualize once in a while when visible layer is input images
-    #         if it % self.rf["period"] == 0 and self.is_bottom:
-    #             viz_rf(weights=self.weight_vh[:, self.rf["ids"]].reshape((self.image_size[0], self.image_size[1], -1)),
-    #                    it=it, grid=self.rf["grid"])
-
-    #         # print progress
-
-    #         if it % self.print_period == 0:
-    #             print("iteration=%7d recon_loss=%4.4f" % (it, np.linalg.norm(visible_trainset - visible_trainset)))
-
-    #     return
 
     def update_params(self, v_0, h_0, v_k, h_k):
 

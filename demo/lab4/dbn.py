@@ -149,46 +149,47 @@ class DeepBeliefNet():
         """
 
         try:
-
             self.loadfromfile_rbm(loc="trained_rbm", name="vis--hid")
-            self.rbm_stack["vis--hid"].untwine_weights()
-
-            self.loadfromfile_rbm(loc="trained_rbm", name="hid--pen")
-            self.rbm_stack["hid--pen"].untwine_weights()
-
-            self.loadfromfile_rbm(loc="trained_rbm", name="pen+lbl--top")
-
         except IOError:
-
             # [TODO TASK 4.2] use CD-1 to train all RBMs greedily
-
             print("training vis--hid")
             """ 
             CD-1 training for vis--hid 
             """
             self.rbm_stack["vis--hid"].cd1(vis_trainset, n_iterations)
             self.savetofile_rbm(loc="trained_rbm", name="vis--hid")
+        self.rbm_stack["vis--hid"].untwine_weights()
 
+
+        vis_hp = None
+        try:
+            self.loadfromfile_rbm(loc="trained_rbm", name="hid--pen")
+        except IOError:
             print("training hid--pen")
-            self.rbm_stack["vis--hid"].untwine_weights()
             """ 
             CD-1 training for hid--pen 
             """
             _, vis_hp = self.rbm_stack["vis--hid"].get_h_given_v_dir(vis_trainset)
             self.rbm_stack["hid--pen"].cd1(vis_hp, n_iterations)
             self.savetofile_rbm(loc="trained_rbm", name="hid--pen")
+        self.rbm_stack["hid--pen"].untwine_weights()
 
+
+        try:
+            self.loadfromfile_rbm(loc="trained_rbm", name="pen+lbl--top")
+        except IOError:
             print("training pen+lbl--top")
-            self.rbm_stack["hid--pen"].untwine_weights()
             """ 
             CD-1 training for pen+lbl--top 
             """
+            if vis_hp is None:
+                _, vis_hp = self.rbm_stack["vis--hid"].get_h_given_v_dir(vis_trainset)
             _, vis_pl = self.rbm_stack["hid--pen"].get_h_given_v_dir(vis_hp)
             vis_pl = np.concatenate((vis_pl, lbl_trainset), axis=1)
             self.rbm_stack["pen+lbl--top"].cd1(vis_pl, n_iterations)
             self.savetofile_rbm(loc="trained_rbm", name="pen+lbl--top")
-
         return
+
 
     def train_wakesleep_finetune(self, vis_trainset, lbl_trainset, n_iterations):
 
