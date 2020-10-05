@@ -51,13 +51,20 @@ class DeepBeliefNet():
 
         self.n_gibbs_recog = 15
 
-        self.n_gibbs_gener = 200
+        self.n_gibbs_gener = 400
 
         self.n_gibbs_wakesleep = 5
 
         self.print_period = 2000
 
         return
+
+    # def gibbs_p(self, v_0, k):
+    #     ph_0, h_k = self.get_h_given_v(v_0)
+    #     for i in range(k):
+    #         pv_k, _ = self.get_v_given_h(h_k)
+    #         ph_k, h_k = self.get_h_given_v(pv_k)
+    #     return ph_0, pv_k, ph_k
 
     def recognize(self, true_img, true_lbl):
 
@@ -82,9 +89,8 @@ class DeepBeliefNet():
         _, vis_pl = self.rbm_stack["hid--pen"].get_h_given_v_dir(vis_hp)
 
         vis_pl = np.concatenate((vis_pl,lbl), axis=1)
-        for _ in range(self.n_gibbs_recog):
-            _, hid_pl = self.rbm_stack["pen+lbl--top"].get_h_given_v(vis_pl)
-            _, vis_pl = self.rbm_stack["pen+lbl--top"].get_v_given_h(hid_pl)
+        
+        _, vis_pl, _ = self.rbm_stack["pen+lbl--top"].gibbs_p(vis_pl, self.n_gibbs_recog)
 
         predicted_lbl = vis_pl[:, -true_lbl.shape[1]:]
 
@@ -116,6 +122,7 @@ class DeepBeliefNet():
 
         vis_pl_pen = np.random.rand(n_sample, self.sizes["pen"])
         vis_pl = np.concatenate((vis_pl_pen, lbl), axis=1)
+
         for _ in range(self.n_gibbs_gener):
             # vis_pl = np.concatenate((vis_pl[:, :-lbl.shape[1]], lbl), axis=1)
             vis_pl[:, -lbl.shape[1]:] = lbl
@@ -130,7 +137,7 @@ class DeepBeliefNet():
 
         # writergif = matplotlib.animation.PillowWriter(fps=30)
         # anim = stitch_video(fig, records).save("%s.generate%d.gif" % (name, np.argmax(true_lbl)), writer=writergif)
-        writervideo = matplotlib.animation.FFMpegWriter(fps=20) 
+        writervideo = matplotlib.animation.FFMpegWriter(fps=60) 
         anim = stitch_video(fig, records).save("%s.generate%d.mp4" % (name, np.argmax(true_lbl)), writer=writervideo)
 
         return
