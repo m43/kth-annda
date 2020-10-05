@@ -82,16 +82,14 @@ class RestrictedBoltzmannMachine():
         return h_0, h_k, v_k 
 
     def gibbs_p(self, v_0, k):
-        _, h_0 = self.get_h_given_v(v_0)
-        h_k = h_0.copy()
+        ph_0, h_k = self.get_h_given_v(v_0)
         for i in range(k):
             pv_k, _ = self.get_v_given_h(h_k)
             ph_k, h_k = self.get_h_given_v(pv_k)
-        return h_0, pv_k, ph_k
+        return ph_0, pv_k, ph_k
 
     def cd1(self, visible_trainset, n_iterations=10):
         print("learning CD1")
-
 
         recon_losses = []    
         self.nprint = 0
@@ -103,8 +101,8 @@ class RestrictedBoltzmannMachine():
             print("epoch ", it, " ---")
             for i in range(int(n_samples / self.batch_size)):
                 v_0 = trainset[int(i * self.batch_size):int((i+1) * self.batch_size)]
-                h_0, pv_k, ph_k = self.gibbs_p(v_0, 1)
-                self.update_params(v_0, h_0, pv_k, ph_k)
+                ph_0, pv_k, ph_k = self.gibbs_p(v_0, 1)
+                self.update_params(v_0, ph_0, pv_k, ph_k)
 
             # visualize once in a while when visible layer is input images
             if it % self.rf["period"] == 0 and self.is_bottom:
@@ -145,18 +143,6 @@ class RestrictedBoltzmannMachine():
         self.delta_weight_vh = (v_0.T @ h_0 - v_k.T @ h_k) / n_samples
         self.delta_bias_h = np.average((h_0 - h_k), axis=0)
         self.delta_bias_v = np.average((v_0 - v_k), axis=0)
-
-        # self.nprint += 1
-        # if self.nprint % 500 == 0:
-        #     print(f'{np.sum(self.delta_weight_vh):.2f}', f'{np.sum(self.delta_bias_h):.2f}', f'{np.sum(self.delta_bias_v):.2f}')
-
-        # self.delta_weight_vh += (v_0.T @ h_0 - v_k.T @ h_k) / n_samples
-        # self.delta_bias_h += np.average((h_0 - h_k), axis=0)
-        # self.delta_bias_v += np.average((v_0 - v_k), axis=0)
-
-        # self.delta_bias_v += 0
-        # self.delta_weight_vh += 0
-        # self.delta_bias_h += 0
 
         self.bias_v += self.learning_rate * self.delta_bias_v
         self.weight_vh += self.learning_rate * self.delta_weight_vh
