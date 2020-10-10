@@ -1,5 +1,4 @@
 import csv
-
 import numpy as np
 
 from model.kmeans import KMeansEuclidean, KMeansAngular

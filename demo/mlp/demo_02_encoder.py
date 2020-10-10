@@ -1,7 +1,6 @@
-import os
-
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 from model.mlp import MLP
 from utils.util import ensure_dir

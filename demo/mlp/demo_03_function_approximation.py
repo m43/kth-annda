@@ -1,9 +1,8 @@
 import datetime
-import multiprocessing
-import os
-
 import matplotlib.pyplot as plt
+import multiprocessing
 import numpy as np
+import os
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 

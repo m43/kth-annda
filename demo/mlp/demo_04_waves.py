@@ -1,11 +1,10 @@
 import datetime
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 import os
 import random
 import statistics
-
-import matplotlib.pyplot as plt
-import numpy as np
 
 from demo.util import prepare_dataset
 from model.mlp import MLP

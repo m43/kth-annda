@@ -1,10 +1,10 @@
 import math
-import os
-from pathlib import Path
-
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+from matplotlib.ticker import StrMethodFormatter
+from pathlib import Path
 
 horse = """               .,,.
              ,;;*;;;;,
@@ -94,6 +94,7 @@ def plot_metric(data, name, save, *more_data, point=None, show_plot=True):
     x = np.arange(len(data))
     plt.title(name)
     plt.plot(x, data, color="green")
+    plt.gca().yaxis.set_major_formatter(StrMethodFormatter('{x:.6f}'))
     for d in more_data:
         plt.plot(x, d)
     if point is not None:

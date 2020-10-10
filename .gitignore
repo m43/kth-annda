@@ -3,12 +3,17 @@
 #######################################
 
 imgs
+demo/lab4/*.mp4
+demo/lab4/*.png
+demo/lab4/*.npy
+demo/lab4/imgs
+demo/lab4/*/*.npy
 
 # datasets  # Used datasets are not memory heavy but are convenient to have because most of the demos will work
 
-# Bigger datasets:
-datasets/mnist.pkl.gz
-
+# Bigger datasets: --> Left the bigger datasets also, for convenience
+# datasets/mnist.pkl.gz
+# datasets/mnist
 
 
 #######################################

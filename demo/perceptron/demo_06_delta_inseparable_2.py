@@ -1,6 +1,5 @@
-import os
-
 import numpy as np
+import os
 
 from demo.util import print_results_as_table, two_class_conf_mat_metrics, \
     perpare_reproducable_inseparable_dataset_2_with_subsets

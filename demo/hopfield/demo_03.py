@@ -41,7 +41,6 @@ for i in range(N_SAMPLE_ATTRACTORS):
     if state is not None:
         attractors.add(tuple(state))
 
-
 print("Found ", len(attractors), " attractors, outputing images and printing energy")
 for current_step in range(len(attractors)):
     state = list(attractors)[current_step]
@@ -58,7 +57,6 @@ print("\n")
 print("Energy for distorted patterns")
 print("\t p10:", my_model.energy(pics[9]))
 print("\t p11:", my_model.energy(pics[10]))
-
 
 energies = []
 energy_list_callback = lambda x, _: energies.append(my_model.energy(x))
@@ -78,4 +76,3 @@ plt.savefig(fname=f'{SAVE_FOLDER}convergence_01', bbox_inches='tight')
 plt.close()
 # plt.show()
 print('Done.')
-
