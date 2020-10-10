@@ -1,7 +1,6 @@
 import datetime
-import os
-
 import numpy as np
+import os
 
 from model.hopfield import Hopfield
 from utils.util import ensure_dir

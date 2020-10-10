@@ -1,4 +1,5 @@
 import gzip
+
 import pickle
 
 from model.mlp import MLP

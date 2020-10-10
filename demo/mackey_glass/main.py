@@ -1,11 +1,10 @@
+import matplotlib.pyplot as plt
 import os
 import shutil
 import statistics
 import sys
-import time
-
-import matplotlib.pyplot as plt
 import tensorflow as tf
+import time
 
 from demo.mackey_glass.tensorflow_model import TensorFlowModel, train_step_wrapper, evaluate_step_wrapper
 from demo.mackey_glass.time_series import generate_time_series

@@ -1,10 +1,9 @@
 import datetime
 import math
-import os
-import random
-
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+import random
 from matplotlib import cm
 
 from demo.util import prepare_dataset

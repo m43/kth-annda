@@ -1,6 +1,5 @@
-import os
-
 import numpy as np
+import os
 
 from demo.util import plot_ballist
 from model.kmeans import KMeansEuclidean, KMeansAngular

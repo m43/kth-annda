@@ -1,6 +1,5 @@
-import sys
-
 import numpy as np
+import sys
 
 from utils.util import mse, extend_inputs_with_bias, shuffle_two_arrays, plot_metric, accuracy
 

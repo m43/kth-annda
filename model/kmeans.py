@@ -1,6 +1,5 @@
-from abc import ABC, abstractmethod
-
 import numpy as np
+from abc import ABC, abstractmethod
 
 from utils.util import normalize_vectors
 

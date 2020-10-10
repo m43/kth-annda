@@ -1,9 +1,8 @@
-import os
-
-import numpy as np
 import matplotlib.pyplot as plt
-
+import numpy as np
+import os
 import sys
+
 sys.path.append('../../model/')
 from hopfield import Hopfield
 
@@ -13,7 +12,6 @@ BATCH = True
 DEBUG = False
 
 N_SAMPLE_ATTRACTORS = 1000
-
 
 if not os.path.exists(SAVE_FOLDER):
     os.makedirs(SAVE_FOLDER)
@@ -33,18 +31,18 @@ print("Learning pictures p1, p2, and p3.")
 my_model.learn_patterns(pics[0:3])
 
 
-
 # from copy import deepcopy
 
 # test = deepcopy(pics[0])
 
-# Function to generate noisy samples
+#  Function to generate noisy samples
 def add_noise(pattern, proportion):
     noisy = pattern.copy()
     nflips = int(proportion * pattern.shape[0])
-    indexes = np.random.choice(pattern.shape[0], nflips, False) # sample random indexes
-    noisy[indexes] *= -1 # flip sign
+    indexes = np.random.choice(pattern.shape[0], nflips, False)  #  sample random indexes
+    noisy[indexes] *= -1  #  flip sign
     return noisy
+
 
 # def distort_bipolar_pattern(pattern, proportion):
 #     nflips = int(proportion * pattern.shape[0])
@@ -68,31 +66,30 @@ NAVERAGE = 30
 ls = [[], [], []]
 iters = [[], [], []]
 buff = []
-buffer_callback = lambda x,_: buff.append(my_model.state)
+buffer_callback = lambda x, _: buff.append(my_model.state)
 
 for i in range(3):
     for j in np.arange(0.01, 1.01, 0.01):
         avg = 0
         avg_it = 0
         for _ in range(NAVERAGE):
-            buff = [] # reset buffer
-            
+            buff = []  #  reset buffer
+
             noisy_p = add_noise(pics[i], j)
             my_model.set_state(noisy_p)
             state = my_model.update_automatically(batch=BATCH, step_callback=buffer_callback)
-            
-            retrived_percentage = 1-np.sum(state != pics[i]) / pics[i].shape[0]
+
+            retrived_percentage = 1 - np.sum(state != pics[i]) / pics[i].shape[0]
             avg += retrived_percentage
             # avg += np.sum(noisy_p != pics[i]) / pics[i].shape[0]
-            
 
             niter = len(buff) - 1
             avg_it += niter
             # final_state = buff[-1]
             # attractor = find_most_similar_attractor(final_state)
 
-        iters[i].append(avg_it/NAVERAGE)
-        ls[i].append(avg/NAVERAGE)
+        iters[i].append(avg_it / NAVERAGE)
+        ls[i].append(avg / NAVERAGE)
 
 plt.plot(list(range(len(ls[0]))), ls[0], "r-", label="p1")
 plt.plot(list(range(len(ls[1]))), ls[1], "g-", label="p2")

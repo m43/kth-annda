@@ -11,10 +11,10 @@ Lab 4
 1. Files included
 -----------------
 
-run.py			    Main file to run all networks.
-util.py			    Utility file containing activation functions, sampling methods, load/save files, etc.
-rbm.py			    Contains the Restricted Boltzmann Machine class.
-dbn.py			    Contains the Deep Belief Network class.
+demo_rbm.py and demo_dbn.py     Main files to run networks.
+util.py			                Utility file containing activation functions, sampling methods, load/save files, etc.
+rbm.py			                Contains the Restricted Boltzmann Machine class.
+dbn.py			                Contains the Deep Belief Network class.
 
 train-images-idx3-ubyte	    MNIST training images
 train-labels-idx1-ubyte	    MNIST training labels
@@ -31,12 +31,14 @@ All the functions and classes needed for the lab are provided as templates, and 
 
 You will have to create the above directories to store and load trained deep belief net models. The 'trained_rbm' will contain pre-trained rbm stack parameters, and 'trained_dbn' will contain fine-tuned deep belief net parameters. And finally,
 
- > python run.py
+ > python demo_rbm.py
 
  Starting a Restricted Boltzmann Machine..
  learning CD1
  iteration=      0 recon_loss=0.0000
  iteration=   5000 recon_loss=0.0000
+
+ > python demo_dbn.py
 
  Starting a Deep Belief Net..
  training vis--hid
@@ -50,11 +52,11 @@ You will have to create the above directories to store and load trained deep bel
  accuracy = 9.87%
  accuracy = 9.80%
 
-The first part of run.py creates a RestrictedBoltzmannMachine and runs contrastive divergence learning. The reconstruction loss is printed while learning, and the receptive fields are stored as 'rf.<epoch>.png' in the same directory. Since there is no learning implemented yet, you will see the loss to be zero, and receptive fields as random pixels.
+demo_rbm.py creates a RestrictedBoltzmannMachine and runs contrastive divergence learning. The reconstruction loss is printed while learning, and the receptive fields are stored as 'rf.<epoch>.png' in the same directory. Since there is no learning implemented yet, you will see the loss to be zero, and receptive fields as random pixels.
 
-The second part of run.py creates a DeepBeliefNet. Make sure that the RBM from previous part works as expected before starting with DBNs. The learning is by greedy layer-wise stacking of RBMS, and the DBN architecture is by default the model discussed in Hinton, Osindero & Teh (2006) with 3 hidden layers. After training, the network is evaluated and the train/test set accuracy is printed. You will see the accuracy is around 10.0%. The network is then run as generative model, and the results of the network generating each digit (from 0 to 9) are stored as videos 'rbms.generate<digit>.mp4' in the same directory.
+The first part demo_dbn.py creates a DeepBeliefNet. Make sure that the RBM from previous part works as expected before starting with DBNs. The learning is by greedy layer-wise stacking of RBMS, and the DBN architecture is by default the model discussed in Hinton, Osindero & Teh (2006) with 3 hidden layers. After training, the network is evaluated and the train/test set accuracy is printed. You will see the accuracy is around 10.0%. The network is then run as generative model, and the results of the network generating each digit (from 0 to 9) are stored as videos 'rbms.generate<digit>.mp4' in the same directory.
 
-The last part of run.py uses the DeepBeliefNet from last part, and fine-tunes the parameters by the wake-sleep algorithm. After training, as in the last part, the train/test set accuracy is printed. The generative model results of each digit (from 0 to 9) are stored as videos 'dbn.generate<digit>.mp4' in the same directory. 
+The second part of demo_dbn.py uses the DeepBeliefNet from last part, and fine-tunes the parameters by the wake-sleep algorithm. After training, as in the last part, the train/test set accuracy is printed. The generative model results of each digit (from 0 to 9) are stored as videos 'dbn.generate<digit>.mp4' in the same directory.
 
 The learning methods load the parameters from file by default. If there are no stored parameters, the learning is implemented. When the greedy learning and wake-sleep learning are successful, all the parameters are stored in the directories 'trained_rbm/' and 'trained_dbn/'. Make sure to clear the directories, if you do not want to reuse the parameters. 
 
