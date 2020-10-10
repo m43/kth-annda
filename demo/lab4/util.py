@@ -1,7 +1,6 @@
-import os
-
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 mnist_train_images_filename = "train-images-idx3-ubyte"
 mnist_train_labels_filename = "train-labels-idx1-ubyte"
@@ -18,9 +17,9 @@ def sigmoid(support):
     Returns:
       on_probabilities: shape is (size of mini-batch, size of layer)      
     """
-    return 1. / (1. + np.exp(-support))
-    # on_probabilities = 1. / (1. + np.exp(-support))
-    # return on_probabilities
+
+    on_probabilities = 1. / (1. + np.exp(-support))
+    return on_probabilities
 
 
 def softmax(support):
@@ -32,6 +31,7 @@ def softmax(support):
     Returns:
       probabilities: shape is (size of mini-batch, number of categories)      
     """
+
     expsup = np.exp(support - np.sum(support, axis=1)[:, None])
     return expsup / np.sum(expsup, axis=1)[:, None]
 
@@ -45,9 +45,9 @@ def sample_binary(on_probabilities):
     Returns:
       activations: shape is (size of mini-batch, size of layer)      
     """
-    return 1. * (on_probabilities >= np.random.random_sample(size=on_probabilities.shape))
-    # activations = 1. * (on_probabilities >= np.random.random_sample(size=on_probabilities.shape))
-    # return activations
+
+    activations = 1. * (on_probabilities >= np.random.random_sample(size=on_probabilities.shape))
+    return activations
 
 
 def sample_categorical(probabilities):
@@ -106,7 +106,7 @@ def read_mnist(mnist_dataset_location, dim=[28, 28], n_train=60000, n_test=1000)
     return train_imgs[:n_train], train_lbls_1hot[:n_train], test_imgs[:n_test], test_lbls_1hot[:n_test]
 
 
-def viz_rf(weights, it, grid):
+def viz_rf(weights, it, grid, save_path):
     """
     Visualize receptive fields and save 
     """
@@ -115,10 +115,10 @@ def viz_rf(weights, it, grid):
     imax = abs(weights).max()
     for x in range(grid[0]):
         for y in range(grid[1]):
-            axs[x, y].set_xticks([]);
-            axs[x, y].set_yticks([]);
+            axs[x, y].set_xticks([])
+            axs[x, y].set_yticks([])
             axs[x, y].imshow(weights[:, :, y + grid[1] * x], cmap="bwr", vmin=-imax, vmax=imax, interpolation=None)
-    plt.savefig("rf.iter%06d.png" % it)
+    plt.savefig(os.path.join(save_path, "rf.iter%06d.png" % it), dpi=200)
     plt.close('all')
 
 
