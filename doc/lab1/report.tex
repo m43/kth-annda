@@ -141,7 +141,7 @@ In all subsampling cases, we noticed that measured accuracy on the original data
 \subsubsection{Classification of linearly non-separable data}
 %\textit{It seems that one (decision boundary) or two plots (inclusing learning curves) should suffice. Build a story around the questions in the assignment. Include concise motivation for your findings and potential interpretations/speculations.}
 
-Modifying the number of hidden nodes showed that at least 3 nodes are needed for the prepared two-class inseparable dataset for an accuracy of 100\%, which is to be expected having in mind the class distribution: one sigmoid function gives a line, two sigmoid functions give two lines, so the two cannot create a complex enough boundary.
+Modifying the number of hidden nodes showed that at least 3 nodes are needed for the prepared two-class inseparable dataset for an accuracy of 100\%, which is to be expected having in mind the class distribution: one sigmoid function gives a line with threshold, two sigmoid functions with threshold give a more complex curve that, if observed, still cannot theoretically separate this dataset, so a more complex boundary must be created.
 
 We created 4 subsets from the inseparable dataset (as described in section \ref{section_slp}) and divided the data into train and validation sets. Resulting decision boundaries for all 4 subsets are shown in Figure \ref{fig:d1234}.
 
@@ -182,7 +182,7 @@ By varying the number of nodes in the hidden layer from 1 to 25 as shown in Figu
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=12.5cm]{img/MLP - formula approximation results for different number of hidden nodes.png}
+	\includegraphics[width=9cm]{img/MLP - formula approximation results for different number of hidden nodes.png}
 	\caption{Graph of validation loss in relation to number of nodes in hidden layer}
 	\label{fig:mlp_nh}
 \end{figure}
